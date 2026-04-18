@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (popup) popup.style.display = "none";
     };
 
-    document.getElementById("hintTitle").textContent = "Glucode ૮₍'˶• . • ⑅ ₎ა";
+    // document.getElementById("hintTitle").textContent = "Glucode ૮₍'˶• . • ⑅ ₎ა";
 
     loadGameState();
     generateQuiz();
