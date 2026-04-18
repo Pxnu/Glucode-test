@@ -1,0 +1,274 @@
+/* =========================================
+   1. GLOBAL BASE STYLES
+========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style-type: none;
+    text-decoration: none;
+    font-family: 'Poppins', Tahoma, sans-serif;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* =========================================
+   2. BUTTON STYLES
+========================================= */
+button {
+    background-color: var(--btn);
+    color: var(--btn-text);
+    border: none;
+    border-radius: 12px;
+    height: 55px;
+    padding: 0 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================
+   3. THEME VARIABLES
+========================================= */
+:root {
+    --bg: #F8FAFC;
+    --box: #FFFFFF;
+    --text: #0F172A;
+    --subtext: #64748B;
+    --btn: #4F46E5;
+    --btn-text: #FFFFFF;
+    --hover: #4338CA;
+    --border: #E2E8F0;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+body.dark {
+    --bg: #0F172A;
+    --box: #1E293B;
+    --text: #F8FAFC;
+    --subtext: #94A3B8;
+    --btn: #0EA5E9;
+    --btn-text: #FFFFFF;
+    --hover: #0284C7;
+    --border: #334155;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+body.halloween {
+    --bg: #1A0B2E;
+    --box: #2D1B4E;
+    --text: #FF9E00;
+    --subtext: #B392DD;
+    --btn: #FF7518;
+    --btn-text: #1A0B2E;
+    --hover: #FF9E00;
+    --border: #4A2B7C;
+    --shadow: 0 10px 30px rgba(255, 117, 24, 0.15);
+}
+
+body.winter {
+    --bg: #F0F9FF;
+    --box: #FFFFFF;
+    --text: #0369A1;
+    --subtext: #38BDF8;
+    --btn: #0284C7;
+    --btn-text: #FFFFFF;
+    --hover: #0369A1;
+    --border: #BAE6FD;
+    --shadow: 0 10px 30px rgba(2, 132, 199, 0.1);
+}
+
+body.easter {
+    --bg: #FFF5F7;
+    --box: #FFFFFF;
+    --text: #BE185D;
+    --subtext: #F472B6;
+    --btn: #EC4899;
+    --btn-text: #FFFFFF;
+    --hover: #BE185D;
+    --border: #FBCFE8;
+    --shadow: 0 10px 30px rgba(236, 72, 153, 0.1);
+}
+
+/* =========================================
+   4. THEME SWITCHER
+========================================= */
+.theme-switcher {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    display: flex;
+    gap: 8px;
+    background: var(--box);
+    padding: 10px 15px;
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+    z-index: 9999;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.theme-switcher .theme-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--subtext);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+    box-shadow: none;
+}
+
+.theme-switcher .theme-btn:hover {
+    background: var(--bg);
+    color: var(--text);
+    transform: scale(1.15);
+}
+
+.theme-switcher .theme-btn.active {
+    background: var(--btn);
+    color: var(--btn-text);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.1);
+}
+
+/* =========================================
+   5. NAVBAR & DROPDOWN UI
+========================================= */
+nav {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--box);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.4s ease;
+}
+
+nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1.2rem 2.5rem;
+}
+
+nav .logo a {
+    color: var(--text);
+    font-weight: 800;
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, var(--text), var(--btn));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+nav ul li a {
+    color: var(--subtext);
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--btn);
+}
+
+/* Dropdown Styles */
+.user-dropdown-container {
+    position: relative;
+}
+
+.user-dropdown-btn i {
+    font-size: 0.9rem;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: 150%;
+    right: 0;
+    background: var(--box);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 10px 0;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.user-dropdown-container:hover .user-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    top: 100%;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 12px 25px;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg);
+    color: var(--btn);
+}
+
+.dropdown-divider {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 8px 0;
+}
+
+.coin-display span {
+    color: var(--subtext);
+}
+
+.coin-display strong {
+    color: #f59e0b;
+    font-size: 1.1rem;
+    margin-left: 5px;
+}

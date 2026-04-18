@@ -1,0 +1,130 @@
+/* =========================================
+   1. HERO SECTION
+========================================= */
+.Hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.Hero .container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 2.25rem;
+}
+
+.Hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-content {
+    width: 60%;
+    max-width: 730px;
+    position: relative;
+    z-index: 2;
+}
+
+.left-content .header {
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+.left-content .sub-header {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 550px;
+    color: var(--text);
+}
+
+.right-content {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.right-content .box-logo {
+    background-color: var(--hover);
+    padding: 4rem 3rem 4rem 5rem;
+    min-width: 400px;
+    border-radius: 50px 0 0 50px;
+    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.right-content h1 {
+    color: var(--bg);
+    font-size: 4rem;
+    text-align: left;
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+/* =========================================
+   2. WELCOME OVERLAY
+========================================= */
+.welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000000;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.welcome-overlay.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.welcome-content {
+    text-align: center;
+    padding: 40px;
+    background: transparent;
+    transform: scale(1);
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.welcome-overlay.hide .welcome-content {
+    transform: scale(0.9);
+}
+
+.welcome-content h1 {
+    font-size: 4rem;
+    color: var(--text);
+    margin-bottom: 20px;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.welcome-content p {
+    font-size: 1.8rem;
+    color: var(--subtext);
+    font-weight: 500;
+}
+
+#welcomeName {
+    color: var(--btn);
+    text-shadow: 0 0 15px var(--btn);
+}

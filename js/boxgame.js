@@ -1,6 +1,40 @@
 /* ==========================================
-   BOXGAME JS - FULL PERSISTENCE & SCORE SYSTEM
+   BOXGAME JS - FULL (รวม Data System แล้ว)
 ========================================== */
+
+// --- 1. DATA SYSTEM ---
+const SCORE_MAP = { easy: 1, medium: 2, hard: 3, expert: 4 };
+
+function getCurrentUser() { return localStorage.getItem("loggedInUser") || "Guest"; }
+
+function loadScore() {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let user = users.find(u => u.username === getCurrentUser());
+    return user && user.scoreBox ? user.scoreBox : 0;
+}
+
+function saveScore(newScore) {
+    const username = getCurrentUser();
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let userIndex = users.findIndex(u => u.username === username);
+    if (userIndex !== -1) {
+        users[userIndex].scoreBox = newScore;
+        users[userIndex].score = (users[userIndex].scoreDuo || 0) + newScore;
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+}
+
+function updateScoreUI() {
+    const scoreEl = document.getElementById("scoreTitle");
+    if (scoreEl) scoreEl.innerText = `${getCurrentUser()} | Score: ${loadScore()}`;
+}
+
+function addScore(difficulty) {
+    let currentScore = loadScore();
+    currentScore += SCORE_MAP[difficulty] || 1;
+    saveScore(currentScore);
+    updateScoreUI();
+}
 
 /* =========================
    LEVEL DATA
