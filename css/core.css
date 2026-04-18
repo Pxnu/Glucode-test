@@ -274,3 +274,100 @@ nav ul li a:hover {
     font-size: 1.1rem;
     margin-left: 5px;
 }
+
+/* =========================================
+   Game Status Bar & Dropdown (New)
+========================================= */
+.game-status-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    padding: 10px;
+    width: 100%;
+}
+
+.status-badge {
+    background: var(--box);
+    color: var(--text);
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.coin-badge {
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+.score-badge {
+    border-color: var(--btn);
+    color: var(--btn);
+}
+
+.level-badge {
+    border-color: var(--subtext);
+    color: var(--subtext);
+}
+
+.diff-select {
+    background: transparent;
+    border: none;
+    color: #10b981;
+    font-weight: 800;
+    cursor: pointer;
+    outline: none;
+    font-family: inherit;
+    font-size: 1rem;
+    margin-left: 8px;
+}
+
+.diff-select option {
+    background: var(--box);
+    color: var(--text);
+}
+
+/* =========================================
+   Popups (Skip, Progression)
+========================================= */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+
+.popup-box {
+    background: var(--box);
+    padding: 40px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    border: 1px solid var(--border);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    animation: popIn 0.3s ease;
+}
+
+.popup-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--text);
+}
+
+.popup-box p {
+    color: var(--subtext);
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
