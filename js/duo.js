@@ -1,5 +1,5 @@
 /* ==========================================
-   DUO JS - FULL (จัดแบ่งโจทย์ 4 ระดับ + ระบบใหม่)
+   DUO JS - FULL (มีระบบจำโจทย์ปัจจุบัน & สลับโหมดอิสระ)
 ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const currentUser = localStorage.getItem("loggedInUser");
@@ -75,10 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const SKIP_COSTS = { easy: 10, medium: 20, hard: 30, expert: 40 };
 
     let currentDifficulty = "easy";
-    let playedInRound = 0;
     let isSubmitting = false;
     let correctAnswer = "";
-
+    
+    // 🔥 แยกนับรอบของแต่ละโหมด
+    let playedInRound = { easy: 0, medium: 0, hard: 0, expert: 0 };
+    // 🔥 ล็อกข้อปัจจุบันไว้กันรีเฟรชหน้าจอ
+    let activeQuestion = { easy: -1, medium: -1, hard: -1, expert: -1 };
+    
     let easyPlayed = [], mediumPlayed = [], hardPlayed = [], expertPlayed = [];
     let duoCorrectTotal = 0, duoStreak = 0, questionStartTime = 0;
 
@@ -103,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveGameState() {
         const state = {
-            currentDifficulty, playedInRound,
+            currentDifficulty, playedInRound, activeQuestion,
             easyPlayed, mediumPlayed, hardPlayed, expertPlayed,
             duoCorrectTotal, duoStreak
         };
@@ -115,7 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (saved) {
             const state = JSON.parse(saved);
             currentDifficulty = state.currentDifficulty || "easy";
-            playedInRound = state.playedInRound || 0;
+            
+            if (typeof state.playedInRound === 'number') playedInRound = { easy: state.playedInRound, medium: 0, hard: 0, expert: 0 };
+            else playedInRound = state.playedInRound || { easy: 0, medium: 0, hard: 0, expert: 0 };
+
+            activeQuestion = state.activeQuestion || { easy: -1, medium: -1, hard: -1, expert: -1 };
+
             easyPlayed = state.easyPlayed || [];
             mediumPlayed = state.mediumPlayed || [];
             hardPlayed = state.hardPlayed || [];
@@ -132,37 +141,34 @@ document.addEventListener('DOMContentLoaded', () => {
         let user = users.find(u => u.username === currentUser);
         let coins = user ? (user.coins || 0) : 0;
 
-        document.getElementById("coinDisplay").innerText = `💰 ${coins}`;
-        document.getElementById("scoreDisplay").innerText = `Score: ${loadScore()}`;
-        document.getElementById("levelDisplay").innerText = `Round: ${playedInRound + 1 > ROUND_LIMIT ? ROUND_LIMIT : playedInRound + 1} / ${ROUND_LIMIT}`;
-        document.getElementById("difficultySelect").value = currentDifficulty;
+        let round = playedInRound[currentDifficulty] + 1;
+        if (round > ROUND_LIMIT) round = ROUND_LIMIT;
 
+        document.getElementById("coinDisplay").innerHTML = `<i class="fa-solid fa-coins"></i> ${coins}`;
+        document.getElementById("scoreDisplay").innerText = `Score: ${loadScore()}`;
+        document.getElementById("levelDisplay").innerText = `Round: ${round} / ${ROUND_LIMIT}`;
+        document.getElementById("difficultySelect").value = currentDifficulty;
+        
         let navCoin = document.querySelector('.coin-display strong');
-        if (navCoin) navCoin.innerText = coins;
+        if(navCoin) navCoin.innerText = coins;
     }
 
-    window.changeDifficulty = function (val) {
-        if (playedInRound > 0 && playedInRound < ROUND_LIMIT) {
-            if (!confirm("คุณกำลังทำข้อค้างอยู่ หากเปลี่ยนโหมดตอนนี้จะเริ่มนับ 1 ใหม่ ตกลงหรือไม่?")) {
-                document.getElementById("difficultySelect").value = currentDifficulty;
-                return;
-            }
-        }
+    // 🔥 เปลี่ยนโหมดอิสระ
+    window.changeDifficulty = function(val) {
         currentDifficulty = val;
-        playedInRound = 0;
         generateQuiz();
     };
 
     /* =========================
        🚀 ระบบ Skip
     ========================= */
-    window.promptSkip = function () {
+    window.promptSkip = function() {
         if (isSubmitting) return;
         document.getElementById("skipCostText").innerText = SKIP_COSTS[currentDifficulty];
         document.getElementById("skipConfirmPopup").style.display = "flex";
     };
 
-    window.executeSkip = function () {
+    window.executeSkip = function() {
         const cost = SKIP_COSTS[currentDifficulty];
         let users = JSON.parse(localStorage.getItem('users')) || [];
         let userIndex = users.findIndex(u => u.username === currentUser);
@@ -170,18 +176,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userIndex !== -1 && users[userIndex].coins >= cost) {
             users[userIndex].coins -= cost;
             localStorage.setItem('users', JSON.stringify(users));
-
+            
             window.closePopup('skipConfirmPopup');
-            duoStreak = 0; // ตัด Streak
-
+            duoStreak = 0; 
+            
             let resultDisplay = document.getElementById("resultMessage");
             resultDisplay.textContent = `⏭️ ข้ามด่านสำเร็จ! (-${cost} Coins)`;
             resultDisplay.style.color = "#f59e0b";
-
+            
             isSubmitting = true;
             setTimeout(() => {
                 resultDisplay.textContent = "";
-                handleRoundProgress(true);
+                handleRoundProgress(true); 
             }, 1000);
         } else {
             alert("เหรียญไม่พอข้ามด่าน!");
@@ -195,69 +201,70 @@ document.addEventListener('DOMContentLoaded', () => {
     function getAvailableQuestions() {
         let pool = quizData[currentDifficulty];
         let played = currentDifficulty === "easy" ? easyPlayed : currentDifficulty === "medium" ? mediumPlayed : currentDifficulty === "hard" ? hardPlayed : expertPlayed;
-
+        
         let avail = [];
-        pool.forEach((_, i) => { if (!played.includes(i)) avail.push(i); });
+        pool.forEach((_, i) => { if(!played.includes(i)) avail.push(i); });
         return { avail, pool, played };
     }
 
     function handleRoundProgress(isSkip = false) {
-        playedInRound++;
+        activeQuestion[currentDifficulty] = -1; // เคลียร์ข้อปัจจุบันทิ้ง
+        playedInRound[currentDifficulty]++;
         syncGameUI();
-
-        if (playedInRound >= ROUND_LIMIT) {
+        
+        if (playedInRound[currentDifficulty] >= ROUND_LIMIT) {
             showProgressionPopup();
         } else {
             generateQuiz();
         }
         isSubmitting = false;
+        saveGameState();
     }
 
-    window.showProgressionPopup = function (isExhausted = false) {
+    window.showProgressionPopup = function(isExhausted = false) {
         let { avail } = getAvailableQuestions();
         let popup = document.getElementById("progressionPopup");
         let title = document.getElementById("progTitle");
         let desc = document.getElementById("progDesc");
         let btnContainer = document.getElementById("progBtns");
         btnContainer.innerHTML = "";
-
+        
         if (isExhausted || avail.length === 0) {
-            title.innerText = "โหมดนี้เล่นครบแล้ว!";
+            title.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 🚧 โหมดนี้เล่นครบแล้ว!`;
             desc.innerText = `คุณเล่นโจทย์ ${currentDifficulty.toUpperCase()} ครบทั้งหมดแล้ว ไประดับต่อไปกันเถอะ`;
         } else {
-            title.innerText = " คุณเล่นผ่านระดับนี้แล้ว!";
+            title.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 🎉 คุณเล่นผ่านระดับนี้แล้ว!`;
             desc.innerText = `สามารถไปด่านถัดไป หรือจะฝึกระดับ ${currentDifficulty.toUpperCase()} ต่อดี?`;
-
+            
             let btnStay = document.createElement("button");
-            btnStay.innerText = `เล่น ${currentDifficulty} ต่อ`;
-            btnStay.style.background = "var(--subtext)";
-            btnStay.style.color = "white";
-            btnStay.onclick = () => { playedInRound = 0; window.closePopup('progressionPopup'); generateQuiz(); };
+            btnStay.className = "btn-cancel";
+            btnStay.innerHTML = `<i class="fa-solid fa-rotate-right"></i> เล่น ${currentDifficulty} ต่อ`;
+            btnStay.onclick = () => { playedInRound[currentDifficulty] = 0; window.closePopup('progressionPopup'); generateQuiz(); };
             btnContainer.appendChild(btnStay);
         }
 
         let btnNext = document.createElement("button");
-        btnNext.className = "goHome";
-
+        btnNext.className = "btn-primary";
+        
         if (currentDifficulty === "expert" && avail.length === 0) {
             document.getElementById("gameClearPopup").style.display = "flex";
             localStorage.removeItem(`duo_persistence_${currentUser}`);
             return;
         } else {
-            btnNext.innerText = "ไปด่านถัดไป ➔";
+            btnNext.innerHTML = `ไปด่านถัดไป <i class="fa-solid fa-arrow-right"></i>`;
             btnNext.onclick = () => moveNextDifficulty();
         }
-
+        
         btnContainer.appendChild(btnNext);
         popup.style.display = "flex";
     };
 
-    window.moveNextDifficulty = function () {
+    window.moveNextDifficulty = function() {
         const order = ["easy", "medium", "hard", "expert"];
         let nextIdx = order.indexOf(currentDifficulty) + 1;
-        if (nextIdx < order.length) {
+        if(nextIdx < order.length) {
+            playedInRound[currentDifficulty] = 0;
             currentDifficulty = order[nextIdx];
-            playedInRound = 0;
             window.closePopup('progressionPopup');
             generateQuiz();
         } else {
@@ -268,6 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function generateQuiz() {
+        if (playedInRound[currentDifficulty] >= ROUND_LIMIT) {
+            showProgressionPopup();
+            return;
+        }
+
         document.getElementById("userInput").value = "";
         document.getElementById("userInput").disabled = false;
         document.getElementById("resultMessage").innerHTML = "";
@@ -275,15 +287,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let { avail, pool, played } = getAvailableQuestions();
 
-        if (avail.length === 0) {
-            showProgressionPopup(true);
-            return;
+        let randIdx;
+        // 🔥 ตรวจสอบว่ามีโจทย์ค้างอยู่ไหม ถ้ารีเฟรชมาจะดึงข้อเดิมมาทำ
+        if (activeQuestion[currentDifficulty] !== -1) {
+            randIdx = activeQuestion[currentDifficulty];
+        } else {
+            if (avail.length === 0) {
+                showProgressionPopup(true);
+                return;
+            }
+            randIdx = avail[Math.floor(Math.random() * avail.length)];
+            played.push(randIdx);
+            activeQuestion[currentDifficulty] = randIdx; // ล็อกข้อไว้
         }
 
-        let randIdx = avail[Math.floor(Math.random() * avail.length)];
-        played.push(randIdx);
         const currentItem = pool[randIdx];
-
         correctAnswer = currentItem.tags.join('');
         document.getElementById("hintText").textContent = currentItem.hint;
 
@@ -314,14 +332,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userTyped === correctNormalized) {
             let earnedScore = SCORE_MAP[currentDifficulty];
             addScoreToUser(earnedScore);
-
+            
             resultDisplay.textContent = `🎉 ถูกต้อง! รับไป ${earnedScore} คะแนน`;
             resultDisplay.style.color = "#10B981";
 
             submitBtn.disabled = true;
             answerField.disabled = true;
 
-            // ระบบ Quest & Achievement เดิมของคุณ
             duoCorrectTotal++;
             duoStreak++;
             if (typeof window.unlockAchievement === "function") {
@@ -347,14 +364,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    window.closePopup = function (id) { document.getElementById(id).style.display = "none"; };
-    window.goHome = function () { window.location.href = "../Home.html"; };
+    window.closePopup = function(id) { document.getElementById(id).style.display = "none"; };
+    window.goHome = function() { window.location.href = "../Home.html"; };
 
-    // Initial Load
     loadGameState();
     generateQuiz();
 
-    // Events
     document.getElementById("submitBtn").addEventListener("click", checkAnswer);
     document.getElementById("userInput").addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
