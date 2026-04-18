@@ -1,0 +1,92 @@
+/* =========================================
+   Achievement Page Styles
+========================================= */
+
+#achievement-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    flex: 1;
+}
+
+#achievement-section h2 {
+    font-size: 2.5rem;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+}
+
+/* Grid Layout สำหรับกล่องรางวัล */
+#achievement-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+/* สเตตัส: ล็อกอยู่ (Locked) */
+#achievement-list li {
+    background: var(--box);
+    color: var(--subtext);
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 2px dashed var(--subtext);
+    opacity: 0.6; /* ทำให้ดูจางๆ เพราะยังไม่ได้ปลดล็อก */
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* สเตตัส: ปลดล็อกแล้ว (Unlocked) - JS จะมาเติมคลาสนี้ให้ */
+#achievement-list li.unlocked {
+    opacity: 1;
+    color: var(--text);
+    border: 2px solid #2ecc71; /* กรอบสีเขียว */
+    background: linear-gradient(145deg, var(--box), rgba(46, 204, 113, 0.1));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.15);
+}
+
+#achievement-list li:hover {
+    transform: translateY(-5px);
+}
+
+/* =========================================
+   Achievement Popup (Toast Notification)
+========================================= */
+#achievement-popup {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background: var(--box);
+    color: var(--text);
+    padding: 15px 25px;
+    border-radius: 12px;
+    border-left: 6px solid #f1c40f; /* แถบสีทองเหลืองด้านซ้าย */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: none;
+    opacity: 0;
+    z-index: 9999;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* คลาสโชว์ Popup แบบเด้งขึ้นมา */
+#achievement-popup.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#popup-text {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn | Glucode</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/learn.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav style="width: 100%; z-index: 100;">
+        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
+            <div class="logo">
+                <a href="../Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
+            </div>
+            <ul style="margin: 0; padding: 0;">
+                <li><a href="../Home.html">Home</a></li>
+                <li><a href="../Glucode LearnPage/Learn.html">Learn</a></li>
+                <li><a href="#">Leader Board</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="learn-container">
+        <header class="learn-header">
+            <h1>เลือกโหมดการเรียนรู้ 🎮</h1>
+            <p>สนุกกับการฝึกเขียนโค้ด HTML ผ่านเกมที่คุณชื่นชอบ!</p>
+        </header>
+
+        <div class="game-cards-wrapper">
+            <div class="game-card">
+                <div class="game-icon"><i class="fa-solid fa-gamepad"></i></div>
+                <h3>Duo (Quiz)</h3>
+                <p>ฝึกฝนความจำและความแม่นยำในการพิมพ์แท็ก HTML แข่งกับเวลา เก็บสะสมคะแนนไต่อันดับกระดานผู้นำ</p>
+                <button onclick="window.location.href='../Glucode Game/duo.html'" class="play-btn duo-btn">เล่นเกม Duo</button>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon"><i class="fa-solid fa-puzzle-piece"></i></div>
+                <h3>BoxGame (Jigsaws)</h3>
+                <p>เรียนรู้โครงสร้างหน้าเว็บเพจ ผ่านการต่อบล็อกคำสั่ง HTML แบบจิ๊กซอว์ให้ถูกต้องตามโจทย์ที่ได้รับ</p>
+                <button onclick="window.location.href='../Glucode Game/BoxGame.html'" class="play-btn boxgame-btn">เล่นเกม BoxGame</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light" title="Light Theme"><i class="fa-solid fa-sun"></i></button>
+        <button class="theme-btn" data-theme="dark" title="Dark Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
+        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i class="fa-solid fa-snowflake"></i></button>
+        <button class="theme-btn" data-theme="easter" title="Easter Theme"><i class="fa-solid fa-egg"></i></button>
+    </div>
+
+    <script src="../script/theme.js"></script>
+    <script src="../script/auth.js"></script>
+    <script src="../script/ui.js"></script>
+
+</body>
+</html>

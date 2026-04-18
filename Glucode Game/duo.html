@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Duo | Glucode</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/duo.css">
+    <link rel="stylesheet" href="../css/achievement.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <nav style="width: 100%; z-index: 100;">
+        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
+            <div class="logo">
+                <a href="../Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
+            </div>
+            <ul style="margin: 0; padding: 0;">
+                <li><a href="../Home.html">Home</a></li>
+                <li><a href="../Glucode LearnPage/Learn.html">Learn</a></li>
+                <li><a href="#">Leader Board</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="game-wrapper">
+        <div class="card">
+            <div class="header-row">
+                <h2 id="hintTitle">Glucode</h2>
+                <div class="right-content">
+                    <div class="score-badge" id="scoreDisplay">Score: 0</div>
+                    <div class="level-badge" id="levelDisplay">Level: 1 / 10</div>
+                </div>
+            </div>
+
+            <div class="pieces-container">
+                <div id="hintText" class="hint-text">กำลังโหลดโจทย์...</div>
+            </div>
+
+            <div class="game-area">
+                <div class="answer-box">
+                    <input type="text" id="userInput" placeholder="ประกอบโค้ดที่นี่..." autocomplete="off">
+                </div>
+                <button class="submit-btn" id="submitBtn">Submit</button>
+            </div>
+
+            <div id="resultMessage"></div>
+        </div>
+    </div>
+
+    <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light" title="Light Theme"><i class="fa-solid fa-sun"></i></button>
+        <button class="theme-btn" data-theme="dark" title="Dark Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
+        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i class="fa-solid fa-snowflake"></i></button>
+        <button class="theme-btn" data-theme="easter" title="Easter Theme"><i class="fa-solid fa-egg"></i></button>
+    </div>
+
+    <script src="../script/theme.js"></script>
+    <script src="../script/auth.js"></script>
+    <script src="../script/ui.js"></script>
+    <script src="../script/quest.js"></script>
+    <script src="../script/achievement.js"></script>
+    <script src="../script/duo.js"></script>
+</body>
+
+</html>

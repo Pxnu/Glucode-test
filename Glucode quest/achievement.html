@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement | Glucode</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/achievement.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <nav style="width: 100%; z-index: 100;">
+        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
+            <div class="logo">
+                <a href="../Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
+            </div>
+            <ul style="margin: 0; padding: 0;">
+                <li><a href="../Home.html">Home</a></li>
+                <li><a href="../Glucode LearnPage/Learn.html">Learn</a></li>
+                <li><a href="#">Leader Board</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="achievement-section">
+        <h2>🏆 Achievement</h2>
+
+        <ul id="achievement-list">
+            <li data-achievement="word-first">🔒 เรียงคำสำเร็จครั้งแรก</li>
+            <li data-achievement="word-3">🔒 เรียงคำถูก 3 ครั้ง</li>
+            <li data-achievement="word-5">🔒 เรียงคำถูก 5 ครั้งติด</li>
+            <li data-achievement="word-speed">🔒 เรียงคำภายใน 5 วินาที</li>
+            <li data-achievement="word-master">🔒 Word Master (ครบ 10 ครั้ง)</li>
+
+            <li data-achievement="code-first">🔒 เขียนโค้ดครั้งแรก</li>
+            <li data-achievement="code-if">🔒 ใช้ if-else ได้</li>
+            <li data-achievement="code-loop">🔒 ใช้ loop (for/while) ได้</li>
+            <li data-achievement="code-array">🔒 ใช้ array ได้</li>
+            <li data-achievement="code-correct-5">🔒 เขียนโค้ดถูก 5 ข้อ</li>
+            <li data-achievement="code-correct-10">🔒 เขียนโค้ดถูก 10 ข้อ</li>
+            <li data-achievement="code-master">🔒 Coding Master</li>
+
+            <li data-achievement="quiz-first">🔒 ตอบถูกครั้งแรก</li>
+            <li data-achievement="quiz-3">🔒 ตอบถูก 3 ข้อ</li>
+            <li data-achievement="quiz-5">🔒 ตอบถูก 5 ข้อติด</li>
+            <li data-achievement="quiz-10">🔒 ตอบถูก 10 ข้อ</li>
+            <li data-achievement="quiz-speed">🔒 ตอบภายใน 5 วินาที</li>
+            <li data-achievement="quiz-master">🔒 Quiz Master</li>
+
+            <li data-achievement="all-rounder">🔒 All Rounder (ครบทุกหมวด)</li>
+            <li data-achievement="pro-player">🔒 Pro Player (ปลดล็อกทั้งหมด)</li>
+        </ul>
+    </section>
+
+    <div id="achievement-popup">
+        <p id="popup-text">Achievement Unlocked!</p>
+    </div>
+
+    <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light" title="Light Theme"><i class="fa-solid fa-sun"></i></button>
+        <button class="theme-btn" data-theme="dark" title="Dark Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
+        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i class="fa-solid fa-snowflake"></i></button>
+        <button class="theme-btn" data-theme="easter" title="Easter Theme"><i class="fa-solid fa-egg"></i></button>
+    </div>
+
+    <script src="../script/theme.js"></script>
+    <script src="../script/auth.js"></script>
+    <script src="../script/ui.js"></script>
+    <script src="../script/achievement.js"></script>
+</body>
+
+</html>

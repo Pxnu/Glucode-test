@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glucode - Box Game</title>
+    <link rel="stylesheet" href="../css/theme.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/boxgame.css">
+    
+    <link rel="stylesheet" href="../css/achievement.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <nav style="width: 100%; z-index: 100;">
+        <div class="container"
+            style="max-width: 1440px; padding: 1.2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; margin: 0 auto;">
+            <div class="logo">
+                <a href="../Home.html" style="font-weight: 800; font-size: 2.2rem; text-decoration: none;">Glucode</a>
+            </div>
+            <ul style="display: flex; gap: 35px; list-style: none;">
+                <li><a href="../Home.html">Home</a></li>
+                <li><a href="../Glucode LearnPage/Learn.html">Learn</a></li>
+                <li><a href="#">Leader Board</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="game-box-wrapper">
+        <div id="scoreTitle">Score: 0</div>
+        <div id="levelTitle">Level: 1 / 20</div>
+
+        <h2 id="question">Loading...</h2>
+
+        <div class="answer-container">
+            <div id="answerArea">
+            </div>
+            <button class="btn-submit" onclick="submitAnswer()">Submit</button>
+        </div>
+
+        <div id="choices">
+        </div>
+
+        <div class="control-buttons">
+            <button class="btn-secondaryRe" onclick="resetBoard()">Reset</button>
+            <button class="btn-secondaryDel" onclick="removeLast()">Delete</button>
+            <button class="btn-secondarySkip" onclick="skipLevel()">Skip</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <div id="finishPopup" class="popup-overlay">
+        <div class="popup-box">
+            <button class="close-popup" onclick="closePopup()">&times;</button>
+            <h2>🎉 ยินดีด้วย!</h2>
+            <p id="finalScoreText">คะแนนของคุณคือ: 0</p>
+            <div class="popup-buttons">
+                <button class="goHome" onclick="goHome()">Back to Home</button>
+                <button style="background: var(--subtext); color: white;" onclick="playAgain()">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light" title="Light Theme"><i class="fa-solid fa-sun"></i></button>
+        <button class="theme-btn" data-theme="dark" title="Dark Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
+        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i class="fa-solid fa-snowflake"></i></button>
+        <button class="theme-btn" data-theme="easter" title="Easter Theme"><i class="fa-solid fa-egg"></i></button>
+    </div>
+
+    <script src="../script/theme.js"></script>
+    <script src="../script/auth.js"></script>
+    <script src="../script/ui.js"></script>
+    <script src="../script/data.js"></script>
+    
+    <script src="../script/quest.js"></script>
+    <script src="../script/achievement.js"></script>
+    
+    <script src="../script/boxgame.js"></script>
+</body>
+
+</html>

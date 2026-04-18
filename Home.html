@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Glucode</title>
+    <link rel="stylesheet" href="./css/theme.css">
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/navbar.css">
+    <link rel="stylesheet" href="./css/hero.css">
+    <link rel="stylesheet" href="./css/welcome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="welcomeOverlay" class="welcome-overlay">
+        <div class="welcome-content">
+            <h1>Welcome <span id="welcomeName" style="color: var(--btn);">Player</span> to our website</h1>
+            <p>Ready to code?</p>
+        </div>
+    </div>
+
+    <script>
+        // ถ้าเช็คเจอว่า 'เคยดูแล้ว' ให้ซ่อนทันทีก่อนที่เบราว์เซอร์จะวาดหน้าเว็บเสร็จ!
+        if (sessionStorage.getItem("hasSeenWelcome")) {
+            document.getElementById("welcomeOverlay").style.display = "none";
+        }
+    </script>
+
+    <nav style="width: 100%;">
+        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
+            <div class="logo">
+                <a href="./Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
+            </div>
+            <ul style="margin: 0; padding: 0;">
+                <li><a href="./Home.html">Home</a></li>
+                <li><a href="./Glucode LearnPage/Learn.html">Learn</a></li>
+                <li><a href="#">Leader Board</a></li>
+            </ul>
+        </div>
+    </nav>
+     
+     <section class="Hero">
+        <div class="container">
+          <div class="Hero-content">
+            <div class="left-content">
+              <div class="header">
+                <h2>Hi "<span style="color: var(--btn);">Guest</span>" Welcome to our website</h2>
+              </div>
+              <div class="sub-header">
+                <p>This website will allow you to learn programming skills, presented in the form of a game to make it easy to understand, fun, and relaxing.</p>
+              </div>
+              <button type="button" class="Hero-btn" id="getStartedBtn">Get Started</button>
+            </div>
+             <div class="right-content">
+              <div class="box-logo">
+                <h1>Glucode</h1>
+              </div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="theme-switcher">
+        <button class="theme-btn" data-theme="light" title="Light Theme"><i class="fa-solid fa-sun"></i></button>
+        <button class="theme-btn" data-theme="dark" title="Dark Theme"><i class="fa-solid fa-moon"></i></button>
+        <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
+        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i class="fa-solid fa-snowflake"></i></button>
+        <button class="theme-btn" data-theme="easter" title="Easter Theme"><i class="fa-solid fa-egg"></i></button>
+    </div>
+
+      <script src="./script/theme.js"></script>
+      <script src="./script/welcome.js"></script>
+      <script src="./script/auth.js"></script>
+      <script src="./script/ui.js"></script>
+      <script src="./script/main.js"></script>
+</body>
+</html>

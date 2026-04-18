@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    color: #111;
+    overflow: hidden;
+    cursor: none;
+    transition: opacity 0.3s;
+
+    /* 🔥 กันเลือกข้อความ */
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* 🔥 กันลาก */
+* {
+    -webkit-user-drag: none;
+}
+
+.screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.box {
+    text-align: center;
+    animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+h1 {
+    font-size: 48px;
+}
+
+p {
+    color: #555;
+    line-height: 1.6;
+}
+
+/* cursor */
+.cursor {
+    position: fixed;
+    font-size: 40px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.cursor i {
+    color: #111;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}

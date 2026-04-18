@@ -1,0 +1,143 @@
+/* =========================================
+   Glucode - Premium Master Theme Styles
+========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* 1. Light Theme (Default) - สไตล์คลีนๆ ดูแพง ขาว/เทาอมฟ้า */
+:root {
+    --bg: #F8FAFC;
+    /* พื้นหลังสีเทาอ่อน สบายตา */
+    --box: #FFFFFF;
+    /* กล่องสีขาวล้วน */
+    --text: #0F172A;
+    /* ตัวอักษรสีน้ำเงินเข้มจัด (แทนสีดำ) */
+    --subtext: #64748B;
+    /* ตัวอักษรย่อยสีเทา */
+    --btn: #4F46E5;
+    /* สีส้ม Signature ของ Glucode */
+    --btn-text: #FFFFFF;
+    /* สีตัวอักษรบนปุ่ม */
+    --hover: #4338CA;
+    /* สีส้มเข้มตอนโฮเวอร์ */
+    --border: #E2E8F0;
+    /* สีขอบบางๆ */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    /* เงาฟุ้งๆ */
+}
+
+/* 2. Dark Theme - สไตล์ล้ำๆ โทนน้ำเงินเข้ม/เทา */
+body.dark {
+    --bg: #0F172A;
+    --box: #1E293B;
+    --text: #F8FAFC;
+    --subtext: #94A3B8;
+    --btn: #0EA5E9;
+    --btn-text: #FFFFFF;
+    --hover: #0284C7;
+    --border: #334155;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* 3. Halloween Theme - ม่วงเข้ม/ส้มเรืองแสง */
+body.halloween {
+    --bg: #1A0B2E;
+    --box: #2D1B4E;
+    --text: #FF9E00;
+    --subtext: #B392DD;
+    --btn: #FF7518;
+    --btn-text: #1A0B2E;
+    --hover: #FF9E00;
+    --border: #4A2B7C;
+    --shadow: 0 10px 30px rgba(255, 117, 24, 0.15);
+}
+
+/* 4. Winter Theme - ขาวสว่าง/ฟ้าอ่อน/น้ำเงิน */
+body.winter {
+    --bg: #F0F9FF;
+    --box: #FFFFFF;
+    --text: #0369A1;
+    --subtext: #38BDF8;
+    --btn: #0284C7;
+    --btn-text: #FFFFFF;
+    --hover: #0369A1;
+    --border: #BAE6FD;
+    --shadow: 0 10px 30px rgba(2, 132, 199, 0.1);
+}
+
+/* 5. Easter Theme - พาสเทลชมพู/เหลือง/เขียว */
+body.easter {
+    --bg: #FFF5F7;
+    --box: #FFFFFF;
+    --text: #BE185D;
+    --subtext: #F472B6;
+    --btn: #EC4899;
+    --btn-text: #FFFFFF;
+    --hover: #BE185D;
+    --border: #FBCFE8;
+    --shadow: 0 10px 30px rgba(236, 72, 153, 0.1);
+}
+
+/* =========================================
+   Floating Theme Switcher (Icon Based)
+========================================= */
+.theme-switcher {
+    position: fixed;
+    bottom: 25px;
+    left: 25px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    background: var(--box);
+    padding: 10px 15px;
+    border-radius: 50px;
+    box-shadow: var(--shadow);
+    z-index: 9999;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+
+.theme-switcher .theme-btn {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--subtext) !important;
+    font-size: 1.2rem !important;
+    cursor: pointer !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: none !important;
+}
+
+.theme-switcher .theme-btn:hover {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    transform: scale(1.15) !important;
+}
+
+.theme-switcher .theme-btn.active {
+    background: var(--btn) !important;
+    color: var(--btn-text) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Force Sync Theme Transition */
+body,
+nav,
+.container,
+.game-card,
+.quest-item,
+.user-dropdown-menu,
+.theme-switcher,
+.theme-btn,
+.popup-box,
+.answer-container,
+#choices,
+#answerArea {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease !important;
+}
