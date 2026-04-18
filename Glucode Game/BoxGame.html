@@ -28,7 +28,9 @@
 
     <div class="game-box-wrapper">
         <div class="game-status-bar">
-            <div class="status-badge coin-badge" id="coinDisplay">💰 0</div>
+            <div class="status-badge coin-badge" id="coinDisplay">
+                <i class="fa-solid fa-coins"></i> 0
+            </div>
             <div class="status-badge">
                 <span style="color: var(--subtext); font-size: 0.85em;">Mode:</span>
                 <select id="difficultySelect" class="diff-select" onchange="changeDifficulty(this.value)">
@@ -75,31 +77,53 @@
 
     <div id="skipConfirmPopup" class="popup-overlay">
         <div class="popup-box">
-            <h2>⏭️ ยืนยันการข้าม?</h2>
-            <p>ต้องใช้ <span id="skipCostText" style="color:#f59e0b; font-weight:bold; font-size: 1.5rem;">0</span>
-                Coins เพื่อข้ามด่านนี้</p>
+            <h2>
+                <i class="fa-solid fa-forward-step" style="color: #38bdf8;"></i>
+                ข้ามด่านนี้?
+            </h2>
+            <p>การข้ามด่านจะต้องใช้เหรียญ<br>คุณต้องการยืนยันหรือไม่?</p>
+
+            <div style="display: flex; justify-content: center;">
+                <span class="highlight-coin">
+                    <span id="skipCostText">0</span>
+                    <i class="fa-solid fa-coins"></i>
+                </span>
+            </div>
+
             <div class="popup-buttons">
-                <button style="background: var(--subtext); color: white;"
-                    onclick="closePopup('skipConfirmPopup')">ยกเลิก</button>
-                <button style="background: #ef4444; color: white;" onclick="executeSkip()">ยืนยัน (-Coin)</button>
+                <button class="btn-cancel" onclick="closePopup('skipConfirmPopup')">
+                    <i class="fa-solid fa-xmark"></i> ยกเลิก
+                </button>
+                <button class="btn-danger" onclick="executeSkip()">
+                    <i class="fa-solid fa-check"></i> ยืนยัน
+                </button>
             </div>
         </div>
     </div>
 
     <div id="progressionPopup" class="popup-overlay">
         <div class="popup-box">
-            <h2 id="progTitle">🎉 เยี่ยมมาก!</h2>
+            <h2 id="progTitle">
+                <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
+                เยี่ยมมาก!
+            </h2>
             <p id="progDesc">คุณเล่นผ่านระดับนี้แล้ว สามารถไปด่านถัดไปได้</p>
-            <div class="popup-buttons" id="progBtns" style="flex-wrap: wrap;"></div>
+
+            <div class="popup-buttons" id="progBtns"></div>
         </div>
     </div>
 
     <div id="gameClearPopup" class="popup-overlay">
         <div class="popup-box">
-            <h2>🏆 CONGRATULATION!</h2>
-            <p>สุดยอดมาก! คุณเล่นเคลียร์ครบทุกด่านของเกมนี้แล้ว 🎉</p>
+            <h2>
+                <i class="fa-solid fa-trophy" style="color: #facc15;"></i>
+                CONGRATULATIONS!
+            </h2>
+            <p>สุดยอดมาก! คุณเล่นเคลียร์ครบทุกด่านของเกมนี้แล้ว แวะไปรับรางวัลหรือลุยเกมอื่นต่อได้เลย</p>
             <div class="popup-buttons">
-                <button class="goHome" onclick="goHome()" style="width: 100%;">กลับหน้าหลัก</button>
+                <button class="btn-primary" onclick="goHome()" style="width: 100%;">
+                    <i class="fa-solid fa-house"></i> กลับหน้าหลัก
+                </button>
             </div>
         </div>
     </div>

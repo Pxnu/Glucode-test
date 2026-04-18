@@ -228,10 +228,10 @@ window.showProgressionPopup = function (isExhausted = false) {
     btnContainer.innerHTML = "";
 
     if (isExhausted || avail.length === 0) {
-        title.innerText = "🚧 โหมดนี้เล่นครบแล้ว!";
+        title.innerText = "โหมดนี้เล่นครบแล้ว!";
         desc.innerText = `คุณเล่นโจทย์ ${currentDifficulty.toUpperCase()} ครบทั้งหมดแล้ว ไประดับต่อไปกันเถอะ`;
     } else {
-        title.innerText = "🎉 คุณเล่นผ่านระดับนี้แล้ว!";
+        title.innerText = " คุณเล่นผ่านระดับนี้แล้ว!";
         desc.innerText = `สามารถไปด่านถัดไป หรือจะฝึกระดับ ${currentDifficulty.toUpperCase()} ต่อดี?`;
 
         let btnStay = document.createElement("button");
