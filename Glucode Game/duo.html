@@ -13,9 +13,11 @@
 
 <body>
     <nav style="width: 100%; z-index: 100;">
-        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
+        <div class="container"
+            style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
             <div class="logo">
-                <a href="../Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
+                <a href="../Home.html"
+                    style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
             </div>
             <ul style="margin: 0; padding: 0;">
                 <li><a href="../Home.html">Home</a></li>
@@ -43,8 +45,9 @@
                 <div class="answer-box">
                     <input type="text" id="userInput" placeholder="ประกอบโค้ดที่นี่..." autocomplete="off">
                 </div>
-                <button class="submit-btn" id="submitBtn">Submit</button>
             </div>
+            <button class="submit-btn" id="submitBtn">Submit</button>
+            <button class="skip-btn" id="skipBtn" onclick="skipLevel()">Skip Level</button>
 
             <div id="resultMessage"></div>
         </div>
@@ -54,7 +57,8 @@
         <button class="theme-btn" data-theme="light" title="Light Theme"><i class="fa-solid fa-sun"></i></button>
         <button class="theme-btn" data-theme="dark" title="Dark Theme"><i class="fa-solid fa-moon"></i></button>
         <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
-        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i class="fa-solid fa-snowflake"></i></button>
+        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i
+                class="fa-solid fa-snowflake"></i></button>
         <button class="theme-btn" data-theme="easter" title="Easter Theme"><i class="fa-solid fa-egg"></i></button>
     </div>
 

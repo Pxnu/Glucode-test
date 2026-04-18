@@ -73,7 +73,7 @@
 }
 
 .game-area {
-    display: flex;
+    display: block;
     gap: 15px;
     margin-bottom: 10px;
 }
@@ -101,6 +101,8 @@
 }
 
 .submit-btn {
+    display: block;
+    margin: 1rem 0;
     background: var(--btn);
     color: var(--btn-text);
     border: none;
@@ -113,6 +115,24 @@
 
 .submit-btn:hover {
     filter: brightness(1.1);
+}
+
+.skip-btn {
+    background-color: transparent;
+    color: var(--subtext);
+    border: 2px solid var(--subtext);
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.skip-btn:hover {
+    background-color: var(--subtext);
+    color: var(--box);
+    transform: translateY(-2px);
 }
 
 #resultMessage {

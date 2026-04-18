@@ -1,5 +1,5 @@
 /* ==========================================
-   DUO JS - FULL VERSION (Separate ScoreDuo)
+   DUO JS - FULL LOGIC (Original UI Compatible)
 ========================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!currentUser) return;
 
     let currentStage = 1;
-    let maxStage = 10;
+    let currentQuestionIndex = -1; // ตัวจำโจทย์
+    const maxStage = 10;
     let correctAnswer = "";
     let isSubmitting = false;
-    let totalScore = 0; // ตัวแปรนี้จะเก็บคะแนนของ Duo เท่านั้น
 
     let duoCorrectTotal = 0;
     let duoStreak = 0;
@@ -84,9 +84,23 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
+    function loadScore() {
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let user = users.find(u => u.username === currentUser);
+        return user && user.scoreDuo ? user.scoreDuo : 0;
+    }
+
+    function updateScoreUI() {
+        const scoreEl = document.getElementById("scoreDisplay");
+        if (scoreEl) {
+            scoreEl.innerText = `${currentUser} | Score: ${loadScore()}`;
+        }
+    }
+
     function saveGameState() {
         const state = {
             currentStage: currentStage,
+            currentQuestionIndex: currentQuestionIndex,
             duoCorrectTotal: duoCorrectTotal,
             duoStreak: duoStreak
         };
@@ -98,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (saved) {
             const state = JSON.parse(saved);
             currentStage = state.currentStage || 1;
+            currentQuestionIndex = state.currentQuestionIndex !== undefined ? state.currentQuestionIndex : -1;
             duoCorrectTotal = state.duoCorrectTotal || 0;
             duoStreak = state.duoStreak || 0;
             return true;
@@ -105,86 +120,79 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
+    // ==========================================
+    // 🚀 ระบบ SKIP แบบ BoxGame (ตัดเหรียญและข้ามด่าน)
+    // ==========================================
     window.skipLevel = function () {
         if (isSubmitting) return;
 
-        let cost = 0;
-        if (currentStage >= 1 && currentStage <= 3) cost = 20;
-        else if (currentStage >= 4 && currentStage <= 6) cost = 40;
-        else if (currentStage >= 7 && currentStage <= 10) cost = 60;
-        else cost = 80;
+        // 1. คำนวณค่าธรรมเนียมการข้าม (ตามแบบ BoxGame)
+        let cost = currentStage <= 3 ? 20 : currentStage <= 6 ? 40 : 60;
 
         let users = JSON.parse(localStorage.getItem("users")) || [];
         let userIndex = users.findIndex(u => u.username === currentUser);
 
         if (userIndex !== -1) {
             let user = users[userIndex];
-            
+
+            // 2. ตรวจสอบเหรียญ
             if (user.coins >= cost) {
                 isSubmitting = true;
                 user.coins -= cost;
-                users[userIndex] = user;
                 localStorage.setItem("users", JSON.stringify(users));
-                
+
+                // อัปเดตการแสดงผลเหรียญในหน้าจอ (ถ้ามี)
                 const coinDisplay = document.querySelector('.coin-display strong');
                 if (coinDisplay) coinDisplay.innerText = user.coins;
 
+                // 3. แสดงสถานะและข้ามด่าน
                 const resultDisplay = document.getElementById("resultMessage");
-                resultDisplay.textContent = `⏭️ ข้ามด่านสำเร็จ! ใช้ไป ${cost} Coins (x2 Duo Rate)`;
-                resultDisplay.className = "success";
+                resultDisplay.textContent = `⏭️ ข้ามด่านสำเร็จ! (-${cost} Coins)`;
+                resultDisplay.style.color = "#f59e0b";
 
                 setTimeout(() => {
-                    duoStreak = 0; 
+                    duoStreak = 0;
                     if (currentStage < maxStage) {
                         currentStage++;
+                        currentQuestionIndex = -1; // รีเซ็ตดัชนีเพื่อสุ่มโจทย์ใหม่ในด่านถัดไป
                         generateQuiz();
                         isSubmitting = false;
                     } else {
-                        finishGame();
+                        showFinishPopup(); // จบเกมถ้าเป็นด่านสุดท้าย
                     }
                 }, 1000);
             } else {
-                alert(`⚠️ เหรียญไม่พอสำหรับข้ามด่านในโหมด Duo! (ต้องการ ${cost} Coins)`);
+                // เหรียญไม่พอ
+                const resultDisplay = document.getElementById("resultMessage");
+                resultDisplay.textContent = `⚠️ เหรียญไม่พอ! (ต้องการ ${cost} Coins)`;
+                resultDisplay.style.color = "#ef4444";
             }
         }
     };
-
-    function getLevelByStage(stage) {
-        if (stage >= 1 && stage <= 3) return 'level1';
-        if (stage >= 4 && stage <= 6) return 'level2';
-        if (stage >= 7 && stage <= 10) return 'level3';
-        return 'level1';
-    }
-
-    function getScoreByStage(stage) {
-        if (stage >= 1 && stage <= 3) return 4;
-        if (stage >= 4 && stage <= 6) return 8;
-        if (stage >= 7 && stage <= 10) return 11;
-        return 0;
-    }
 
     function generateQuiz() {
         document.getElementById("userInput").value = "";
         document.getElementById("userInput").disabled = false;
         document.getElementById("resultMessage").innerHTML = "";
-        document.getElementById("resultMessage").className = "";
         document.getElementById("submitBtn").disabled = false;
 
-        let levelKey = getLevelByStage(currentStage);
+        let levelKey = currentStage <= 3 ? 'level1' : currentStage <= 6 ? 'level2' : 'level3';
         const levelArray = quizData[levelKey];
-        const randomIndex = Math.floor(Math.random() * levelArray.length);
-        const currentItem = levelArray[randomIndex];
+
+        // สุ่มโจทย์ใหม่เฉพาะเมื่อไม่ได้เซฟไว้
+        if (currentQuestionIndex === -1 || currentQuestionIndex >= levelArray.length) {
+            currentQuestionIndex = Math.floor(Math.random() * levelArray.length);
+        }
+
+        const currentItem = levelArray[currentQuestionIndex];
 
         correctAnswer = currentItem.tags.join('');
-        document.getElementById("hintText").textContent = `Stage ${currentStage}: ${currentItem.hint}`;
+        document.getElementById("hintText").textContent = currentItem.hint;
         document.getElementById("levelDisplay").textContent = `Level: ${currentStage} / ${maxStage}`;
 
         questionStartTime = Date.now();
         saveGameState();
-    }
-
-    function normalizeAnswer(str) {
-        return str.trim().replace(/\s+/g, '').toLowerCase();
+        updateScoreUI();
     }
 
     function checkAnswer() {
@@ -194,24 +202,26 @@ document.addEventListener('DOMContentLoaded', () => {
         let answerField = document.getElementById("userInput");
         let resultDisplay = document.getElementById("resultMessage");
         let submitBtn = document.getElementById("submitBtn");
-        let userTyped = answerField.value.trim();
+
+        // ตัดช่องว่างเพื่อให้เช็คได้ง่ายขึ้น
+        let userTyped = answerField.value.trim().replace(/\s+/g, '').toLowerCase();
+        let correctNormalized = correctAnswer.trim().replace(/\s+/g, '').toLowerCase();
 
         if (userTyped === "") {
             resultDisplay.textContent = "⚠️ กรุณากรอกคำตอบก่อนส่ง";
-            resultDisplay.className = "error";
+            resultDisplay.style.color = "#ef4444";
             isSubmitting = false;
             return;
         }
 
-        if (normalizeAnswer(userTyped) === normalizeAnswer(correctAnswer)) {
-            let earnedScore = getScoreByStage(currentStage);
-            totalScore += earnedScore;
+        if (userTyped === correctNormalized) {
+            let earnedScore = currentStage <= 3 ? 4 : currentStage <= 6 ? 8 : 11;
 
             addScoreToUser(earnedScore);
-            document.getElementById("scoreDisplay").textContent = `${currentUser} - Score: ${totalScore}`;
-            
+            updateScoreUI();
+
             resultDisplay.textContent = `🎉 ถูกต้อง! รับไป ${earnedScore} คะแนน`;
-            resultDisplay.className = "success";
+            resultDisplay.style.color = "#10B981";
 
             submitBtn.disabled = true;
             answerField.disabled = true;
@@ -223,68 +233,68 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof window.unlockAchievement === "function") {
                 window.unlockAchievement("quiz-first");
                 if (duoCorrectTotal >= 3) window.unlockAchievement("quiz-3");
-                if (duoCorrectTotal >= 10) {
-                    window.unlockAchievement("quiz-10");
-                    window.unlockAchievement("quiz-master");
-                }
                 if (duoStreak >= 5) window.unlockAchievement("quiz-5");
-                if (timeTaken <= 5) window.unlockAchievement("quiz-speed");
             }
-
             if (typeof window.updateQuestProgress === "function") {
-                window.updateQuestProgress("q_duo_5", 1); 
+                window.updateQuestProgress("q_duo_5", 1);
                 window.updateQuestProgress("q_streak_3", duoStreak);
-                window.updateQuestProgress("q_score_50", earnedScore);
             }
 
-            if (currentStage < maxStage) {
-                currentStage++;
-                setTimeout(() => {
+            setTimeout(() => {
+                if (currentStage < maxStage) {
+                    currentStage++;
+                    currentQuestionIndex = -1; // ผ่านด่านแล้ว ให้สุ่มโจทย์ใหม่
                     generateQuiz();
                     isSubmitting = false;
-                }, 1500);
-            } else {
-                finishGame();
-            }
+                } else {
+                    showFinishPopup();
+                }
+            }, 1000);
         } else {
             resultDisplay.textContent = "❌ ยังไม่ถูกต้อง ลองใหม่อีกครั้งนะ";
-            resultDisplay.className = "error";
-            duoStreak = 0; 
+            resultDisplay.style.color = "#ef4444";
+            duoStreak = 0;
             isSubmitting = false;
         }
     }
 
-    // 🛠️ อัปเดตให้บวกคะแนนเข้าตัวแปร scoreDuo เท่านั้น
     function addScoreToUser(points) {
         let users = JSON.parse(localStorage.getItem("users")) || [];
         let userIndex = users.findIndex(u => u.username === currentUser);
         if (userIndex !== -1) {
             users[userIndex].scoreDuo = (users[userIndex].scoreDuo || 0) + points;
-            
-            // อัปเดตคะแนนรวม (Total Score)
             users[userIndex].score = users[userIndex].scoreDuo + (users[userIndex].scoreBox || 0);
-            
             localStorage.setItem("users", JSON.stringify(users));
         }
     }
 
-    function finishGame() {
-        let resultDisplay = document.getElementById("resultMessage");
-        resultDisplay.innerHTML = `🏆 เก่งมาก! คุณผ่านครบ 10 ด่านแล้ว!<br>คะแนนรวมที่ทำได้: ${totalScore} คะแนน`;
+    function showFinishPopup() {
+        const popup = document.getElementById("finishPopup");
+        if (popup) {
+            popup.style.display = "flex";
+            document.getElementById("finalScoreText").innerText = `คะแนนของคุณคือ: ${loadScore()}`;
+        }
         document.getElementById("submitBtn").disabled = true;
         document.getElementById("userInput").disabled = true;
-        
         localStorage.removeItem(`duo_persistence_${currentUser}`);
         isSubmitting = false;
     }
 
-    // 🛠️ ดึงคะแนนปัจจุบันของ Duo มาโชว์
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-    let user = users.find(u => u.username === currentUser);
-    totalScore = user && user.scoreDuo ? user.scoreDuo : 0;
+    window.playAgain = function () {
+        localStorage.removeItem(`duo_persistence_${currentUser}`);
+        location.reload();
+    };
+
+    window.goHome = function () {
+        window.location.href = "../Home.html";
+    };
+
+    window.closePopup = function () {
+        const popup = document.getElementById("finishPopup");
+        if (popup) popup.style.display = "none";
+    };
 
     document.getElementById("hintTitle").textContent = "Glucode ૮₍'˶• . • ⑅ ₎ა";
-    document.getElementById("scoreDisplay").textContent = `${currentUser} - Score: ${totalScore}`;
 
     loadGameState();
     generateQuiz();
