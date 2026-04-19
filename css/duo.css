@@ -1,17 +1,19 @@
 /* =========================================
-   Game Duo Styles
+   Game Duo Styles (สไตล์เฉพาะโหมดพิมพ์โค้ด)
 ========================================= */
 
+/* คอนเทนเนอร์จัดกึ่งกลางจอทั้งหมด */
 .game-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1;
+    flex: 1; /* กินพื้นที่ที่เหลือของหน้าจอให้เต็ม */
     padding: 40px;
 }
 
+/* กล่อง Card สีขาว/สีตามธีมที่เป็นกรอบของเกม Duo */
 .card {
-    background: var(--box); /* เปลี่ยนตามธีม */
+    background: var(--box); /* ดึงสีมาจาก core.css ตามธีม */
     width: 100%;
     max-width: 800px;
     padding: 40px;
@@ -23,27 +25,32 @@
     flex-direction: column;
 }
 
+/* แถบด้านบนของกล่อง Card (ใช้จัดเรียง Score/Level) */
 .header-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* ดันให้อยู่ซ้ายสุดและขวาสุด */
     align-items: center;
     margin-bottom: 20px;
 }
 
+/* ฝั่งขวาของ Header Row */
 .right-content {
     display: flex;
 }
 
+/* ระยะห่างของป้ายคะแนน */
 .score-badge {
     margin-right: 1rem;
 }
 
+/* ชื่อเกมหรือหัวข้อด้านซ้ายบนของ Card */
 .card h2 {
     font-size: 24px;
     margin: 0;
     color: var(--text);
 }
 
+/* สไตล์แคปซูลของป้ายบอกด่าน (Level) และคะแนน (Score) */
 .level-badge, .score-badge {
     background: var(--bg);
     padding: 8px 15px;
@@ -51,9 +58,10 @@
     font-size: 14px;
     font-weight: bold;
     color: var(--text);
-    border: 1px solid var(--subtext);
+    border: 1px solid var(--subtext); /* ขอบสีเทาอ่อนๆ */
 }
 
+/* กล่องที่แสดงคำใบ้ (Hint) */
 .pieces-container {
     background: var(--bg);
     border-radius: 15px;
@@ -65,6 +73,7 @@
     justify-content: center;
 }
 
+/* ข้อความคำใบ้ */
 .hint-text {
     text-align: center;
     color: var(--text);
@@ -72,16 +81,18 @@
     font-size: 18px;
 }
 
+/* พื้นที่ส่วนล่างที่รวมช่องกรอกข้อความและปุ่ม */
 .game-area {
     display: block;
     gap: 15px;
     margin-bottom: 10px;
 }
 
+/* กล่องครอบ Input กรอกข้อความ */
 .answer-box {
-    flex-grow: 1;
+    flex-grow: 1; /* ขยายกว้างให้เต็มที่ */
     background: var(--bg);
-    border: 2px dashed var(--subtext);
+    border: 2px dashed var(--subtext); /* ขอบเส้นประแบบเดียวกับ BoxGame */
     border-radius: 15px;
     padding: 20px;
     min-height: 100px;
@@ -89,20 +100,22 @@
     align-items: center;
 }
 
+/* ตัวช่องกรอกข้อความ (Input Box) */
 .answer-box input {
     width: 100%;
     background: transparent;
     border: none;
-    outline: none;
+    outline: none; /* เอาขอบสีดำตอนพิมพ์ออก */
     font-size: 20px;
-    text-align: center;
-    font-family: 'Courier New', monospace;
+    text-align: center; /* จัดให้ข้อความที่พิมพ์อยู่ตรงกลาง */
+    font-family: 'Courier New', monospace; /* ใช้ฟอนต์เขียนโค้ด (Monospace) เพื่อความเท่ */
     color: var(--text); /* ให้ตัวอักษรเปลี่ยนสีตามธีม */
 }
 
+/* ปุ่ม Submit สำหรับส่งคำตอบโหมด Duo */
 .submit-btn {
     display: block;
-    margin: 1rem 0;
+    margin: 1rem 0; /* ระยะห่างบนล่าง */
     background: var(--btn);
     color: var(--btn-text);
     border: none;
@@ -114,13 +127,14 @@
 }
 
 .submit-btn:hover {
-    filter: brightness(1.1);
+    filter: brightness(1.1); /* สว่างขึ้นตอนเอาเมาส์ชี้ */
 }
 
+/* ปุ่ม Skip ข้ามด่านโหมด Duo */
 .skip-btn {
-    background-color: transparent;
+    background-color: transparent; /* โปร่งใสเห็นพื้นหลัง */
     color: var(--subtext);
-    border: 2px solid var(--subtext);
+    border: 2px solid var(--subtext); /* ขอบสีเทา */
     padding: 10px 25px;
     border-radius: 12px;
     font-size: 1rem;
@@ -129,12 +143,14 @@
     transition: all 0.3s ease;
 }
 
+/* เอฟเฟกต์ตอนเอาเมาส์ชี้ปุ่ม Skip (เติมสีพื้นหลัง) */
 .skip-btn:hover {
     background-color: var(--subtext);
     color: var(--box);
-    transform: translateY(-2px);
+    transform: translateY(-2px); /* ลอยขึ้น */
 }
 
+/* ข้อความแจ้งผลลัพธ์ ถูก/ผิด ด้านล่างสุด */
 #resultMessage {
     text-align: center;
     margin-top: 15px;
@@ -144,13 +160,15 @@
     min-height: 24px;
 }
 
-/* สีสำหรับแจ้งเตือนตอนถูก/ผิด ยังคงใช้สีเดิมเพื่อให้ชัดเจน */
+/* สีสำหรับแจ้งเตือนตอนถูก/ผิด (ใช้สีตายตัวเพื่อให้ชัดเจน ไม่เปลี่ยนตามธีม) */
+/* ตอบถูก */
 .success {
-    color: #2ecc71;
-    background: #eafaf1;
+    color: #2ecc71; /* สีเขียว */
+    background: #eafaf1; /* พื้นหลังเขียวอ่อน */
 }
 
+/* ตอบผิด */
 .error {
-    color: #e74c3c;
-    background: #fdedec;
+    color: #e74c3c; /* สีแดง */
+    background: #fdedec; /* พื้นหลังแดงอ่อน */
 }

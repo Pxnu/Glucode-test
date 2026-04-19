@@ -1,5 +1,5 @@
 /* =========================================
-   BoxGame Layout Fix
+   BoxGame Layout Fix (สไตล์เฉพาะของโหมดเกมต่อบล็อกจิ๊กซอว์)
 ========================================= */
 
 body {
@@ -7,13 +7,13 @@ body {
     color: var(--text) !important;
     font-family: 'Poppins', sans-serif;
     display: block !important;
-    /* ห้ามใช้ flex เพื่อไม่ให้ Navbar เบี้ยว */
+    /* ห้ามใช้ flex เพื่อไม่ให้ Navbar เบี้ยวในหน้านี้ */
     margin: 0;
     padding: 0;
     min-height: 100vh;
 }
 
-/* Navbar กางเต็ม 100% */
+/* บังคับให้ Navbar กางเต็ม 100% ของหน้าจอเสมอ */
 nav .container {
     max-width: 1440px !important;
     margin: 0 auto !important;
@@ -21,7 +21,7 @@ nav .container {
     width: 100% !important;
 }
 
-/* กล่องเกมหลัก */
+/* กล่องกรอบนอกสุดที่ใช้คลุมเกม BoxGame ทั้งหมด */
 .game-box-wrapper {
     text-align: center;
     width: 90%;
@@ -37,7 +37,7 @@ nav .container {
     transition: all 0.4s ease;
 }
 
-/* ป้ายคะแนนและเลเวล */
+/* ป้ายบอก Level และ Score แบบเก่า (จัดตำแหน่งแบบ Absolute ลอยๆ อยู่มุมขวาบนกล่อง) */
 #levelTitle,
 #scoreTitle {
     position: absolute;
@@ -51,14 +51,17 @@ nav .container {
     border: 2px solid var(--btn);
 }
 
+/* ตำแหน่งป้ายเลเวล */
 #levelTitle {
     right: 25px;
 }
 
+/* ตำแหน่งป้ายคะแนน */
 #scoreTitle {
     right: 165px;
 }
 
+/* หัวข้อโจทย์ */
 h2 {
     margin-top: 30px;
     margin-bottom: 30px;
@@ -66,40 +69,42 @@ h2 {
     font-size: 1.8rem;
 }
 
-/* 5. พื้นที่วางคำตอบ */
+/* 5. พื้นที่วางคำตอบ (ส่วนที่อยู่เหนือตัวเลือก) */
 .answer-container {
     display: flex;
     gap: 15px;
     margin-bottom: 30px;
 }
 
+/* กล่องที่รับบล็อกคำตอบที่ผู้เล่นคลิกเลือกขึ้นมา */
 #answerArea {
     flex-grow: 1;
-    min-height: 100px;
-    border: 2px dashed var(--border);
+    min-height: 100px; /* กำหนดความสูงขั้นต่ำ */
+    border: 2px dashed var(--border); /* ขอบแบบเส้นประ */
     padding: 15px;
     background-color: var(--bg);
     border-radius: 20px;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* ถ้าล้นให้ปัดตกบรรทัดใหม่ */
     gap: 10px;
     align-content: center;
     transition: all 0.4s ease;
 }
 
-/* สถานะถูก/ผิด */
+/* สถานะเมื่อกด Submit แล้วตอบ "ถูก" */
 .correct {
-    border: 3px solid #10B981 !important;
+    border: 3px solid #10B981 !important; /* เปลี่ยนขอบเป็นสีเขียว */
     background: rgba(16, 185, 129, 0.05) !important;
 }
 
+/* สถานะเมื่อกด Submit แล้วตอบ "ผิด" */
 .wrong {
-    border: 3px solid #ef4444 !important;
+    border: 3px solid #ef4444 !important; /* เปลี่ยนขอบเป็นสีแดง */
     background: rgba(239, 68, 68, 0.05) !important;
-    animation: shake 0.35s ease;
+    animation: shake 0.35s ease; /* เรียกใช้แอนิเมชันสั่นกระตุก */
 }
 
-/* 6. ปุ่ม Submit หลัก */
+/* 6. ปุ่ม Submit หลักของโหมด BoxGame */
 .btn-submit {
     background: linear-gradient(135deg, var(--btn), var(--hover));
     color: var(--btn-text);
@@ -111,16 +116,16 @@ h2 {
     transition: all 0.3s ease;
     font-size: 1.15rem;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    min-height: 100px;
-
+    min-height: 100px; /* ทำให้ปุ่มสูงๆ เพื่อความโดดเด่น */
 }
 
+/* เอฟเฟกต์ตอนชี้ปุ่ม Submit */
 .btn-submit:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* ขยายขนาดขึ้น 5% */
     filter: brightness(1.1);
 }
 
-/* 7. ตัวต่อจิ๊กซอว์ (Blocks) */
+/* 7. ตัวต่อจิ๊กซอว์ (Blocks ที่เป็นตัวเลือกด้านล่าง) */
 .block {
     display: inline-block;
     background: var(--box) !important;
@@ -135,14 +140,15 @@ h2 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
+/* เอฟเฟกต์ตอนชี้ที่บล็อก */
 .block:hover {
-    background: var(--btn) !important;
+    background: var(--btn) !important; /* เปลี่ยนพื้นหลังเป็นสีหลัก */
     color: var(--btn-text) !important;
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* ลอยขึ้น */
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* 8. กล่องพักตัวเลือก */
+/* 8. กล่องพักตัวเลือก (กรอบที่คลุมบล็อกตัวเลือกทั้งหมดด้านล่าง) */
 #choices {
     background-color: var(--bg);
     padding: 25px;
@@ -153,15 +159,16 @@ h2 {
     transition: all 0.4s ease;
 }
 
-/* 9. ปุ่มควบคุมย่อย (Reset, Delete, Skip) */
+/* 9. จัดตำแหน่งปุ่มควบคุมย่อย (Reset, Delete, Skip) */
 .control-buttons {
-    text-align: right;
+    text-align: right; /* ดันปุ่มไปชิดขวา */
 }
 
+/* สไตล์ปุ่มรอง (Secondary Buttons) เช่น Reset, Delete, Skip */
 .btn-secondaryRe,
 .btn-secondaryDel,
 .btn-secondarySkip {
-    background: transparent;
+    background: transparent; /* พื้นหลังโปร่งใส */
     border: 2px solid var(--border);
     color: var(--subtext);
     padding: 10px 22px;
@@ -173,24 +180,26 @@ h2 {
     transition: all 0.3s ease;
 }
 
-.btn-secondaryRe:hover {
+/* สีเฉพาะของแต่ละปุ่มเวลาเอาเมาส์ชี้ */
+.btn-secondaryRe:hover { /* ปุ่ม Reset */
     background-color: var(--btn);
     color: var(--btn-text);
     border-color: var(--btn);
 }
 
-.btn-secondaryDel:hover {
-    background-color: #ef4444;
+.btn-secondaryDel:hover { /* ปุ่ม Delete */
+    background-color: #ef4444; /* สีแดง */
     color: white;
     border-color: #ef4444;
 }
 
-.btn-secondarySkip:hover {
+.btn-secondarySkip:hover { /* ปุ่ม Skip */
     background-color: var(--subtext);
     color: #ffff;
     border-color: var(--subtext);
 }
 
+/* ข้อความแจ้งผล (ถูกต้อง / ยังไม่ถูก ลองใหม่) */
 #result {
     margin-top: 15px;
     height: 30px;
@@ -198,7 +207,7 @@ h2 {
     font-size: 1.2em;
 }
 
-/* แอนิเมชัน */
+/* แอนิเมชันป๊อปอัปเด้งขึ้นมา */
 @keyframes popIn {
     0% {
         transform: scale(0.8);
@@ -211,6 +220,7 @@ h2 {
     }
 }
 
+/* แอนิเมชันสั่นซ้ายขวา (ใช้ตอนตอบผิด) */
 @keyframes shake {
 
     0%,
@@ -229,26 +239,28 @@ h2 {
     }
 }
 
+/* ผูกแอนิเมชันเข้ากับบล็อกตอนถูกเพิ่มเข้ามาในช่องคำตอบ */
 .block.add {
     animation: popIn 0.2s ease;
 }
 
 /* =========================================
-   10. Popup Styling (กันค้าง ทับทุกอย่าง)
+   10. Popup Styling (กันค้าง ทับทุกอย่าง - สไตล์ป๊อปอัปเวอร์ชันเก่า/เฉพาะหน้านี้)
 ========================================= */
+/* ฉากหลังดำทับของเดิม */
 .popup-overlay {
     position: fixed;
-    inset: 0;
+    inset: 0; /* กางเต็มพื้นที่ top:0, left:0, right:0, bottom:0 */
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000001;
-    /* ดัน Z-index ให้สูงกว่า Theme Switcher ที่ตั้งไว้ 9999 */
+    z-index: 1000001; /* ดัน Z-index ให้สูงกว่า Theme Switcher ที่ตั้งไว้ 9999 */
 }
 
+/* กล่องป๊อปอัปตรงกลางจอ */
 .popup-box {
     position: relative;
     background: var(--box);
@@ -260,7 +272,7 @@ h2 {
     max-width: 500px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border);
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เด้งขึ้นมาแบบยืดหยุ่น */
 }
 
 .popup-box h2 {
@@ -275,6 +287,7 @@ h2 {
     color: var(--subtext);
 }
 
+/* ปุ่มกากบาทปิด Popup มุมขวาบน */
 .close-popup {
     position: absolute;
     top: 20px;
@@ -293,12 +306,14 @@ h2 {
     color: var(--subtext);
 }
 
+/* ตอนชี้ปุ่มปิดให้เป็นสีแดงและหมุน */
 .close-popup:hover {
     background-color: #ef4444;
     color: white;
     transform: rotate(90deg) scale(1.1);
 }
 
+/* กล่องจัดเรียงปุ่มด้านล่างใน Popup */
 .popup-buttons {
     margin-top: 30px;
     display: flex;
@@ -316,6 +331,7 @@ h2 {
     transition: all 0.2s;
 }
 
+/* ปุ่มสำหรับกลับหน้า Home */
 .goHome {
     background: linear-gradient(135deg, var(--btn), var(--hover));
     color: var(--btn-text);

@@ -1,59 +1,62 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 /* =========================================
-   1. GLOBAL BASE STYLES
+   1. GLOBAL BASE STYLES (ตั้งค่าพื้นฐานของเว็บไซต์)
 ========================================= */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    list-style-type: none;
-    text-decoration: none;
-    font-family: 'Poppins', Tahoma, sans-serif;
+    margin: 0; /* ล้างระยะห่างด้านนอก */
+    padding: 0; /* ล้างระยะห่างด้านใน */
+    box-sizing: border-box; /* ให้คำนวณขนาดกล่องรวม border และ padding แล้ว */
+    list-style-type: none; /* เอาจุดนำหน้าแท็กรายการ (li) ออก */
+    text-decoration: none; /* เอาเส้นใต้ของลิงก์ออก */
+    font-family: 'Poppins', Tahoma, sans-serif; /* กำหนดฟอนต์หลักของเว็บ */
 }
 
 body {
-    background-color: var(--bg);
-    color: var(--text);
+    background-color: var(--bg); /* ดึงสีพื้นหลังมาจากตัวแปรธีม */
+    color: var(--text); /* ดึงสีตัวอักษรมาจากตัวแปรธีม */
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    overflow-x: hidden;
-    transition: background-color 0.4s ease, color 0.4s ease;
+    min-height: 100vh; /* ให้ความสูงหน้าเว็บเต็มจอเสมอ */
+    overflow-x: hidden; /* ป้องกันไม่ให้เว็บเลื่อนซ้ายขวาได้ */
+    transition: background-color 0.4s ease, color 0.4s ease; /* ทำให้เปลี่ยนธีมแล้วสีค่อยๆ เฟด */
 }
 
 /* =========================================
-   2. BUTTON STYLES
+   2. BUTTON STYLES (สไตล์ปุ่มกดทั่วไปในเว็บ)
 ========================================= */
 button {
     background-color: var(--btn);
     color: var(--btn-text);
     border: none;
-    border-radius: 12px;
+    border-radius: 12px; /* มุมปุ่มโค้งมน */
     height: 55px;
     padding: 0 30px;
     font-size: 1.1rem;
-    cursor: pointer;
+    cursor: pointer; /* เปลี่ยนเมาส์เป็นรูปนิ้วชี้เวลาชี้ปุ่ม */
     font-weight: 600;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* ใส่เงาให้ปุ่มดูมีมิติ */
     transition: all 0.3s ease;
 }
 
+/* เมื่อเอาเมาส์ชี้ปุ่ม (Hover) */
 button:hover {
     background-color: var(--hover);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px); /* ให้ปุ่มยกตัวขึ้นนิดนึง */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* เพิ่มเงาให้ดูเด้งขึ้น */
 }
 
+/* เมื่อกดคลิกปุ่ม (Active) */
 button:active {
-    transform: translateY(1px);
+    transform: translateY(1px); /* ให้ปุ่มยุบลงไปตามแรงกด */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* =========================================
-   3. THEME VARIABLES
+   3. THEME VARIABLES (ตัวแปรชุดสีสำหรับแต่ละธีม)
 ========================================= */
+/* ธีมเริ่มต้น (Light Mode) */
 :root {
     --bg: #F8FAFC;
     --box: #FFFFFF;
@@ -66,6 +69,7 @@ button:active {
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
+/* ธีมมืด (Dark Mode) */
 body.dark {
     --bg: #0F172A;
     --box: #1E293B;
@@ -78,6 +82,7 @@ body.dark {
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
+/* ธีมฮาโลวีน (Halloween) */
 body.halloween {
     --bg: #1A0B2E;
     --box: #2D1B4E;
@@ -90,6 +95,7 @@ body.halloween {
     --shadow: 0 10px 30px rgba(255, 117, 24, 0.15);
 }
 
+/* ธีมฤดูหนาว (Winter) */
 body.winter {
     --bg: #F0F9FF;
     --box: #FFFFFF;
@@ -102,6 +108,7 @@ body.winter {
     --shadow: 0 10px 30px rgba(2, 132, 199, 0.1);
 }
 
+/* ธีมอีสเตอร์ (Easter) */
 body.easter {
     --bg: #FFF5F7;
     --box: #FFFFFF;
@@ -115,8 +122,9 @@ body.easter {
 }
 
 /* =========================================
-   4. THEME SWITCHER
+   4. THEME SWITCHER (ปุ่มเปลี่ยนธีมมุมซ้ายล่าง)
 ========================================= */
+/* กล่องเก็บปุ่มเปลี่ยนธีม */
 .theme-switcher {
     position: fixed;
     bottom: 25px;
@@ -127,11 +135,12 @@ body.easter {
     padding: 10px 15px;
     border-radius: 50px;
     box-shadow: var(--shadow);
-    z-index: 9999;
+    z-index: 9999; /* ให้อยู่บนสุด */
     border: 1px solid var(--border);
     transition: all 0.3s ease;
 }
 
+/* ตัวปุ่มไอคอนธีมแต่ละปุ่ม */
 .theme-switcher .theme-btn {
     width: 42px;
     height: 42px;
@@ -151,9 +160,10 @@ body.easter {
 .theme-switcher .theme-btn:hover {
     background: var(--bg);
     color: var(--text);
-    transform: scale(1.15);
+    transform: scale(1.15); /* ขยายใหญ่ขึ้นตอนเอาเมาส์ชี้ */
 }
 
+/* ปุ่มของธีมที่กำลังใช้งานอยู่ (Active) */
 .theme-switcher .theme-btn.active {
     background: var(--btn);
     color: var(--btn-text);
@@ -162,15 +172,16 @@ body.easter {
 }
 
 /* =========================================
-   5. NAVBAR & DROPDOWN UI
+   5. NAVBAR & DROPDOWN UI (แถบเมนูด้านบน)
 ========================================= */
+/* แถบนำทางติดขอบบนจอเสมอ */
 nav {
     position: sticky;
     top: 0;
     width: 100%;
     z-index: 1000;
     background-color: var(--box);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px); /* เอฟเฟกต์กระจกเบลอ */
     border-bottom: 1px solid var(--border);
     transition: all 0.4s ease;
 }
@@ -179,16 +190,17 @@ nav .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1440px;
+    max-width: 1440px; /* จำกัดความกว้างสูงสุดไม่ให้ยืดเกินไปในจอใหญ่ */
     margin: 0 auto;
     padding: 1.2rem 2.5rem;
 }
 
+/* โลโก้เว็บ */
 nav .logo a {
     color: var(--text);
     font-weight: 800;
     font-size: 2.2rem;
-    background: linear-gradient(135deg, var(--text), var(--btn));
+    background: linear-gradient(135deg, var(--text), var(--btn)); /* ไล่สีตัวอักษร */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -196,7 +208,7 @@ nav .logo a {
 nav ul {
     display: flex;
     align-items: center;
-    gap: 35px;
+    gap: 35px; /* ระยะห่างระหว่างเมนู */
 }
 
 nav ul li a {
@@ -210,17 +222,19 @@ nav ul li a:hover {
     color: var(--btn);
 }
 
-/* Dropdown Styles */
+/* --- ระบบเมนูย่อย (Dropdown Styles) --- */
 .user-dropdown-container {
     position: relative;
 }
 
+/* ไอคอนลูกศรชี้ลง */
 .user-dropdown-btn i {
     font-size: 0.9rem;
     margin-left: 5px;
     transition: transform 0.3s ease;
 }
 
+/* กล่องเมนูย่อยที่ซ่อนอยู่ */
 .user-dropdown-menu {
     position: absolute;
     top: 150%;
@@ -231,13 +245,14 @@ nav ul li a:hover {
     box-shadow: var(--shadow);
     padding: 10px 0;
     min-width: 200px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(15px);
+    opacity: 0; /* ซ่อนความทึบ */
+    visibility: hidden; /* ซ่อนการมองเห็น */
+    transform: translateY(15px); /* เลื่อนลงไปนิดนึงเตรียมแอนิเมชันเด้งขึ้น */
     transition: all 0.3s ease;
     z-index: 1001;
 }
 
+/* เมื่อเอาเมาส์ชี้ที่ปุ่มหลัก ให้โชว์เมนูย่อยออกมา */
 .user-dropdown-container:hover .user-dropdown-menu {
     opacity: 1;
     visibility: visible;
@@ -245,6 +260,7 @@ nav ul li a:hover {
     top: 100%;
 }
 
+/* ลิงก์แต่ละอันในเมนูย่อย */
 .dropdown-item {
     display: block;
     padding: 12px 25px;
@@ -259,41 +275,45 @@ nav ul li a:hover {
     color: var(--btn);
 }
 
+/* เส้นคั่นแบ่งหมวดหมู่ในเมนูย่อย */
 .dropdown-divider {
     border: 0;
     border-top: 1px solid var(--border);
     margin: 8px 0;
 }
 
+/* สไตล์กล่องโชว์เหรียญในเมนู */
 .coin-display span {
     color: var(--subtext);
 }
 
 .coin-display strong {
-    color: #f59e0b;
+    color: #f59e0b; /* สีเหลืองทอง/ส้ม */
     font-size: 1.1rem;
     margin-left: 5px;
 }
 
 /* =========================================
-   Game Status Bar & Dropdown (New)
+   Game Status Bar & Dropdown (แถบสถานะในหน้าเกม)
 ========================================= */
+/* แถบรวม ป้ายคะแนน เหรียญ และ ตัวเลือกระดับความยาก */
 .game-status-bar {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* ถ้าจอเล็กให้ปัดตกบรรทัดใหม่ */
     margin-bottom: 25px;
     padding: 10px;
     width: 100%;
 }
 
+/* สไตล์ป้ายต่างๆ (สถานะ) */
 .status-badge {
     background: var(--box);
     color: var(--text);
     padding: 10px 18px;
-    border-radius: 50px;
+    border-radius: 50px; /* ขอบกลมมนเป็นแคปซูล */
     font-size: 0.95rem;
     font-weight: 700;
     border: 2px solid var(--border);
@@ -317,6 +337,7 @@ nav ul li a:hover {
     color: var(--subtext);
 }
 
+/* ปุ่ม Dropdown เลือกระดับความยาก (Easy, Medium ฯลฯ) */
 .diff-select {
     background: transparent;
     border: none;
@@ -335,8 +356,9 @@ nav ul li a:hover {
 }
 
 /* =========================================
-   Popups UI (Skip, Progression, Game Clear)
+   Popups UI (สไตล์หน้าต่างแจ้งเตือนต่างๆ)
 ========================================= */
+/* พื้นหลังดำโปร่งแสงที่คลุมเต็มจอ */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -351,11 +373,12 @@ nav ul li a:hover {
     /* ซ่อนไว้รอ JS สั่งแสดง (display: flex) */
     justify-content: center;
     align-items: center;
-    z-index: 100000;
+    z-index: 100000; /* ดันให้อยู่หน้าสุด */
     padding: 20px;
     /* ป้องกันกล่องติดขอบจอในมือถือ */
 }
 
+/* กล่องเนื้อหาของหน้าต่างแจ้งเตือน */
 .popup-box {
     background: var(--box);
     padding: 2.5rem 2rem;
@@ -367,7 +390,7 @@ nav ul li a:hover {
     border: 1px solid var(--border);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     /* เงาแบบลอยตัว */
-    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; /* แอนิเมชันเด้งขึ้นมา */
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -390,7 +413,7 @@ nav ul li a:hover {
     /* ขนาดไอคอนตัวใหญ่ด้านบน */
 }
 
-/* ข้อความอธิบาย */
+/* ข้อความอธิบายใน Popup */
 .popup-box p {
     color: var(--subtext);
     font-size: 1.1rem;
@@ -398,7 +421,7 @@ nav ul li a:hover {
     line-height: 1.5;
 }
 
-/* ตัวหนังสือโชว์เหรียญแบบเน้นๆ */
+/* ตัวหนังสือโชว์เหรียญแบบเน้นๆ (ใช้ในหน้า Skip) */
 .highlight-coin {
     font-size: 1.8rem;
     color: #f59e0b;
@@ -412,7 +435,7 @@ nav ul li a:hover {
     margin: 10px 0;
 }
 
-/* กล่องจัดเรียงปุ่ม */
+/* กล่องจัดเรียงปุ่มใน Popup */
 .popup-buttons {
     display: flex;
     gap: 12px;
@@ -441,6 +464,7 @@ nav ul li a:hover {
     font-family: inherit;
 }
 
+/* เอฟเฟกต์ตอนชี้ปุ่มใน Popup */
 .popup-buttons button:hover {
     transform: translateY(-3px);
     filter: brightness(1.1);
@@ -451,23 +475,23 @@ nav ul li a:hover {
     transform: translateY(1px);
 }
 
-/* สีของปุ่มต่างๆ */
+/* สีของปุ่มต่างๆ ใน Popup */
 .btn-cancel {
-    background: var(--subtext);
+    background: var(--subtext); /* สีเทา */
     color: white;
 }
 
 .btn-danger {
-    background: #ef4444;
+    background: #ef4444; /* สีแดง */
     color: white;
 }
 
 .btn-primary {
-    background: var(--btn);
+    background: var(--btn); /* สีหลัก (น้ำเงิน/ม่วง) */
     color: white;
 }
 
-/* แอนิเมชันเด้งขึ้นมา */
+/* แอนิเมชันเด้งขึ้นมาของกล่อง Popup */
 @keyframes popIn {
     0% {
         transform: scale(0.8) translateY(20px);
@@ -480,7 +504,7 @@ nav ul li a:hover {
     }
 }
 
-/* แก้ไขไอคอนเหรียญที่แถบสถานะด้านบนเกม (Status Bar) */
+/* แก้ไขไอคอนเหรียญที่แถบสถานะด้านบนเกม (Status Bar) เพิ่มเติม */
 .coin-badge {
     border-color: #f59e0b;
     color: #f59e0b;
