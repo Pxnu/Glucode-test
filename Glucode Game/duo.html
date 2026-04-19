@@ -90,6 +90,25 @@
         </div>
     </div>
 
+    <div id="coinEmptyPopup" class="popup-overlay" style="display: none;">
+        <div class="popup-box">
+            <button class="close-popup" onclick="closePopup('coinEmptyPopup')">&times;</button>
+            <h2 style="color: #ef4444;"><i class="fa-solid fa-coins"></i> อ๊ะ! เหรียญไม่พอซะแล้ว</h2>
+            <p id="coinEmptyDesc">คุณมีเหรียญไม่พอสำหรับการข้ามด่านนี้ครับ</p>
+            <div class="highlight-coin" style="font-size: 1.1rem; color: var(--text); background: transparent;">
+                อยากได้เหรียญเพิ่มไหม? ไปทำภารกิจสนุกๆ เพื่อรับเหรียญฟรีกันเถอะ!
+            </div>
+            <div class="popup-buttons">
+                <button class="btn-cancel" onclick="closePopup('coinEmptyPopup')">ไว้ทีหลัง</button>
+                <button class="btn-primary" onclick="goToQuestPage()">
+                    <i class="fa-solid fa-map-location-dot"></i> ไปหน้า Quest
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="levelPassModal" class="game-modal">
+
     <div id="progressionPopup" class="popup-overlay">
         <div class="popup-box">
             <h2 id="progTitle">

@@ -211,9 +211,18 @@ window.executeSkip = function() {
             handleRoundProgress(true); // เปลี่ยนข้อ (ข้าม)
         }, 1000);
     } else {
-        alert("เหรียญไม่พอข้ามด่าน!");
-        closePopup('skipConfirmPopup');
+        // 🟢 เปลี่ยนจาก alert() เป็นเปิด Popup โชว์ว่าเหรียญไม่พอ
+        closePopup('skipConfirmPopup'); // ปิดหน้าต่างยืนยันก่อน
+        const emptyDesc = document.getElementById("coinEmptyDesc");
+        if (emptyDesc) emptyDesc.innerText = `การข้ามด่านนี้ต้องใช้ ${cost} Coins (คุณมี ${(users[userIndex] ? users[userIndex].coins : 0)} Coins)`;
+        document.getElementById("coinEmptyPopup").style.display = "flex";
     }
+};
+
+// 🟢 ฟังก์ชันสำหรับปุ่ม "ไปหน้า Quest"
+window.goToQuestPage = function() {
+    // ปรับเส้นทางให้ถูกต้องตามโครงสร้างโฟลเดอร์ของคุณ
+    window.location.href = "../Glucode quest/quest.html"; 
 };
 
 /* =========================
