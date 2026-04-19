@@ -1,84 +1,284 @@
+/* =========================================
+   Leaderboard Styles (พรีเมียม สะอาดตา)
+========================================= */
 .leaderboard-wrapper {
     text-align: center;
-    padding: 40px 20px;
+    padding: 40px 20px 110px 20px;
     flex: 1;
 }
 
 .leaderboard-wrapper h1 {
-    margin: 0 0 30px;
-    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-size: 2.2rem;
     font-weight: 800;
-    letter-spacing: 3px;
     color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+/* =========================================
+   Current User Card (แถบอันดับแบบลอยซ้อน กลมกลืนกับตาราง)
+========================================= */
+.current-user-card.sticky-bottom {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: calc(100% - 40px);
+    max-width: 700px;
+    background: var(--box);
+    /* ใช้สีพื้นกล่องเดียวกับตาราง */
+    color: var(--text);
+    /* ใช้สีตัวอักษรหลัก */
+    padding: 16px 28px;
+    border-radius: 24px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
+    /* เงาซอฟท์ๆ ด้านบน */
+    z-index: 99999;
+    border: 2px solid var(--btn);
+    /* เน้นขอบสีปุ่มหลัก เพื่อบอกว่าเป็นตัวเรา */
+    display: flex;
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity: 1;
+    visibility: visible;
+}
+
+.current-user-card.sticky-bottom.hidden-float {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 30px);
+    pointer-events: none;
+}
+
+.user-rank-floating {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.floating-rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+}
+
+.floating-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    flex-grow: 1;
+    text-align: left;
+    padding-left: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.you-badge-float {
+    background: rgba(99, 102, 241, 0.1);
+    /* สีฟ้าอ่อนๆ */
+    color: var(--btn);
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-weight: 700;
+}
+
+.floating-score {
+    font-size: 1.15rem;
+    font-weight: 700;
+    background: var(--bg);
+    /* พื้นหลังช่องคะแนนเป็นสีเทาอ่อน */
+    color: var(--text);
+    padding: 8px 18px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border);
+}
+
+.floating-score span {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    font-weight: 500;
+    color: var(--subtext);
+}
+
+/* =========================================
+   Leaderboard Container (ตารางจัดอันดับ)
+========================================= */
 .leaderboard-container {
     width: 100%;
-    max-width: 800px;
-    /* ปรับให้กว้างขึ้นสำหรับ Desktop */
+    max-width: 700px;
     margin: auto;
     background: var(--box);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 28px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.leaderboard-container .header,
+.leaderboard-container .row {
+    display: grid;
+    grid-template-columns: 80px 1fr 140px;
+    align-items: center;
 }
 
 .leaderboard-container .header {
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    padding: 16px;
-    font-size: 1.2rem;
-    font-weight: bold;
+    padding: 0 15px 15px 15px;
+    font-size: 0.95rem;
+    font-weight: 600;
     color: var(--subtext);
-    border-bottom: 2px solid var(--bg);
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 15px;
 }
 
 .leaderboard-container .row {
-    display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    align-items: center;
     margin: 10px 0;
-    padding: 18px;
-    border-radius: 12px;
+    padding: 12px 15px;
+    border-radius: 20px;
     background: var(--bg);
-    font-size: 1.1rem;
     color: var(--text);
-    transition: all 0.2s ease;
-    animation: fadeIn 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    border: 1px solid transparent;
 }
 
-.leaderboard-container .header div,
-.leaderboard-container .row div {
+.leaderboard-container .row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+    background: var(--box);
+    border-color: var(--border);
+}
+
+/* การจัดวางแต่ละคอลัมน์ */
+.col-rank {
     text-align: center;
 }
 
-.leaderboard-container .player {
-    font-weight: bold;
+.col-player {
+    font-weight: 600;
+    text-align: left;
+    padding-left: 10px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
 }
 
-/* TOP 3 */
-.top1 {
+.col-score {
     font-weight: 700;
-    background: #f1c40f !important;
-    color: #000 !important;
-    transform: scale(1.02);
+    text-align: right;
+    color: var(--text);
+    font-size: 1.05rem;
+}
+
+.col-score span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--subtext);
+    margin-left: 4px;
+}
+
+.score-icon {
+    color: #F59E0B;
+    margin-right: 5px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* =========================================
+   Rank Badges (ป้ายอันดับ)
+========================================= */
+.rank-badge {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.rank-1 {
+    background: linear-gradient(135deg, #FEF08A, #F59E0B);
+    color: #78350F;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.rank-2 {
+    background: linear-gradient(135deg, #F1F5F9, #94A3B8);
+    color: #1E293B;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 12px rgba(148, 163, 184, 0.3);
+}
+
+.rank-3 {
+    background: linear-gradient(135deg, #FED7AA, #D97706);
+    color: #431407;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+}
+
+.rank-other {
+    background: var(--box);
+    color: var(--subtext);
+    border: 2px solid var(--border);
+}
+
+/* ไฮไลท์พื้นหลังของแถว Top 3 */
+.top1 {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: rgba(245, 158, 11, 0.1);
 }
 
 .top2 {
-    background: #bdc3c7 !important;
-    color: #000 !important;
-    font-weight: 600;
+    background: rgba(148, 163, 184, 0.05);
+    border-color: rgba(148, 163, 184, 0.1);
 }
 
 .top3 {
-    background: #cd7f32 !important;
-    color: #000 !important;
+    background: rgba(217, 119, 6, 0.05);
+    border-color: rgba(217, 119, 6, 0.1);
 }
 
+/* =========================================
+   Current User (ไฮไลท์ตัวเราในตาราง)
+========================================= */
+.current-user {
+    border: 2px solid var(--btn) !important;
+    background: var(--box) !important;
+    transform: scale(1.01);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.12);
+    z-index: 10;
+    position: relative;
+}
+
+.you-badge {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--btn);
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 50px;
+    margin-left: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* =========================================
+   Pagination & Animations
+========================================= */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(15px);
     }
 
     to {
@@ -87,33 +287,34 @@
     }
 }
 
-/* =========================================
-   Pagination Buttons (Show More / Show Less)
-========================================= */
 .pagination-wrapper {
     display: flex;
     justify-content: center;
-    gap: 15px; /* ระยะห่างระหว่างปุ่ม */
+    gap: 15px;
     margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border);
 }
 
 .show-more-btn {
-    padding: 12px 30px;
-    background-color: transparent;
-    color: var(--text);
-    border: 2px solid var(--subtext);
+    padding: 12px 28px;
+    background: var(--bg);
+    color: var(--subtext);
+    border: 1px solid var(--border);
     border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: bold;
-    transition: all 0.3s ease;
-    width: fit-content;
-    height: auto;
-    box-shadow: none; /* เอาเงาของ Global ออก */
 }
 
 .show-more-btn:hover {
-    background-color: var(--subtext);
-    color: var(--box);
-    transform: translateY(-3px);
+    background: var(--btn);
+    color: var(--btn-text);
+    border-color: var(--btn);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(99, 102, 241, 0.2);
 }
