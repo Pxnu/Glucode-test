@@ -80,13 +80,14 @@
 }
 
 /* =========================================
-   2. WELCOME OVERLAY (เปลี่ยนใหม่แบบเต็มจอ Cinematic)
+   WELCOME OVERLAY (Full Screen Cinematic)
 ========================================= */
 .welcome-overlay {
     position: fixed;
     inset: 0;
+    /* คลุมเต็มจอ 100% */
     background-color: var(--bg);
-    /* ใช้สีพื้นหลังทึบของแต่ละธีมไปเลย เพื่อให้ดูเนียนตา */
+    /* ใช้สีพื้นหลังตามธีม */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -106,59 +107,45 @@
     text-align: center;
     width: 100vw;
     height: 100vh;
-    /* ให้กล่องข้อความกินพื้นที่ 100% ของหน้าจอ */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: transparent;
-    /* เอาพื้นหลังกล่องออก */
-    border: none;
-    /* เอาเส้นขอบออก */
-    box-shadow: none;
-    /* เอาเงาออก */
     transform: scale(1);
+    /* แอนิเมชันซูมเข้าหาคนดูเวลาหน้าจอหายไป */
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.8s ease;
 }
 
-/* เอฟเฟกต์ตอนจางหาย ให้ตัวหนังสือขยายพุ่งเข้ามาหาตัวเรานิดๆ */
 .welcome-overlay.hide .welcome-content {
     transform: scale(1.15);
     opacity: 0;
 }
 
 .welcome-content h1 {
-    font-size: 4.5rem;
-    /* ขยายตัวอักษรให้ใหญ่สะใจเต็มจอ */
+    font-size: 5rem;
+    /* ตัวหนังสือใหญ่สะใจ */
     color: var(--text);
     margin-bottom: 20px;
     font-weight: 800;
-    letter-spacing: -1px;
+    letter-spacing: -2px;
 }
 
-.welcome-content p {
-    font-size: 1.6rem;
-    /* ขยายตัวหนังสือย่อยให้อ่านง่าย */
-    color: var(--subtext);
-    font-weight: 400;
-}
-
-/* ไฮไลท์ชื่อผู้เล่น */
 #welcomeName {
     color: var(--btn);
-    display: inline-block;
+    font-weight: 800;
     position: relative;
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
 }
 
-/* ลูกเล่นขีดเส้นใต้ชื่อผู้เล่นซอฟท์ๆ */
+/* เส้นขีดใต้ชื่อ User แบบจางๆ */
 #welcomeName::after {
     content: '';
     position: absolute;
-    bottom: 8px;
+    bottom: 5px;
     left: 0;
     width: 100%;
-    height: 8px;
-    background-color: var(--btn);
-    opacity: 0.2;
+    height: 10px;
+    background: var(--btn);
+    opacity: 0.15;
     border-radius: 10px;
 }
