@@ -1,12 +1,15 @@
 /* ==========================================
    DUO JS - FULL (มีระบบจำโจทย์ปัจจุบัน & สลับโหมดอิสระ)
+   (ไฟล์นี้รวมชุดข้อมูลโจทย์ quiz_data.js เข้ามาไว้ด้วยกันแล้ว)
 ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
+    // ป้องกันการรันสคริปต์ถ้าไม่ได้ล็อกอิน
     const currentUser = localStorage.getItem("loggedInUser");
     if (!currentUser) return;
 
     /* =========================
        QUIZ DATA
+       (ข้อมูลโจทย์คำถามและคำตอบทั้งหมดในโหมด Duo)
     ========================= */
     const quizData = {
         easy: [
@@ -69,42 +72,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* =========================
        GAME STATE
+       (ตัวแปรควบคุมเกม)
     ========================= */
-    const SCORE_MAP = { easy: 1, medium: 2, hard: 3, expert: 4 };
-    const ROUND_LIMIT = 5;
-    const SKIP_COSTS = { easy: 10, medium: 20, hard: 30, expert: 40 };
+    const SCORE_MAP = { easy: 1, medium: 2, hard: 3, expert: 4 }; // คะแนนต่อข้อ
+    const ROUND_LIMIT = 5; // ทำครบ 5 ข้อถึงจะเด้งหน้าต่างพักครึ่ง
+    const SKIP_COSTS = { easy: 10, medium: 20, hard: 30, expert: 40 }; // ราคาข้ามด่าน
 
-    let currentDifficulty = "easy";
-    let isSubmitting = false;
-    let correctAnswer = "";
+    let currentDifficulty = "easy"; // ความยากปัจจุบัน
+    let isSubmitting = false; // กันส่งคำตอบเบิ้ล
+    let correctAnswer = ""; // เก็บค่าเฉลยในรูปแบบ String
     
-    // 🔥 แยกนับรอบของแต่ละโหมด
+    // 🔥 แยกนับรอบของแต่ละโหมด (ตัวนับรอบ 1-5 ข้อ)
     let playedInRound = { easy: 0, medium: 0, hard: 0, expert: 0 };
-    // 🔥 ล็อกข้อปัจจุบันไว้กันรีเฟรชหน้าจอ
+    // 🔥 ล็อกข้อปัจจุบันไว้กันรีเฟรชหน้าจอหนี
     let activeQuestion = { easy: -1, medium: -1, hard: -1, expert: -1 };
     
+    // เก็บ Index ข้อที่เคยเล่นไปแล้วเพื่อไม่ให้สุ่มมาซ้ำ
     let easyPlayed = [], mediumPlayed = [], hardPlayed = [], expertPlayed = [];
-    let duoCorrectTotal = 0, duoStreak = 0, questionStartTime = 0;
+    let duoCorrectTotal = 0, duoStreak = 0, questionStartTime = 0; // ตัวแปรสถิติส่งให้ระบบ Quest
 
     /* =========================
        💾 Persistence & Score
+       (ระบบเซฟ/โหลด และอัปเดต UI)
     ========================= */
+    // โหลดคะแนนเฉพาะโหมด Duo
     function loadScore() {
         let users = JSON.parse(localStorage.getItem("users")) || [];
         let user = users.find(u => u.username === currentUser);
         return user && user.scoreDuo ? user.scoreDuo : 0;
     }
 
+    // เพิ่มคะแนนเข้าบัญชีผู้ใช้เมื่อตอบถูก
     function addScoreToUser(points) {
         let users = JSON.parse(localStorage.getItem("users")) || [];
         let userIndex = users.findIndex(u => u.username === currentUser);
         if (userIndex !== -1) {
             users[userIndex].scoreDuo = (users[userIndex].scoreDuo || 0) + points;
-            users[userIndex].score = users[userIndex].scoreDuo + (users[userIndex].scoreBox || 0);
+            users[userIndex].score = users[userIndex].scoreDuo + (users[userIndex].scoreBox || 0); // รวมคะแนนสองโหมดเข้าด้วยกัน
             localStorage.setItem("users", JSON.stringify(users));
         }
     }
 
+    // เซฟตัวแปรสถานะลง LocalStorage
     function saveGameState() {
         const state = {
             currentDifficulty, playedInRound, activeQuestion,
@@ -114,12 +123,14 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(`duo_persistence_${currentUser}`, JSON.stringify(state));
     }
 
+    // โหลดตัวแปรสถานะขึ้นมาจาก LocalStorage
     function loadGameState() {
         const saved = localStorage.getItem(`duo_persistence_${currentUser}`);
         if (saved) {
             const state = JSON.parse(saved);
             currentDifficulty = state.currentDifficulty || "easy";
             
+            // ปรับโครงสร้างเผื่อผู้เล่นมีเซฟแบบเวอร์ชันเก่า
             if (typeof state.playedInRound === 'number') playedInRound = { easy: state.playedInRound, medium: 0, hard: 0, expert: 0 };
             else playedInRound = state.playedInRound || { easy: 0, medium: 0, hard: 0, expert: 0 };
 
@@ -136,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
+    // รีเฟรชข้อมูลตัวเลขบนหน้าจอ (คะแนน, เหรียญ, ความคืบหน้า)
     function syncGameUI() {
         let users = JSON.parse(localStorage.getItem("users")) || [];
         let user = users.find(u => u.username === currentUser);
@@ -149,42 +161,47 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById("levelDisplay").innerText = `Round: ${round} / ${ROUND_LIMIT}`;
         document.getElementById("difficultySelect").value = currentDifficulty;
         
+        // อัปเดตตัวเลขเหรียญบน Navbar ด้านบนด้วย
         let navCoin = document.querySelector('.coin-display strong');
         if(navCoin) navCoin.innerText = coins;
     }
 
-    // 🔥 เปลี่ยนโหมดอิสระ
+    // 🔥 สลับโหมดอย่างอิสระ (เมื่อผู้ใช้เปลี่ยนค่าใน Dropdown)
     window.changeDifficulty = function(val) {
         currentDifficulty = val;
         generateQuiz();
     };
 
     /* =========================
-       🚀 ระบบ Skip
+       🚀 ระบบ Skip (ข้ามข้อ)
     ========================= */
+    // เด้งหน้าต่างถามยืนยันเมื่อกดข้าม
     window.promptSkip = function() {
         if (isSubmitting) return;
         document.getElementById("skipCostText").innerText = SKIP_COSTS[currentDifficulty];
         document.getElementById("skipConfirmPopup").style.display = "flex";
     };
 
+    // ดำเนินการตัดเหรียญและข้ามข้อ
     window.executeSkip = function() {
         const cost = SKIP_COSTS[currentDifficulty];
         let users = JSON.parse(localStorage.getItem('users')) || [];
         let userIndex = users.findIndex(u => u.username === currentUser);
 
         if (userIndex !== -1 && users[userIndex].coins >= cost) {
-            users[userIndex].coins -= cost;
+            users[userIndex].coins -= cost; // ตัดเหรียญ
             localStorage.setItem('users', JSON.stringify(users));
             
             window.closePopup('skipConfirmPopup');
-            duoStreak = 0; 
+            duoStreak = 0; // รีเซ็ตคอมโบ
             
+            // แสดงข้อความว่าข้ามแล้ว
             let resultDisplay = document.getElementById("resultMessage");
             resultDisplay.textContent = `⏭️ ข้ามด่านสำเร็จ! (-${cost} Coins)`;
             resultDisplay.style.color = "#f59e0b";
             
             isSubmitting = true;
+            // หน่วงเวลาเพื่อเปลี่ยนข้อ
             setTimeout(() => {
                 resultDisplay.textContent = "";
                 handleRoundProgress(true); 
@@ -197,7 +214,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* =========================
        CORE LOGIC
+       (ระบบการสร้างโจทย์ ตรวจคำตอบ เปลี่ยนด่าน)
     ========================= */
+    // ดึงโจทย์ชุดปัจจุบันและหาข้อที่ยังไม่ถูกเล่นมาเตรียมไว้
     function getAvailableQuestions() {
         let pool = quizData[currentDifficulty];
         let played = currentDifficulty === "easy" ? easyPlayed : currentDifficulty === "medium" ? mediumPlayed : currentDifficulty === "hard" ? hardPlayed : expertPlayed;
@@ -207,35 +226,42 @@ document.addEventListener('DOMContentLoaded', () => {
         return { avail, pool, played };
     }
 
+    // จัดการความคืบหน้า (เช่นเมื่อจบข้อ)
     function handleRoundProgress(isSkip = false) {
-        activeQuestion[currentDifficulty] = -1; // เคลียร์ข้อปัจจุบันทิ้ง
-        playedInRound[currentDifficulty]++;
+        activeQuestion[currentDifficulty] = -1; // เคลียร์ข้อปัจจุบันทิ้งเพราะทำไปแล้ว
+        playedInRound[currentDifficulty]++; // เพิ่มจำนวนนับ
         syncGameUI();
         
+        // ถ้าครบ 5 ข้อ ให้เด้ง Popup
         if (playedInRound[currentDifficulty] >= ROUND_LIMIT) {
             showProgressionPopup();
         } else {
+            // ถ้าไม่ครบก็ดึงข้อต่อไปมาแสดง
             generateQuiz();
         }
         isSubmitting = false;
         saveGameState();
     }
 
+    // แสดงหน้าต่างยินดีเมื่อจบ 5 ข้อ
     window.showProgressionPopup = function(isExhausted = false) {
         let { avail } = getAvailableQuestions();
         let popup = document.getElementById("progressionPopup");
         let title = document.getElementById("progTitle");
         let desc = document.getElementById("progDesc");
         let btnContainer = document.getElementById("progBtns");
-        btnContainer.innerHTML = "";
+        btnContainer.innerHTML = ""; // ล้างปุ่มที่มีอยู่
         
+        // กรณีโจทย์ถูกดึงมาใช้ครบทุกข้อแล้ว
         if (isExhausted || avail.length === 0) {
             title.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 🚧 โหมดนี้เล่นครบแล้ว!`;
             desc.innerText = `คุณเล่นโจทย์ ${currentDifficulty.toUpperCase()} ครบทั้งหมดแล้ว ไประดับต่อไปกันเถอะ`;
         } else {
+            // กรณียังมีโจทย์เหลือให้เล่นซ้ำในระดับนี้
             title.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 🎉 คุณเล่นผ่านระดับนี้แล้ว!`;
             desc.innerText = `สามารถไปด่านถัดไป หรือจะฝึกระดับ ${currentDifficulty.toUpperCase()} ต่อดี?`;
             
+            // เพิ่มปุ่มเล่นระดับเดิมต่อ
             let btnStay = document.createElement("button");
             btnStay.className = "btn-cancel";
             btnStay.innerHTML = `<i class="fa-solid fa-rotate-right"></i> เล่น ${currentDifficulty} ต่อ`;
@@ -243,9 +269,11 @@ document.addEventListener('DOMContentLoaded', () => {
             btnContainer.appendChild(btnStay);
         }
 
+        // ปุ่มไปด่านถัดไป
         let btnNext = document.createElement("button");
         btnNext.className = "btn-primary";
         
+        // ถ้าอยู่ Expert แล้วเล่นจนข้อหมด ให้จบเกมจริงๆ
         if (currentDifficulty === "expert" && avail.length === 0) {
             document.getElementById("gameClearPopup").style.display = "flex";
             localStorage.removeItem(`duo_persistence_${currentUser}`);
@@ -259,12 +287,13 @@ document.addEventListener('DOMContentLoaded', () => {
         popup.style.display = "flex";
     };
 
+    // อัปเกรดระดับความยากเป็นอันถัดไป
     window.moveNextDifficulty = function() {
         const order = ["easy", "medium", "hard", "expert"];
         let nextIdx = order.indexOf(currentDifficulty) + 1;
         if(nextIdx < order.length) {
-            playedInRound[currentDifficulty] = 0;
-            currentDifficulty = order[nextIdx];
+            playedInRound[currentDifficulty] = 0; // เคลียร์ตัวนับของโหมดเก่าทิ้ง
+            currentDifficulty = order[nextIdx]; // ดันหมวดใหม่ขึ้นมา
             window.closePopup('progressionPopup');
             generateQuiz();
         } else {
@@ -274,12 +303,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // สร้างและโหลดโจทย์ขึ้นมาบนหน้าจอ
     function generateQuiz() {
         if (playedInRound[currentDifficulty] >= ROUND_LIMIT) {
             showProgressionPopup();
             return;
         }
 
+        // รีเซ็ตช่องพิมพ์คำตอบ ปลดล็อกปุ่ม
         document.getElementById("userInput").value = "";
         document.getElementById("userInput").disabled = false;
         document.getElementById("resultMessage").innerHTML = "";
@@ -288,29 +319,33 @@ document.addEventListener('DOMContentLoaded', () => {
         let { avail, pool, played } = getAvailableQuestions();
 
         let randIdx;
-        // 🔥 ตรวจสอบว่ามีโจทย์ค้างอยู่ไหม ถ้ารีเฟรชมาจะดึงข้อเดิมมาทำ
+        // 🔥 ตรวจสอบว่ามีโจทย์ค้างอยู่ไหม ถ้ารีเฟรชหน้าเว็บมาจะได้ข้อเดิม ไม่โดนริบ
         if (activeQuestion[currentDifficulty] !== -1) {
             randIdx = activeQuestion[currentDifficulty];
         } else {
+            // ถ้าไม่มีโจทย์ให้เล่นแล้วในระดับนี้
             if (avail.length === 0) {
                 showProgressionPopup(true);
                 return;
             }
+            // สุ่ม Index แบบเอามาจากข้อที่ยังไม่เล่น
             randIdx = avail[Math.floor(Math.random() * avail.length)];
-            played.push(randIdx);
+            played.push(randIdx); // เก็บเข้าประวัติว่าเล่นแล้ว
             activeQuestion[currentDifficulty] = randIdx; // ล็อกข้อไว้
         }
 
+        // ดึงโจทย์ข้อนั้นมากำหนดเป็นเฉลย
         const currentItem = pool[randIdx];
         correctAnswer = currentItem.tags.join('');
-        document.getElementById("hintText").textContent = currentItem.hint;
+        document.getElementById("hintText").textContent = currentItem.hint; // โชว์คำใบ้
 
         syncGameUI();
-        questionStartTime = Date.now();
+        questionStartTime = Date.now(); // เริ่มจับเวลา
         isSubmitting = false;
-        saveGameState();
+        saveGameState(); // บันทึกเกมเสมอ
     }
 
+    // ฟังก์ชันตรวจคำตอบ (เช็คว่าที่พิมพ์มาตรงกับเฉลยหรือไม่)
     function checkAnswer() {
         if (isSubmitting) return;
         isSubmitting = true;
@@ -319,9 +354,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let resultDisplay = document.getElementById("resultMessage");
         let submitBtn = document.getElementById("submitBtn");
 
+        // ลบช่องว่างออกให้หมด และทำเป็นตัวพิมพ์เล็ก เพื่อให้คนเล่นไม่ต้องกังวลเรื่องการเว้นวรรค
         let userTyped = answerField.value.trim().replace(/\s+/g, '').toLowerCase();
         let correctNormalized = correctAnswer.trim().replace(/\s+/g, '').toLowerCase();
 
+        // ดักว่ายังไม่ได้พิมพ์อะไรเลย
         if (userTyped === "") {
             resultDisplay.textContent = "⚠️ กรุณากรอกคำตอบก่อนส่ง";
             resultDisplay.style.color = "#ef4444";
@@ -329,18 +366,22 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // ตรวจว่าคำตอบถูกไหม
         if (userTyped === correctNormalized) {
+            // === กรณีตอบถูก ===
             let earnedScore = SCORE_MAP[currentDifficulty];
-            addScoreToUser(earnedScore);
+            addScoreToUser(earnedScore); // ให้คะแนน
             
             resultDisplay.textContent = `🎉 ถูกต้อง! รับไป ${earnedScore} คะแนน`;
             resultDisplay.style.color = "#10B981";
 
-            submitBtn.disabled = true;
-            answerField.disabled = true;
+            submitBtn.disabled = true; // ล็อกปุ่ม
+            answerField.disabled = true; // ล็อกช่องพิมพ์
 
             duoCorrectTotal++;
             duoStreak++;
+            
+            // เรียกใช้ระบบ Achievement และเควสถ้ามีอยู่
             if (typeof window.unlockAchievement === "function") {
                 window.unlockAchievement("quiz-first");
                 if (duoCorrectTotal >= 3) window.unlockAchievement("quiz-3");
@@ -352,24 +393,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.updateQuestProgress("q_score_50", earnedScore);
             }
 
+            // หน่วงเวลาเพื่อแสดงข้อถัดไป
             setTimeout(() => {
                 resultDisplay.textContent = "";
-                handleRoundProgress(false);
+                handleRoundProgress(false); // เลื่อนข้อ
             }, 1000);
         } else {
+            // === กรณีตอบผิด ===
             resultDisplay.textContent = "❌ ยังไม่ถูกต้อง ลองใหม่อีกครั้งนะ";
             resultDisplay.style.color = "#ef4444";
-            duoStreak = 0;
-            isSubmitting = false;
+            duoStreak = 0; // ทำลายสถิติตอบต่อเนื่อง
+            isSubmitting = false; // ให้โอกาสพิมพ์ใหม่โดยไม่ล็อกช่อง
         }
     }
 
+    // ฟังก์ชันจัดการปุ่มและหน้าต่างทั่วไป
     window.closePopup = function(id) { document.getElementById(id).style.display = "none"; };
     window.goHome = function() { window.location.href = "../Home.html"; };
 
-    loadGameState();
-    generateQuiz();
+    // --- ตอนหน้าเว็บโหลดเสร็จ ---
+    loadGameState(); // โหลดเซฟ
+    generateQuiz(); // สร้างหน้าเกมข้อแรก
 
+    // ผู้เล่นสามารถกดปุ่มคลิก หรือกด Enter ในช่องเพื่อส่งคำตอบได้
     document.getElementById("submitBtn").addEventListener("click", checkAnswer);
     document.getElementById("userInput").addEventListener("keypress", (event) => {
         if (event.key === "Enter") {
