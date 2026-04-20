@@ -104,23 +104,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 4. ระบบ Theme ---
-    // จัดการเปลี่ยนธีมสีของเว็บไซต์ สว่าง/มืด/กิจกรรมต่างๆ
-    const savedTheme = localStorage.getItem("theme") || "light";
-    document.body.className = "";
-    if (savedTheme !== "light") document.body.classList.add(savedTheme);
+    // --------------------------------------------------
+    // 4. ระบบเปลี่ยนธีม (Theme Switcher แบบยืดหดได้)
+    // --------------------------------------------------
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    const body = document.body;
+    const savedTheme = localStorage.getItem('theme') || 'light';
 
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-        if (btn.getAttribute('data-theme') === savedTheme) btn.classList.add('active');
+    // ฟังก์ชันจัดการเปิด/ปิดเมนูธีม
+    const themeSwitcherBox = document.getElementById('themeSwitcherBox');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
 
+    if (themeToggleBtn && themeSwitcherBox) {
+        themeToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // กันไม่ให้กดแล้วเหตุการณ์ทะลุไปโดน document
+            themeSwitcherBox.classList.toggle('open');
+        });
+
+        // ถ้ากดพื้นที่อื่นบนหน้าเว็บ ให้ปิดเมนูธีม
+        document.addEventListener('click', (e) => {
+            if (!themeSwitcherBox.contains(e.target)) {
+                themeSwitcherBox.classList.remove('open');
+            }
+        });
+    }
+
+    // ฟังก์ชันสำหรับเซ็ตคลาสธีมให้ <body>
+    function setTheme(theme) {
+        body.className = ''; 
+        if (theme !== 'light') {
+            body.classList.add(theme); 
+        }
+        localStorage.setItem('theme', theme); 
+
+        // อัปเดตสถานะปุ่ม (ปุ่มไหนถูกเลือกให้สว่างขึ้น)
+        themeButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === theme);
+        });
+        
+        // 🟢 เปลี่ยนไอคอนของปุ่มเปิด/ปิด ให้ตรงกับธีมที่เลือก
+        if (themeToggleBtn) {
+            const activeBtn = Array.from(themeButtons).find(b => b.dataset.theme === theme);
+            if (activeBtn) {
+                // คัดลอกไอคอนของธีมที่เลือก มาใส่ในปุ่มหลักแทน (ยกเว้นลูกศร)
+                const themeIconClass = activeBtn.querySelector('i').className;
+                themeToggleBtn.innerHTML = `<i class="${themeIconClass}"></i> <i class="fa-solid fa-angle-up arrow-icon"></i>`;
+            }
+        }
+    }
+
+    // กำหนด Event Listener ให้ทุกปุ่มสลับธีม
+    themeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            const theme = btn.getAttribute('data-theme');
-            document.body.className = "";
-            if (theme !== "light") document.body.classList.add(theme); // ใส่ class ธีมลงใน body
-            localStorage.setItem("theme", theme); // เซฟธีมลง LocalStorage
-
-            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            setTheme(btn.dataset.theme);
+            // เมื่อเลือกธีมเสร็จ ให้หดเมนูเก็บอัตโนมัติ
+            if (themeSwitcherBox) themeSwitcherBox.classList.remove('open');
         });
     });
+
+    // สั่งรันธีมที่เซฟไว้ทันทีที่โหลดหน้าเว็บเสร็จ
+    setTheme(savedTheme);
 });
