@@ -40,55 +40,215 @@ function addScore(difficulty) {
    (ข้อมูลโจทย์ทั้งหมดของแต่ละระดับความยาก)
 ========================= */
 const easyLevels = [
-    { question: "สร้างหัวข้อหลัก (Main Heading)", correct: ["<h1>", "My Website", "</h1>"], choices: ["</h1>", "<h1>", "My Website"] },
-    { question: "สร้างย่อหน้าเนื้อหา", correct: ["<p>", "This is a paragraph.", "</p>"], choices: ["</p>", "This is a paragraph.", "<p>"] },
-    { question: "ทำให้ข้อความเป็นตัวหนา", correct: ["<b>", "Warning", "</b>"], choices: ["Warning", "</b>", "<b>"] },
-    { question: "สร้างตัวเอียง", correct: ["<i>", "Italic Text", "</i>"], choices: ["</i>", "<i>", "Italic Text"] },
-    { question: "ขีดเส้นใต้คำ", correct: ["<u>", "Underline", "</u>"], choices: ["Underline", "</u>", "<u>"] },
-    { question: "สร้างหัวข้อรองระดับ 2", correct: ["<h2>", "Topic", "</h2>"], choices: ["Topic", "</h2>", "<h2>"] },
-    { question: "ใช้ Tag Strong", correct: ["<strong>", "Alert!", "</strong>"], choices: ["<strong>", "Alert!", "</strong>"] },
-    { question: "สร้างข้อความตัวเล็ก", correct: ["<small>", "Copyright", "</small>"], choices: ["</small>", "<small>", "Copyright"] },
-    { question: "แสดง Code", correct: ["<code>", "print('Hi')", "</code>"], choices: ["<code>", "print('Hi')", "</code>"] },
-    { question: "สร้างหัวข้อระดับ 3", correct: ["<h3>", "Title", "</h3>"], choices: ["Title", "</h3>", "<h3>"] }
+    {
+        question: "คุณกำลังสร้างหน้าเว็บแนะนำตัว และต้องการแสดงข้อความ 'Hello' เป็นหัวข้อหลักที่ใหญ่ที่สุดบนหน้าเว็บ",
+        correct: ["<h1>", "Hello", "</h1>"],
+        choices: ["<h1>", "Hello", "</h1>", "<p>"]
+    },
+    {
+        question: "คุณต้องการเขียนข้อความธรรมดาเป็นเนื้อหาอธิบายใต้หัวข้อ โดยใช้คำว่า 'This is my website'",
+        correct: ["<p>", "This is my website", "</p>"],
+        choices: ["<p>", "This is my website", "</p>", "<h1>"]
+    },
+    {
+        question: "คุณต้องการเน้นคำว่า 'Important' ให้เป็นตัวหนา เพื่อให้ผู้ใช้เห็นเด่นชัด",
+        correct: ["<b>", "Important", "</b>"],
+        choices: ["<b>", "Important", "</b>", "<i>"]
+    },
+    {
+        question: "คุณต้องการทำข้อความ 'Note' ให้เป็นตัวเอียง เพื่อใช้เป็นคำอธิบายเพิ่มเติม",
+        correct: ["<i>", "Note", "</i>"],
+        choices: ["<i>", "Note", "</i>", "<u>"]
+    },
+    {
+        question: "คุณต้องการขีดเส้นใต้คำว่า 'Link' เพื่อให้ดูเหมือนข้อความสำคัญ",
+        correct: ["<u>", "Link", "</u>"],
+        choices: ["<u>", "Link", "</u>", "<b>"]
+    },
+    {
+        question: "คุณต้องการสร้างหัวข้อรองสำหรับหัวข้อย่อย โดยใช้ข้อความว่า 'About Me'",
+        correct: ["<h2>", "About Me", "</h2>"],
+        choices: ["<h2>", "About Me", "</h2>", "<h1>"]
+    },
+    {
+        question: "คุณต้องการแสดงข้อความลิขสิทธิ์ '© 2026' ให้มีขนาดเล็กกว่าปกติ",
+        correct: ["<small>", "© 2026", "</small>"],
+        choices: ["<small>", "© 2026", "</small>", "<p>"]
+    },
+    {
+        question: "คุณต้องการแสดงโค้ดตัวอย่าง เช่น 'console.log(1)' ให้มีรูปแบบเหมือนโค้ด",
+        correct: ["<code>", "console.log(1)", "</code>"],
+        choices: ["<code>", "console.log(1)", "</code>", "<p>"]
+    },
+    {
+        question: "คุณต้องการสร้างหัวข้อย่อยขนาดเล็กลงอีกระดับหนึ่ง โดยใช้ข้อความ 'Details'",
+        correct: ["<h3>", "Details", "</h3>"],
+        choices: ["<h3>", "Details", "</h3>", "<h2>"]
+    },
+    {
+        question: "คุณต้องการเน้นข้อความ 'Warning!' ให้มีความสำคัญมากกว่าปกติ",
+        correct: ["<strong>", "Warning!", "</strong>"],
+        choices: ["<strong>", "Warning!", "</strong>", "<b>"]
+    }
 ];
 
 const mediumLevels = [
-    { question: "สร้างลิงก์ไป Google", correct: ['<a href="https://google.com">', "Google", "</a>"], choices: ["</a>", "Google", '<a href="https://google.com">'] },
-    { question: "สร้างรายการ (List Item)", correct: ["<li>", "Item 1", "</li>"], choices: ["</li>", "Item 1", "<li>"] },
-    { question: "สร้างปุ่ม Submit", correct: ["<button>", "Click Me", "</button>"], choices: ["Click Me", "</button>", "<button>"] },
-    { question: "สร้างกล่อง Div", correct: ["<div>", "Content", "</div>"], choices: ["</div>", "Content", "<div>"] },
-    { question: "สร้างแถวตาราง (tr)", correct: ["<tr>", "Data", "</tr>"], choices: ["</tr>", "Data", "<tr>"] },
-    { question: "สร้างหัวตาราง (th)", correct: ["<th>", "Name", "</th>"], choices: ["</th>", "<th>", "Name"] },
-    { question: "สร้างช่องรับตัวเลข", correct: ['<input type="number">'], choices: ['<input type="number">'] },
-    { question: "สร้างฟอร์ม (Form)", correct: ["<form>", "Form Content", "</form>"], choices: ["</form>", "Form Content", "<form>"] },
-    { question: "สร้างคำพูดอ้างอิง", correct: ["<blockquote>", "Quote", "</blockquote>"], choices: ["<blockquote>", "Quote", "</blockquote>"] },
-    { question: "สร้างรายการแบบตัวเลข (ol)", correct: ["<ol>", "Item", "</ol>"], choices: ["</ol>", "<ol>", "Item"] }
+    {
+        question: "คุณต้องการสร้างลิงก์ให้ผู้ใช้กดเพื่อไปยังหน้าอื่น โดยแสดงคำว่า 'Go to page'",
+        correct: ['<a href="#">', "Go to page", "</a>"],
+        choices: ['<a href="#">', "Go to page", "</a>", "<p>"]
+    },
+    {
+        question: "คุณกำลังสร้างรายการเมนู และต้องการเพิ่มรายการชื่อ 'Home' ลงไปใน list",
+        correct: ["<li>", "Home", "</li>"],
+        choices: ["<li>", "Home", "</li>", "<ul>"]
+    },
+    {
+        question: "คุณต้องการสร้างปุ่มให้ผู้ใช้กด โดยแสดงข้อความ 'Submit'",
+        correct: ["<button>", "Submit", "</button>"],
+        choices: ["<button>", "Submit", "</button>", "<a>"]
+    },
+    {
+        question: "คุณต้องการสร้างกล่องสำหรับใส่เนื้อหา เช่น 'Content here'",
+        correct: ["<div>", "Content here", "</div>"],
+        choices: ["<div>", "Content here", "</div>", "<span>"]
+    },
+    {
+        question: "คุณกำลังสร้างตาราง และต้องการเพิ่มแถวที่มีข้อมูลคำว่า 'Data'",
+        correct: ["<tr>", "Data", "</tr>"],
+        choices: ["<tr>", "Data", "</tr>", "<td>"]
+    },
+    {
+        question: "คุณต้องการสร้างหัวตารางที่แสดงคำว่า 'Name'",
+        correct: ["<th>", "Name", "</th>"],
+        choices: ["<th>", "Name", "</th>", "<td>"]
+    },
+    {
+        question: "คุณต้องการสร้างช่องกรอกตัวเลข เช่น อายุ",
+        correct: ['<input type="number">'],
+        choices: ['<input type="number">', '<input type="text">', '<button>']
+    },
+    {
+        question: "คุณต้องการสร้างฟอร์มสำหรับกรอกข้อมูล โดยมีข้อความ 'Form here'",
+        correct: ["<form>", "Form here", "</form>"],
+        choices: ["<form>", "Form here", "</form>", "<div>"]
+    },
+    {
+        question: "คุณต้องการแสดงคำพูดอ้างอิง เช่น 'Learning never ends'",
+        correct: ["<blockquote>", "Learning never ends", "</blockquote>"],
+        choices: ["<blockquote>", "Learning never ends", "</blockquote>", "<p>"]
+    },
+    {
+        question: "คุณต้องการสร้างรายการแบบตัวเลข เช่น 'Step 1'",
+        correct: ["<ol>", "Step 1", "</ol>"],
+        choices: ["<ol>", "Step 1", "</ol>", "<ul>"]
+    }
 ];
 
 const hardLevels = [
-    { question: "สร้างหัวข้อ (h1) และปุ่มต่อกัน", correct: ["<h1>", "Title", "</h1>", "<button>", "OK", "</button>"], choices: ["</button>", "<h1>", "OK", "Title", "</h1>", "<button>"] },
-    { question: "สร้างลิงก์ที่หุ้มรูปภาพ", correct: ['<a href="#">', '<img src="pic.jpg">', "</a>"], choices: ["</a>", '<img src="pic.jpg">', '<a href="#">'] },
-    { question: "สร้างย่อหน้าที่มีตัวหนาข้างใน", correct: ["<p>", "Hi", "<b>", "User", "</b>", "</p>"], choices: ["</b>", "<p>", "Hi", "User", "</p>", "<b>"] },
-    { question: "สร้างรายการแบบ ul > li", correct: ["<ul>", "<li>", "Info", "</li>", "</ul>"], choices: ["</li>", "<ul>", "Info", "</ul>", "<li>"] },
-    { question: "สร้าง header > nav", correct: ["<header>", "<nav>", "Menu", "</nav>", "</header>"], choices: ["</nav>", "<header>", "Menu", "</header>", "<nav>"] },
-    { question: "สร้างฟอร์มที่มีรหัสผ่านและปุ่ม", correct: ["<form>", '<input type="password">', "<button>", "Go", "</button>", "</form>"], choices: ["<form>", "Go", "</button>", '<input type="password">', "</form>", "<button>"] },
-    { question: "สร้างกล่องที่มีเส้นคั่น (div > hr)", correct: ["<div>", "Text", "<hr>", "</div>"], choices: ["<hr>", "<div>", "</div>", "Text"] },
-    { question: "สร้างตารางย่อ (table > tr > td)", correct: ["<table>", "<tr>", "<td>", "Val", "</td>", "</tr>", "</table>"], choices: ["</td>", "<table>", "</tr>", "<td>", "Val", "<tr>", "</table>"] },
-    { question: "สร้าง Footer พร้อมตัวเล็ก", correct: ["<footer>", "<small>", "Copy", "</small>", "</footer>"], choices: ["<footer>", "</small>", "Copy", "</footer>", "<small>"] },
-    { question: "สร้าง Label คู่กับช่องเลือกสี", correct: ["<label>", "Color", "</label>", '<input type="color">'], choices: ["Color", "</label>", '<input type="color">', "<label>"] }
+    {
+        question: "คุณกำลังสร้างหน้าเว็บ และต้องการแสดงหัวข้อ 'Welcome' จากนั้นมีปุ่ม 'Start' อยู่ถัดลงมา เพื่อให้ผู้ใช้กดเริ่มใช้งาน",
+        correct: ["<h1>", "Welcome", "</h1>", "<button>", "Start", "</button>"],
+        choices: ["<h1>", "Welcome", "</h1>", "<button>", "Start", "</button>", "<p>"]
+    },
+    {
+        question: "คุณต้องการให้รูปภาพสามารถคลิกได้ โดยเมื่อกดที่รูปจะทำหน้าที่เป็นลิงก์",
+        correct: ['<a href="#">', '<img src="img.jpg">', "</a>"],
+        choices: ['<a href="#">', '<img src="img.jpg">', "</a>", "<div>"]
+    },
+    {
+        question: "คุณต้องการเขียนประโยค 'Hi User' โดยให้คำว่า 'User' เป็นตัวหนาอยู่ภายในย่อหน้า",
+        correct: ["<p>", "Hi", "<b>", "User", "</b>", "</p>"],
+        choices: ["<p>", "Hi", "<b>", "User", "</b>", "</p>", "<i>"]
+    },
+    {
+        question: "คุณกำลังสร้างเมนูรายการ และต้องการให้มี list ที่ภายในมีรายการชื่อ 'Info'",
+        correct: ["<ul>", "<li>", "Info", "</li>", "</ul>"],
+        choices: ["<ul>", "<li>", "Info", "</li>", "</ul>", "<ol>"]
+    },
+    {
+        question: "คุณต้องการสร้างส่วนหัวของเว็บไซต์ (header) และภายในมีเมนูนำทางชื่อ 'Menu'",
+        correct: ["<header>", "<nav>", "Menu", "</nav>", "</header>"],
+        choices: ["<header>", "<nav>", "Menu", "</nav>", "</header>", "<div>"]
+    },
+    {
+        question: "คุณต้องการสร้างฟอร์มที่มีช่องกรอกรหัสผ่าน เพื่อให้ผู้ใช้พิมพ์ password",
+        correct: ["<form>", '<input type="password">', "</form>"],
+        choices: ["<form>", '<input type="password">', "</form>", "<input>"]
+    },
+    {
+        question: "คุณต้องการสร้างกล่องข้อความที่มีเนื้อหา 'Hello' และมีเส้นคั่นด้านล่าง",
+        correct: ["<div>", "Hello", "<hr>", "</div>"],
+        choices: ["<div>", "Hello", "<hr>", "</div>", "<p>"]
+    },
+    {
+        question: "คุณกำลังสร้างตาราง และต้องการมี 1 แถว 1 ช่อง ที่แสดงคำว่า 'Value'",
+        correct: ["<table>", "<tr>", "<td>", "Value", "</td>", "</tr>", "</table>"],
+        choices: ["<table>", "<tr>", "<td>", "Value", "</td>", "</tr>", "</table>", "<div>"]
+    },
+    {
+        question: "คุณต้องการสร้างส่วนท้ายของเว็บไซต์ โดยแสดงข้อความลิขสิทธิ์ '© 2026' ด้วยตัวอักษรขนาดเล็ก",
+        correct: ["<footer>", "<small>", "© 2026", "</small>", "</footer>"],
+        choices: ["<footer>", "<small>", "© 2026", "</small>", "</footer>", "<p>"]
+    },
+    {
+        question: "คุณต้องการสร้าง label ที่มีข้อความ 'Pick color' และมีช่องเลือกสีอยู่ถัดไป",
+        correct: ["<label>", "Pick color", "</label>", '<input type="color">'],
+        choices: ["<label>", "Pick color", "</label>", '<input type="color">', "<input>"]
+    }
 ];
 
 const expertLevels = [
-    { question: "สร้างโครงสร้างบทความ (Article)", correct: ["<article>", "<h2>", "Title", "</h2>", "<p>", "Text", "</p>", "</article>"], choices: ["<p>", "</article>", "<h2>", "Title", "</h2>", "Text", "<article>", "</p>"] },
-    { question: "สร้างแถบด้านข้าง (Aside)", correct: ["<aside>", "<ul>", "<li>", "<a>", "Link", "</a>", "</li>", "</ul>", "</aside>"], choices: ["<li>", "</a>", "<ul>", "<a>", "Link", "</aside>", "<aside>", "</li>", "</ul>"] },
-    { question: "สร้าง Figure พร้อมคำบรรยาย", correct: ["<figure>", '<img src="img.jpg">', "<figcaption>", "Caption", "</figcaption>", "</figure>"], choices: ["<figcaption>", "Caption", "</figure>", '<img src="img.jpg">', "</figcaption>", "<figure>"] },
-    { question: "สร้างแบบฟอร์ม Fieldset", correct: ["<fieldset>", "<legend>", "Login", "</legend>", "<input>", "</fieldset>"], choices: ["<input>", "<legend>", "</fieldset>", "<fieldset>", "Login", "</legend>"] },
-    { question: "สร้าง Main และ Section", correct: ["<main>", "<section>", "<h1>", "Hi", "</h1>", "</section>", "</main>"], choices: ["</main>", "<h1>", "<section>", "<main>", "Hi", "</h1>", "</section>"] },
-    { question: "สร้างตาราง thead และ tbody", correct: ["<table>", "<thead>", "<tr>", "<th>", "ID", "</th>", "</tr>", "</thead>", "<tbody>", "</tbody>", "</table>"], choices: ["<thead>", "</th>", "<tbody>", "<table>", "<tr>", "ID", "</th>", "</tr>", "</thead>", "<th>", "</table>", "</tbody>"] },
-    { question: "สร้าง nav ที่มีป้ายชื่อ label", correct: ["<nav>", "<label>", "Menu", "</label>", "<ul>", "<li>", "Home", "</li>", "</ul>", "</nav>"], choices: ["</nav>", "<li>", "<label>", "Home", "</li>", "<nav>", "Menu", "</label>", "<ul>", "</ul>"] },
-    { question: "สร้างส่วน Details", correct: ["<details>", "<summary>", "Read More", "</summary>", "<p>", "Content", "</p>", "</details>"], choices: ["<details>", "</summary>", "Content", "</details>", "<p>", "<summary>", "Read More", "</p>"] },
-    { question: "สร้างฟอร์ม Label ผูกกับ Input", correct: ["<form>", "<label>", "Username", "</label>", '<input type="text">', "<button>", "Send", "</button>", "</form>"], choices: ["<button>", "<label>", "Username", "</label>", "Send", "</form>", "<form>", '<input type="text">', "</button>"] },
-    { question: "สร้าง Video พร้อมไฟล์สำรอง", correct: ["<video>", '<source src="v.mp4">', '<source src="v.webm">', "Error", "</video>"], choices: ["<video>", "Error", '<source src="v.webm">', "</video>", '<source src="v.mp4">'] }
+    {
+        question: "คุณกำลังสร้างบทความบนเว็บ โดยมีหัวข้อ 'My Blog' และมีเนื้อหา 'Welcome to my blog' อยู่ภายใน article",
+        correct: ["<article>", "<h2>", "My Blog", "</h2>", "<p>", "Welcome to my blog", "</p>", "</article>"],
+        choices: ["<article>", "<h2>", "My Blog", "</h2>", "<p>", "Welcome to my blog", "</p>", "</article>", "<div>"]
+    },
+    {
+        question: "คุณต้องการสร้าง sidebar (aside) ที่มีรายการลิงก์ชื่อ 'Link' อยู่ภายใน list",
+        correct: ["<aside>", "<ul>", "<li>", "<a>", "Link", "</a>", "</li>", "</ul>", "</aside>"],
+        choices: ["<aside>", "<ul>", "<li>", "<a>", "Link", "</a>", "</li>", "</ul>", "</aside>", "<nav>"]
+    },
+    {
+        question: "คุณต้องการแสดงรูปภาพพร้อมคำอธิบายใต้รูป โดยใช้ข้อความ 'This is image'",
+        correct: ["<figure>", '<img src="img.jpg">', "<figcaption>", "This is image", "</figcaption>", "</figure>"],
+        choices: ["<figure>", '<img src="img.jpg">', "<figcaption>", "This is image", "</figcaption>", "</figure>", "<p>"]
+    },
+    {
+        question: "คุณต้องการจัดกลุ่มข้อมูลในฟอร์ม โดยมีหัวข้อ 'Login' และมีช่อง input อยู่ด้านใน",
+        correct: ["<fieldset>", "<legend>", "Login", "</legend>", "<input>", "</fieldset>"],
+        choices: ["<fieldset>", "<legend>", "Login", "</legend>", "<input>", "</fieldset>", "<form>"]
+    },
+    {
+        question: "คุณกำลังสร้างโครงสร้างหลักของหน้าเว็บ โดยมี main และภายในมี section ที่มีหัวข้อ 'Hello'",
+        correct: ["<main>", "<section>", "<h1>", "Hello", "</h1>", "</section>", "</main>"],
+        choices: ["<main>", "<section>", "<h1>", "Hello", "</h1>", "</section>", "</main>", "<div>"]
+    },
+    {
+        question: "คุณต้องการสร้างตารางที่มีส่วนหัว (thead) และส่วนข้อมูล (tbody) ครบโครงสร้าง",
+        correct: ["<table>", "<thead>", "</thead>", "<tbody>", "</tbody>", "</table>"],
+        choices: ["<table>", "<thead>", "</thead>", "<tbody>", "</tbody>", "</table>", "<tr>"]
+    },
+    {
+        question: "คุณต้องการสร้างเมนูนำทาง (nav) ที่มี label 'Menu' และรายการ 'Home' อยู่ภายใน list",
+        correct: ["<nav>", "<label>", "Menu", "</label>", "<ul>", "<li>", "Home", "</li>", "</ul>", "</nav>"],
+        choices: ["<nav>", "<label>", "Menu", "</label>", "<ul>", "<li>", "Home", "</li>", "</ul>", "</nav>", "<div>"]
+    },
+    {
+        question: "คุณต้องการสร้างส่วนที่สามารถกดเพื่อแสดง/ซ่อนเนื้อหา โดยมีหัวข้อ 'Read more' และข้อความ 'Details here'",
+        correct: ["<details>", "<summary>", "Read more", "</summary>", "<p>", "Details here", "</p>", "</details>"],
+        choices: ["<details>", "<summary>", "Read more", "</summary>", "<p>", "Details here", "</p>", "</details>", "<span>"]
+    },
+    {
+        question: "คุณต้องการสร้างฟอร์มที่มี label 'Username' ช่องกรอกข้อความ และปุ่ม 'Send'",
+        correct: ["<form>", "<label>", "Username", "</label>", '<input type="text">', "<button>", "Send", "</button>", "</form>"],
+        choices: ["<form>", "<label>", "Username", "</label>", '<input type="text">', "<button>", "Send", "</button>", "</form>", "<input>"]
+    },
+    {
+        question: "คุณต้องการแสดงวิดีโอที่รองรับหลายไฟล์ และมีข้อความ fallback กรณีโหลดไม่ได้",
+        correct: ["<video>", '<source src="v.mp4">', '<source src="v.webm">', "Your browser does not support video", "</video>"],
+        choices: ["<video>", '<source src="v.mp4">', '<source src="v.webm">', "Your browser does not support video", "</video>", "<audio>"]
+    }
 ];
 
 /* =========================
@@ -362,8 +522,12 @@ function loadLevel() {
     displayChoices.forEach(choice => {
         let btn = document.createElement("div");
         btn.className = "block";
+        // ตรวจสอบว่าคำตอบนี้ถูกเลือกอยู่หรือไม่ ถ้าใช่ให้ใส่ class 'selected'
+        if (answerList.includes(choice)) {
+            btn.classList.add("selected");
+        }
         btn.innerText = choice;
-        btn.onclick = () => addAnswer(choice); // เมื่อกด จะเอาคำตอบส่งไปข้างบน
+        btn.onclick = () => addAnswer(choice, btn); // ส่ง element btn เข้าไปด้วย
         choicesDiv.appendChild(btn);
     });
 
@@ -374,28 +538,50 @@ function loadLevel() {
     saveGameState(); // เซฟเกม
 }
 
-// ฟังก์ชันสำหรับวาดกล่องคำตอบที่ผู้เล่นกดเลือกไว้ในด้านบน
+
+// ฟังก์ชันสำหรับวาดคำตอบด้านบน และคืนค่าสีให้ตัวเลือกด้านล่าง
 function renderAnswer() {
     let area = document.getElementById("answerArea");
     area.innerHTML = "";
+    
+    // ค้นหาและคืนค่าสีหม่นให้กับปุ่มด้านล่างทั้งหมดก่อน
+    const allChoices = document.querySelectorAll("#choices .block");
+    allChoices.forEach(btn => {
+        if (!answerList.includes(btn.innerText)) {
+            btn.classList.remove("selected");
+        } else {
+            btn.classList.add("selected");
+        }
+    });
+
     answerList.forEach(function(value, index) {
         let block = document.createElement("div");
         block.className = "block add";
         block.innerText = value;
-        block.onclick = function() { removeAt(index); }; // กดที่บล็อกเพื่อลบมันออกได้
+        block.onclick = function() { 
+            removeAt(index); 
+        };
         area.appendChild(block);
     });
 }
 
 // ฟังก์ชันจัดการเมื่อผู้เล่นกดเลือกตัวเลือกด้านล่าง
-function addAnswer(value) {
+function addAnswer(value, element) {
     let { pool } = getAvailableQuestions();
     let level = pool[currentLevel];
-    // ดักไม่ให้เพิ่มคำตอบเกินจำนวนช่องเฉลย หรือเพิ่มตัวที่เลือกไปแล้วซ้ำอีก
+    
     if (answerList.length >= level.correct.length || answerList.includes(value)) return;
+    
     answerList.push(value);
+    
+    // ใส่สีหม่นให้กับตัวเลือกที่ถูกกด
+    if (element) {
+        element.classList.add("selected");
+    }
+    
     renderAnswer();
 }
+
 
 // ปุ่มควบคุมการจัดการคำตอบ
 window.removeLast = function() { answerList.pop(); renderAnswer(); }; // ลบตัวสุดท้าย

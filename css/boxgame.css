@@ -152,6 +152,14 @@ h2#question {
     font-size: 1.1rem;
 }
 
+/* สไตล์สำหรับตัวเลือกที่ถูกกดไปแล้ว */
+.block.selected {
+    opacity: 0.4;            /* ทำให้ดูจางลง */
+    filter: grayscale(80%);   /* ปรับให้สีหม่น */
+    cursor: not-allowed;     /* เปลี่ยน Cursor เป็นรูปห้าม */
+    pointer-events: none;    /* ทำให้กดซ้ำไม่ได้ */
+    transform: scale(0.95);  /* ทำให้ดูยุบลงเล็กน้อย */
+}
 @keyframes popIn {
     0% {
         transform: scale(0.9);
