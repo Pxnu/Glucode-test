@@ -46,12 +46,19 @@
         </div>
     </div>
 
-    <div class="theme-switcher">
-        <button class="theme-btn" data-theme="light" title="Light Theme"><i class="fa-solid fa-sun"></i></button>
-        <button class="theme-btn" data-theme="dark" title="Dark Theme"><i class="fa-solid fa-moon"></i></button>
-        <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
-        <button class="theme-btn" data-theme="winter" title="Winter Theme"><i class="fa-solid fa-snowflake"></i></button>
-        <button class="theme-btn" data-theme="easter" title="Easter Theme"><i class="fa-solid fa-egg"></i></button>
+    <div class="theme-switcher" id="themeSwitcherBox">
+        <button class="theme-toggle-btn" id="themeToggleBtn">
+            <i class="fa-solid fa-palette"></i>
+            <i class="fa-solid fa-angle-up arrow-icon"></i>
+        </button>
+        
+        <div class="theme-options" id="themeOptions">
+            <button class="theme-btn" data-theme="light" title="Light Mode"><i class="fa-solid fa-sun"></i></button>
+            <button class="theme-btn" data-theme="dark" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
+            <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
+            <button class="theme-btn" data-theme="winter" title="Winter"><i class="fa-solid fa-snowflake"></i></button>
+            <button class="theme-btn" data-theme="easter" title="Easter"><i class="fa-solid fa-egg"></i></button>
+        </div>
     </div>
 
     <script src="../js/core.js"></script>
