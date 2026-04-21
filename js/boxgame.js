@@ -41,213 +41,213 @@ function addScore(difficulty) {
 ========================= */
 const easyLevels = [
     {
-        question: "คุณกำลังสร้างหน้าเว็บแนะนำตัว และต้องการแสดงข้อความ 'Hello' เป็นหัวข้อหลักที่ใหญ่ที่สุดบนหน้าเว็บ",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างหัวข้อหลัก (H1) ที่มีข้อความ 'Hello'",
         correct: ["<h1>", "Hello", "</h1>"],
-        choices: ["<h1>", "Hello", "</h1>", "<p>"]
+        choices: ["<h1>", "Hello", "</h1>"]
     },
     {
-        question: "คุณต้องการเขียนข้อความธรรมดาเป็นเนื้อหาอธิบายใต้หัวข้อ โดยใช้คำว่า 'This is my website'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างย่อหน้า (Paragraph) ที่มีข้อความ 'This is my website'",
         correct: ["<p>", "This is my website", "</p>"],
-        choices: ["<p>", "This is my website", "</p>", "<h1>"]
+        choices: ["<p>", "This is my website", "</p>"]
     },
     {
-        question: "คุณต้องการเน้นคำว่า 'Important' ให้เป็นตัวหนา เพื่อให้ผู้ใช้เห็นเด่นชัด",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับทำข้อความตัวหนา (Bold) ที่มีคำว่า 'Important'",
         correct: ["<b>", "Important", "</b>"],
-        choices: ["<b>", "Important", "</b>", "<i>"]
+        choices: ["<b>", "Important", "</b>"]
     },
     {
-        question: "คุณต้องการทำข้อความ 'Note' ให้เป็นตัวเอียง เพื่อใช้เป็นคำอธิบายเพิ่มเติม",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับทำข้อความตัวเอียง (Italic) ที่มีคำว่า 'Note'",
         correct: ["<i>", "Note", "</i>"],
-        choices: ["<i>", "Note", "</i>", "<u>"]
+        choices: ["<i>", "Note", "</i>"]
     },
     {
-        question: "คุณต้องการขีดเส้นใต้คำว่า 'Link' เพื่อให้ดูเหมือนข้อความสำคัญ",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับขีดเส้นใต้ (Underline) คำว่า 'Link'",
         correct: ["<u>", "Link", "</u>"],
-        choices: ["<u>", "Link", "</u>", "<b>"]
+        choices: ["<u>", "Link", "</u>"]
     },
     {
-        question: "คุณต้องการสร้างหัวข้อรองสำหรับหัวข้อย่อย โดยใช้ข้อความว่า 'About Me'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างหัวข้อรอง (H2) ที่มีข้อความ 'About Me'",
         correct: ["<h2>", "About Me", "</h2>"],
-        choices: ["<h2>", "About Me", "</h2>", "<h1>"]
+        choices: ["<h2>", "About Me", "</h2>"]
     },
     {
-        question: "คุณต้องการแสดงข้อความลิขสิทธิ์ '© 2026' ให้มีขนาดเล็กกว่าปกติ",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับแสดงข้อความขนาดเล็ก (Small) คำว่า '© 2026'",
         correct: ["<small>", "© 2026", "</small>"],
-        choices: ["<small>", "© 2026", "</small>", "<p>"]
+        choices: ["<small>", "© 2026", "</small>"]
     },
     {
-        question: "คุณต้องการแสดงโค้ดตัวอย่าง เช่น 'console.log(1)' ให้มีรูปแบบเหมือนโค้ด",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับแสดงรูปแบบโค้ด (Code) ข้อความ 'console.log(1)'",
         correct: ["<code>", "console.log(1)", "</code>"],
-        choices: ["<code>", "console.log(1)", "</code>", "<p>"]
+        choices: ["<code>", "console.log(1)", "</code>"]
     },
     {
-        question: "คุณต้องการสร้างหัวข้อย่อยขนาดเล็กลงอีกระดับหนึ่ง โดยใช้ข้อความ 'Details'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างหัวข้อระดับ 3 (H3) ที่มีข้อความ 'Details'",
         correct: ["<h3>", "Details", "</h3>"],
-        choices: ["<h3>", "Details", "</h3>", "<h2>"]
+        choices: ["<h3>", "Details", "</h3>"]
     },
     {
-        question: "คุณต้องการเน้นข้อความ 'Warning!' ให้มีความสำคัญมากกว่าปกติ",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับเน้นข้อความสำคัญ (Strong) คำว่า 'Warning!'",
         correct: ["<strong>", "Warning!", "</strong>"],
-        choices: ["<strong>", "Warning!", "</strong>", "<b>"]
+        choices: ["<strong>", "Warning!", "</strong>"]
     }
 ];
 
 const mediumLevels = [
     {
-        question: "คุณต้องการสร้างลิงก์ให้ผู้ใช้กดเพื่อไปยังหน้าอื่น โดยแสดงคำว่า 'Go to page'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างลิงก์ (Anchor) ข้อความ 'Go to page'",
         correct: ['<a href="#">', "Go to page", "</a>"],
-        choices: ['<a href="#">', "Go to page", "</a>", "<p>"]
+        choices: ['<a href="#">', "Go to page", "</a>"]
     },
     {
-        question: "คุณกำลังสร้างรายการเมนู และต้องการเพิ่มรายการชื่อ 'Home' ลงไปใน list",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างรายการ (List Item) ข้อความ 'Home'",
         correct: ["<li>", "Home", "</li>"],
-        choices: ["<li>", "Home", "</li>", "<ul>"]
+        choices: ["<li>", "Home", "</li>"]
     },
     {
-        question: "คุณต้องการสร้างปุ่มให้ผู้ใช้กด โดยแสดงข้อความ 'Submit'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างปุ่ม (Button) ข้อความ 'Submit'",
         correct: ["<button>", "Submit", "</button>"],
-        choices: ["<button>", "Submit", "</button>", "<a>"]
+        choices: ["<button>", "Submit", "</button>"]
     },
     {
-        question: "คุณต้องการสร้างกล่องสำหรับใส่เนื้อหา เช่น 'Content here'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างกล่องเนื้อหา (Div) ข้อความ 'Content here'",
         correct: ["<div>", "Content here", "</div>"],
-        choices: ["<div>", "Content here", "</div>", "<span>"]
+        choices: ["<div>", "Content here", "</div>"]
     },
     {
-        question: "คุณกำลังสร้างตาราง และต้องการเพิ่มแถวที่มีข้อมูลคำว่า 'Data'",
-        correct: ["<tr>", "Data", "</tr>"],
-        choices: ["<tr>", "Data", "</tr>", "<td>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างแถวตาราง (Table Row) และข้อมูล 'Data'",
+        correct: ["<tr>", "<td>", "Data", "</td>", "</tr>"],
+        choices: ["<tr>", "<td>", "Data", "</td>", "</tr>"]
     },
     {
-        question: "คุณต้องการสร้างหัวตารางที่แสดงคำว่า 'Name'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างหัวตาราง (Table Header) ข้อความ 'Name'",
         correct: ["<th>", "Name", "</th>"],
-        choices: ["<th>", "Name", "</th>", "<td>"]
+        choices: ["<th>", "Name", "</th>"]
     },
     {
-        question: "คุณต้องการสร้างช่องกรอกตัวเลข เช่น อายุ",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างช่องกรอกข้อมูลตัวเลข (Input Number)",
         correct: ['<input type="number">'],
-        choices: ['<input type="number">', '<input type="text">', '<button>']
+        choices: ['<input type="number">']
     },
     {
-        question: "คุณต้องการสร้างฟอร์มสำหรับกรอกข้อมูล โดยมีข้อความ 'Form here'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างฟอร์ม (Form) ที่มีข้อความ 'Form here'",
         correct: ["<form>", "Form here", "</form>"],
-        choices: ["<form>", "Form here", "</form>", "<div>"]
+        choices: ["<form>", "Form here", "</form>"]
     },
     {
-        question: "คุณต้องการแสดงคำพูดอ้างอิง เช่น 'Learning never ends'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างคำพูดอ้างอิง (Blockquote) ข้อความ 'Learning never ends'",
         correct: ["<blockquote>", "Learning never ends", "</blockquote>"],
-        choices: ["<blockquote>", "Learning never ends", "</blockquote>", "<p>"]
+        choices: ["<blockquote>", "Learning never ends", "</blockquote>"]
     },
     {
-        question: "คุณต้องการสร้างรายการแบบตัวเลข เช่น 'Step 1'",
-        correct: ["<ol>", "Step 1", "</ol>"],
-        choices: ["<ol>", "Step 1", "</ol>", "<ul>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างรายการแบบลำดับเลข (Ordered List) ข้อความ 'Step 1'",
+        correct: ["<ol>", "<li>", "Step 1", "</li>", "</ol>"],
+        choices: ["<ol>", "<li>", "Step 1", "</li>", "</ol>"]
     }
 ];
 
 const hardLevels = [
     {
-        question: "คุณกำลังสร้างหน้าเว็บ และต้องการแสดงหัวข้อ 'Welcome' จากนั้นมีปุ่ม 'Start' อยู่ถัดลงมา เพื่อให้ผู้ใช้กดเริ่มใช้งาน",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างหัวข้อ 'Welcome' และปุ่ม 'Start' ต่อท้าย",
         correct: ["<h1>", "Welcome", "</h1>", "<button>", "Start", "</button>"],
-        choices: ["<h1>", "Welcome", "</h1>", "<button>", "Start", "</button>", "<p>"]
+        choices: ["<h1>", "Welcome", "</h1>", "<button>", "Start", "</button>"]
     },
     {
-        question: "คุณต้องการให้รูปภาพสามารถคลิกได้ โดยเมื่อกดที่รูปจะทำหน้าที่เป็นลิงก์",
-        correct: ['<a href="#">', '<img src="img.jpg">', "</a>"],
-        choices: ['<a href="#">', '<img src="img.jpg">', "</a>", "<div>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างรูปภาพที่กดคลิกได้ (Link Image)",
+        correct: ['<a href="#">', '<img src="img.jpg" alt="image">', "</a>"],
+        choices: ['<a href="#">', '<img src="img.jpg" alt="image">', "</a>"]
     },
     {
-        question: "คุณต้องการเขียนประโยค 'Hi User' โดยให้คำว่า 'User' เป็นตัวหนาอยู่ภายในย่อหน้า",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างย่อหน้าที่มีคำว่า 'User' เป็นตัวหนา (Hi <b>User</b>)",
         correct: ["<p>", "Hi", "<b>", "User", "</b>", "</p>"],
-        choices: ["<p>", "Hi", "<b>", "User", "</b>", "</p>", "<i>"]
+        choices: ["<p>", "Hi", "<b>", "User", "</b>", "</p>"]
     },
     {
-        question: "คุณกำลังสร้างเมนูรายการ และต้องการให้มี list ที่ภายในมีรายการชื่อ 'Info'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างรายการแบบไม่ลำดับ (Unordered List) ที่มีรายการ 'Info'",
         correct: ["<ul>", "<li>", "Info", "</li>", "</ul>"],
-        choices: ["<ul>", "<li>", "Info", "</li>", "</ul>", "<ol>"]
+        choices: ["<ul>", "<li>", "Info", "</li>", "</ul>"]
     },
     {
-        question: "คุณต้องการสร้างส่วนหัวของเว็บไซต์ (header) และภายในมีเมนูนำทางชื่อ 'Menu'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างส่วนหัว (Header) ที่มีเมนูนำทาง (Nav) ข้อความ 'Menu'",
         correct: ["<header>", "<nav>", "Menu", "</nav>", "</header>"],
-        choices: ["<header>", "<nav>", "Menu", "</nav>", "</header>", "<div>"]
+        choices: ["<header>", "<nav>", "Menu", "</nav>", "</header>"]
     },
     {
-        question: "คุณต้องการสร้างฟอร์มที่มีช่องกรอกรหัสผ่าน เพื่อให้ผู้ใช้พิมพ์ password",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างฟอร์มที่มีช่องกรอกรหัสผ่าน (Password Input)",
         correct: ["<form>", '<input type="password">', "</form>"],
-        choices: ["<form>", '<input type="password">', "</form>", "<input>"]
+        choices: ["<form>", '<input type="password">', "</form>"]
     },
     {
-        question: "คุณต้องการสร้างกล่องข้อความที่มีเนื้อหา 'Hello' และมีเส้นคั่นด้านล่าง",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างกล่องเนื้อหา 'Hello' พร้อมเส้นคั่น (HR) ด้านล่าง",
         correct: ["<div>", "Hello", "<hr>", "</div>"],
-        choices: ["<div>", "Hello", "<hr>", "</div>", "<p>"]
+        choices: ["<div>", "Hello", "<hr>", "</div>"]
     },
     {
-        question: "คุณกำลังสร้างตาราง และต้องการมี 1 แถว 1 ช่อง ที่แสดงคำว่า 'Value'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างตาราง 1 ช่องที่มีข้อความ 'Value'",
         correct: ["<table>", "<tr>", "<td>", "Value", "</td>", "</tr>", "</table>"],
-        choices: ["<table>", "<tr>", "<td>", "Value", "</td>", "</tr>", "</table>", "<div>"]
+        choices: ["<table>", "<tr>", "<td>", "Value", "</td>", "</tr>", "</table>"]
     },
     {
-        question: "คุณต้องการสร้างส่วนท้ายของเว็บไซต์ โดยแสดงข้อความลิขสิทธิ์ '© 2026' ด้วยตัวอักษรขนาดเล็ก",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างส่วนท้าย (Footer) ที่มีลิขสิทธิ์ '© 2026' ขนาดเล็ก",
         correct: ["<footer>", "<small>", "© 2026", "</small>", "</footer>"],
-        choices: ["<footer>", "<small>", "© 2026", "</small>", "</footer>", "<p>"]
+        choices: ["<footer>", "<small>", "© 2026", "</small>", "</footer>"]
     },
     {
-        question: "คุณต้องการสร้าง label ที่มีข้อความ 'Pick color' และมีช่องเลือกสีอยู่ถัดไป",
-        correct: ["<label>", "Pick color", "</label>", '<input type="color">'],
-        choices: ["<label>", "Pick color", "</label>", '<input type="color">', "<input>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้าง Label 'Pick color' คู่กับช่องเลือกสี (Input Color)",
+        correct: ['<label for="color">', "Pick color", "</label>", '<input id="color" type="color">'],
+        choices: ['<label for="color">', "Pick color", "</label>", '<input id="color" type="color">']
     }
 ];
 
 const expertLevels = [
     {
-        question: "คุณกำลังสร้างบทความบนเว็บ โดยมีหัวข้อ 'My Blog' และมีเนื้อหา 'Welcome to my blog' อยู่ภายใน article",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างบทความ (Article) ที่มีหัวข้อ 'My Blog' และเนื้อหา",
         correct: ["<article>", "<h2>", "My Blog", "</h2>", "<p>", "Welcome to my blog", "</p>", "</article>"],
-        choices: ["<article>", "<h2>", "My Blog", "</h2>", "<p>", "Welcome to my blog", "</p>", "</article>", "<div>"]
+        choices: ["<article>", "<h2>", "My Blog", "</h2>", "<p>", "Welcome to my blog", "</p>", "</article>"]
     },
     {
-        question: "คุณต้องการสร้าง sidebar (aside) ที่มีรายการลิงก์ชื่อ 'Link' อยู่ภายใน list",
-        correct: ["<aside>", "<ul>", "<li>", "<a>", "Link", "</a>", "</li>", "</ul>", "</aside>"],
-        choices: ["<aside>", "<ul>", "<li>", "<a>", "Link", "</a>", "</li>", "</ul>", "</aside>", "<nav>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างแถบข้าง (Aside) ที่มีรายการลิงก์ 'Link'",
+        correct: ["<aside>", "<ul>", "<li>", '<a href="#">', "Link", "</a>", "</li>", "</ul>", "</aside>"],
+        choices: ["<aside>", "<ul>", "<li>", '<a href="#">', "Link", "</a>", "</li>", "</ul>", "</aside>"]
     },
     {
-        question: "คุณต้องการแสดงรูปภาพพร้อมคำอธิบายใต้รูป โดยใช้ข้อความ 'This is image'",
-        correct: ["<figure>", '<img src="img.jpg">', "<figcaption>", "This is image", "</figcaption>", "</figure>"],
-        choices: ["<figure>", '<img src="img.jpg">', "<figcaption>", "This is image", "</figcaption>", "</figure>", "<p>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างรูปภาพพร้อมคำอธิบาย (Figcaption) 'This is an image'",
+        correct: ["<figure>", '<img src="img.jpg" alt="image">', "<figcaption>", "This is an image", "</figcaption>", "</figure>"],
+        choices: ["<figure>", '<img src="img.jpg" alt="image">', "<figcaption>", "This is an image", "</figcaption>", "</figure>"]
     },
     {
-        question: "คุณต้องการจัดกลุ่มข้อมูลในฟอร์ม โดยมีหัวข้อ 'Login' และมีช่อง input อยู่ด้านใน",
-        correct: ["<fieldset>", "<legend>", "Login", "</legend>", "<input>", "</fieldset>"],
-        choices: ["<fieldset>", "<legend>", "Login", "</legend>", "<input>", "</fieldset>", "<form>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับจัดกลุ่มฟอร์ม (Fieldset) หัวข้อ 'Login' และช่องรับข้อมูล",
+        correct: ["<fieldset>", "<legend>", "Login", "</legend>", '<input type="text">', "</fieldset>"],
+        choices: ["<fieldset>", "<legend>", "Login", "</legend>", '<input type="text">', "</fieldset>"]
     },
     {
-        question: "คุณกำลังสร้างโครงสร้างหลักของหน้าเว็บ โดยมี main และภายในมี section ที่มีหัวข้อ 'Hello'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างโครงสร้าง Main และ Section ที่มีหัวข้อ 'Hello'",
         correct: ["<main>", "<section>", "<h1>", "Hello", "</h1>", "</section>", "</main>"],
-        choices: ["<main>", "<section>", "<h1>", "Hello", "</h1>", "</section>", "</main>", "<div>"]
+        choices: ["<main>", "<section>", "<h1>", "Hello", "</h1>", "</section>", "</main>"]
     },
     {
-        question: "คุณต้องการสร้างตารางที่มีส่วนหัว (thead) และส่วนข้อมูล (tbody) ครบโครงสร้าง",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างตารางที่มีส่วนหัว (Thead) และส่วนข้อมูล (Tbody)",
         correct: ["<table>", "<thead>", "</thead>", "<tbody>", "</tbody>", "</table>"],
-        choices: ["<table>", "<thead>", "</thead>", "<tbody>", "</tbody>", "</table>", "<tr>"]
+        choices: ["<table>", "<thead>", "</thead>", "<tbody>", "</tbody>", "</table>"]
     },
     {
-        question: "คุณต้องการสร้างเมนูนำทาง (nav) ที่มี label 'Menu' และรายการ 'Home' อยู่ภายใน list",
-        correct: ["<nav>", "<label>", "Menu", "</label>", "<ul>", "<li>", "Home", "</li>", "</ul>", "</nav>"],
-        choices: ["<nav>", "<label>", "Menu", "</label>", "<ul>", "<li>", "Home", "</li>", "</ul>", "</nav>", "<div>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้าง Nav ที่มีหัวข้อ 'Menu' และรายการ 'Home'",
+        correct: ["<nav>", "<h3>", "Menu", "</h3>", "<ul>", "<li>", "Home", "</li>", "</ul>", "</nav>"],
+        choices: ["<nav>", "<h3>", "Menu", "</h3>", "<ul>", "<li>", "Home", "</li>", "</ul>", "</nav>"]
     },
     {
-        question: "คุณต้องการสร้างส่วนที่สามารถกดเพื่อแสดง/ซ่อนเนื้อหา โดยมีหัวข้อ 'Read more' และข้อความ 'Details here'",
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้าง Details ที่มี Summary 'Read more' และข้อความ 'Details here'",
         correct: ["<details>", "<summary>", "Read more", "</summary>", "<p>", "Details here", "</p>", "</details>"],
-        choices: ["<details>", "<summary>", "Read more", "</summary>", "<p>", "Details here", "</p>", "</details>", "<span>"]
+        choices: ["<details>", "<summary>", "Read more", "</summary>", "<p>", "Details here", "</p>", "</details>"]
     },
     {
-        question: "คุณต้องการสร้างฟอร์มที่มี label 'Username' ช่องกรอกข้อความ และปุ่ม 'Send'",
-        correct: ["<form>", "<label>", "Username", "</label>", '<input type="text">', "<button>", "Send", "</button>", "</form>"],
-        choices: ["<form>", "<label>", "Username", "</label>", '<input type="text">', "<button>", "Send", "</button>", "</form>", "<input>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างฟอร์มที่มี Label 'Username', ช่องกรอก และปุ่ม 'Send'",
+        correct: ["<form>", '<label for="username">', "Username", "</label>", '<input id="username" type="text">', "<button>", "Send", "</button>", "</form>"],
+        choices: ["<form>", '<label for="username">', "Username", "</label>", '<input id="username" type="text">', "<button>", "Send", "</button>", "</form>"]
     },
     {
-        question: "คุณต้องการแสดงวิดีโอที่รองรับหลายไฟล์ และมีข้อความ fallback กรณีโหลดไม่ได้",
-        correct: ["<video>", '<source src="v.mp4">', '<source src="v.webm">', "Your browser does not support video", "</video>"],
-        choices: ["<video>", '<source src="v.mp4">', '<source src="v.webm">', "Your browser does not support video", "</video>", "<audio>"]
+        question: "จงเลือกชุดคำสั่ง HTML สำหรับสร้างวิดีโอ (Video) ที่รองรับไฟล์หลายนามสกุลและข้อความแจ้งเตือน",
+        correct: ['<video controls>', '<source src="v.mp4">', '<source src="v.webm">', "Your browser does not support video", "</video>"],
+        choices: ['<video controls>', '<source src="v.mp4">', '<source src="v.webm">', "Your browser does not support video", "</video>"]
     }
 ];
 
