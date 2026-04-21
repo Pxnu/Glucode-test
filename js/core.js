@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const userLi = document.createElement('li');
                 userLi.classList.add('user-dropdown-container');
                 userLi.innerHTML = `
-                    <a href="#" id="dropdownToggleBtn" class="user-dropdown-btn" style="display: flex; align-items: center;">
+                    <a href="${rootPath}Glucode ProfilePage/profile.html" id="dropdownToggleBtn" class="user-dropdown-btn" style="display: flex; align-items: center;">
                         ${userIconHtml} ${loggedInUser} <i id="dropdownArrow" class="fa-solid fa-angle-down" style="margin-left: 8px;"></i>
                     </a>
                     <div class="user-dropdown-menu" id="dropdownMenu">
