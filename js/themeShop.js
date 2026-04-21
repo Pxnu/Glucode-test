@@ -4,6 +4,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem("loggedInUser");
     let users = JSON.parse(localStorage.getItem("users")) || [];
+    
+    // 🟢 ระบบล้างข้อมูลเก่า: บังคับให้ผู้ใช้ทุกคนมีแค่ธีม Light และ Dark เท่านั้น (ทำงานแค่ครั้งเดียว)
+    if (localStorage.getItem("forceResetThemes_v1") !== "done") {
+        users.forEach(u => {
+            u.unlockedThemes = ['light', 'dark']; // ริบธีมอื่นคืน และให้แค่ 2 ธีมพื้นฐาน
+        });
+        localStorage.setItem("users", JSON.stringify(users));
+        // มาร์คไว้ว่าทำการรีเซ็ตแล้ว เพื่อที่ครั้งหน้าผู้ใช้ซื้อธีมใหม่แล้วจะได้ไม่โดนลบอีก
+        localStorage.setItem("forceResetThemes_v1", "done"); 
+    }
+
     const userIndex = users.findIndex(u => u.username === loggedInUser);
     const user = users[userIndex];
 
@@ -12,16 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // สร้างคลังธีมที่ผู้ใช้มี หากยังไม่เคยมีให้มี light เป็นค่าเริ่มต้น
+    // กรณีมี User สมัครใหม่
     if (!user.unlockedThemes) {
-        user.unlockedThemes = ['light'];
+        user.unlockedThemes = ['light', 'dark'];
         localStorage.setItem("users", JSON.stringify(users));
     }
 
-    // 1. ข้อมูลและราคาธีม (อิงตามทดสอบ.html)
+    // 1. ข้อมูลและราคาธีม (ปรับ Dark Mode ให้เป็น 0 Coins)
     const THEMES_DATA = [
         { id: 'light', name: 'Light (Default)', price: 0, bg: '#F8FAFC', icon: 'fa-sun', iconColor: '#f59e0b' },
-        { id: 'dark', name: 'Dark Mode', price: 10, bg: '#1E293B', icon: 'fa-moon', iconColor: '#F8FAFC' },
+        { id: 'dark', name: 'Dark Mode', price: 0, bg: '#1E293B', icon: 'fa-moon', iconColor: '#F8FAFC' },
         { id: 'winter', name: 'Winter', price: 50, bg: '#F0F9FF', icon: 'fa-snowflake', iconColor: '#0284C7' },
         { id: 'easter', name: 'Easter', price: 55, bg: '#FFF5F7', icon: 'fa-egg', iconColor: '#EC4899' },
         { id: 'halloween', name: 'Halloween', price: 60, bg: '#1A0B2E', icon: 'fa-ghost', iconColor: '#FF9E00' }
@@ -71,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. ฟังก์ชันซื้อธีม
+    // 3. 🟢 ฟังก์ชันซื้อธีม (แบบ Real-time)
     window.buyTheme = function(themeId, price, themeName) {
         let currentCoins = user.coins || 0;
 
@@ -81,28 +92,57 @@ document.addEventListener('DOMContentLoaded', () => {
             user.unlockedThemes.push(themeId);
             localStorage.setItem("users", JSON.stringify(users));
 
-            // อัปเดตตัวเลขเหรียญบน Navbar ด้านบนด้วย
+            // อัปเดตตัวเลขเหรียญบน Navbar
             const navCoin = document.querySelector('.coin-display strong');
             if (navCoin) navCoin.innerText = user.coins;
 
+            // 🟢 ทำให้ปุ่มธีมที่มุมซ้ายล่าง โผล่ขึ้นมาให้กดได้แบบ Real-time โดยไม่ต้องรีเฟรชหน้า
+            const newlyUnlockedBtn = document.querySelector(`.theme-btn[data-theme="${themeId}"]`);
+            if (newlyUnlockedBtn) {
+                newlyUnlockedBtn.style.display = 'flex';
+                
+                // แอบเพิ่ม Event ให้ปุ่มมุมซ้ายล่างนี้กดใช้งานธีมได้ทันที (เพื่อแก้ปัญหา core.js โหลดค่าไม่ทัน)
+                newlyUnlockedBtn.addEventListener('click', () => {
+                    equipTheme(themeId);
+                    const themeSwitcherBox = document.getElementById('themeSwitcherBox');
+                    if (themeSwitcherBox) themeSwitcherBox.classList.remove('open');
+                });
+            }
+
             showShopAlert('success', 'สั่งซื้อสำเร็จ!', `คุณได้รับธีม ${themeName} แล้ว! สามารถกดเลือกใช้งานได้เลย`);
-            renderShop(); // โหลดหน้าจอใหม่
+            
+            // 🟢 วาดหน้าร้านค้าใหม่ (ปุ่มจะเปลี่ยนจาก "ซื้อ" เป็น "เลือกใช้งาน" โดยที่ยังไม่ถูกสวมใส่ธีม)
+            renderShop(); 
         } else {
             showShopAlert('error', 'เหรียญไม่พอ!', `การซื้อธีมนี้ต้องการ ${price} Coins (คุณมี ${currentCoins} Coins) ไปเล่นเกมเพื่อหาเหรียญเพิ่มกันเถอะ!`);
         }
     };
 
-    // 4. ฟังก์ชันเลือกใช้งานธีม
+    // 4. 🟢 ฟังก์ชันเลือกใช้งานธีม (Real-time แทนการใช้ location.reload)
     window.equipTheme = function(themeId) {
-        // ใช้หลักการเดียวกับ core.js เพื่อเปลี่ยนธีมทันที
+        // เปลี่ยนคลาสธีมที่ Body ทันที
         document.body.className = '';
         if (themeId !== 'light') {
             document.body.classList.add(themeId);
         }
         localStorage.setItem('theme', themeId);
         
-        // รีเฟรชหน้าเพื่อให้ UI ของปุ่มเปลี่ยนตาม และ themeSwitcher ตรงมุมซ้ายอัปเดตด้วย
-        location.reload(); 
+        // 🟢 อัปเดตไอคอนปุ่มใหญ่ (Toggle) ที่มุมซ้ายล่าง ให้เป็นไอคอนของธีมที่เพิ่งเลือก
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        themeButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === themeId);
+        });
+        
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const activeBtn = Array.from(themeButtons).find(b => b.dataset.theme === themeId);
+        
+        if (activeBtn && themeToggleBtn) {
+            const themeIconClass = activeBtn.querySelector('i').className;
+            themeToggleBtn.innerHTML = `<i class="${themeIconClass}"></i> <i class="fa-solid fa-angle-up arrow-icon"></i>`;
+        }
+
+        // วาดหน้าร้านค้าใหม่ เพื่อให้ปุ่มที่กดเมื่อกี้เปลี่ยนเป็นคำว่า "ใช้งานอยู่"
+        renderShop(); 
     };
 
     // 5. ระบบ Popup แจ้งเตือน
