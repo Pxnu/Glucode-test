@@ -1,62 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievement | Glucode</title>
+    <title>Glucode - Achievement</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/core.css">
     <link rel="stylesheet" href="../css/achievement.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-
-    <nav style="width: 100%; z-index: 100;">
-        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
-            <div class="logo">
-                <a href="../Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
-            </div>
-            <ul style="margin: 0; padding: 0;">
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="../Home.html">Glucode</a></div>
+            <ul>
                 <li><a href="../Home.html">Home</a></li>
                 <li><a href="../Glucode LearnPage/Learn.html">Learn</a></li>
-                <li><a href="#">Leader Board</a></li>
+                <li><a href="../Glucode LeaderBoard/leader_board.html">Leader Board</a></li>
             </ul>
         </div>
     </nav>
 
-    <section id="achievement-section">
-        <h2>🏆 Achievement</h2>
+    <div class="achievement-wrapper" style="max-width: 900px; margin: 40px auto; padding: 20px;">
+        <div class="header-section" style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-size: 2.2rem; color: var(--text);">🏆 หอเกียรติยศ (Achievements)</h2>
+            <p style="color: var(--subtext); font-size: 1.1rem;">ปลดล็อกความสำเร็จและรับฉายาสุดเท่ไปประดับโปรไฟล์ของคุณ!</p>
+        </div>
 
-        <ul id="achievement-list">
-            <li data-achievement="word-first">🔒 เรียงคำสำเร็จครั้งแรก</li>
-            <li data-achievement="word-3">🔒 เรียงคำถูก 3 ครั้ง</li>
-            <li data-achievement="word-5">🔒 เรียงคำถูก 5 ครั้งติด</li>
-            <li data-achievement="word-speed">🔒 เรียงคำภายใน 5 วินาที</li>
-            <li data-achievement="word-master">🔒 Word Master (ครบ 10 ครั้ง)</li>
+        <div class="achievements-container" style="display: grid; gap: 20px;">
+            
+            <h3 style="color: var(--btn); border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-top: 20px;">🧩 หมวดหมู่: ต่อบล็อกโค้ด (Jigsaws)</h3>
+            
+            <div class="achievement-card" id="box-first" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #e0e7ff; color: #4f46e5; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-puzzle-piece"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">ก้าวแรกนักต่อโค้ด</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">เล่นโหมด Jigsaws ครั้งแรก</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
 
-            <li data-achievement="code-first">🔒 เขียนโค้ดครั้งแรก</li>
-            <li data-achievement="code-if">🔒 ใช้ if-else ได้</li>
-            <li data-achievement="code-loop">🔒 ใช้ loop (for/while) ได้</li>
-            <li data-achievement="code-array">🔒 ใช้ array ได้</li>
-            <li data-achievement="code-correct-5">🔒 เขียนโค้ดถูก 5 ข้อ</li>
-            <li data-achievement="code-correct-10">🔒 เขียนโค้ดถูก 10 ข้อ</li>
-            <li data-achievement="code-master">🔒 Coding Master</li>
+            <div class="achievement-card" id="box-5" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #dcfce7; color: #10b981; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">นักต่อโค้ดฝึกหัด</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบถูกรวมสะสม 5 ข้อ (โหมด Jigsaws)</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
 
-            <li data-achievement="quiz-first">🔒 ตอบถูกครั้งแรก</li>
-            <li data-achievement="quiz-3">🔒 ตอบถูก 3 ข้อ</li>
-            <li data-achievement="quiz-5">🔒 ตอบถูก 5 ข้อติด</li>
-            <li data-achievement="quiz-10">🔒 ตอบถูก 10 ข้อ</li>
-            <li data-achievement="quiz-speed">🔒 ตอบภายใน 5 วินาที</li>
-            <li data-achievement="quiz-master">🔒 Quiz Master</li>
+            <div class="achievement-card" id="box-10" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #fef3c7; color: #f59e0b; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-crown"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">ปรมาจารย์จิ๊กซอว์</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบถูกรวมสะสม 10 ข้อ (โหมด Jigsaws)</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
 
-            <li data-achievement="all-rounder">🔒 All Rounder (ครบทุกหมวด)</li>
-            <li data-achievement="pro-player">🔒 Pro Player (ปลดล็อกทั้งหมด)</li>
-        </ul>
-    </section>
+            <div class="achievement-card" id="box-streak-3" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #fee2e2; color: #ef4444; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-fire"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">ต่อเนื่องไม่มีสะดุด!</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบถูกติดต่อกัน 3 ข้อ (โหมด Jigsaws)</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
 
-    <div id="achievement-popup">
-        <p id="popup-text">Achievement Unlocked!</p>
+            <div class="achievement-card" id="box-speed" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #f3e8ff; color: #6366f1; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-bolt"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">ไวดั่งสายฟ้า</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบคำถาม Jigsaws ถูกภายใน 5 วินาที</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
+
+            <h3 style="color: var(--btn); border-bottom: 2px solid var(--border); padding-bottom: 10px; margin-top: 30px;">⌨️ หมวดหมู่: พิมพ์โค้ดด้วยตัวเอง (Duo)</h3>
+
+            <div class="achievement-card" id="duo-first" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #e0f2fe; color: #0ea5e9; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-keyboard"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">ก้าวแรกนักพิมพ์โค้ด</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">เล่นโหมด Duo ครั้งแรก</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
+
+            <div class="achievement-card" id="duo-5" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #dcfce7; color: #10b981; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-code"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">พิมพ์คล่องมือ</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบถูกรวมสะสม 5 ข้อ (โหมด Duo)</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
+
+            <div class="achievement-card" id="duo-10" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #fef3c7; color: #f59e0b; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-laptop-code"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">แฮกเกอร์คีย์บอร์ด</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบถูกรวมสะสม 10 ข้อ (โหมด Duo)</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
+
+            <div class="achievement-card" id="duo-streak-3" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #fee2e2; color: #ef4444; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">นิ้วไฟลุก!</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบถูกติดต่อกัน 3 ข้อ (โหมด Duo)</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
+
+            <div class="achievement-card" id="duo-speed" style="display: flex; align-items: center; background: var(--box); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                <div class="icon" style="background: #f3e8ff; color: #8b5cf6; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; margin-right: 20px;"><i class="fa-solid fa-stopwatch"></i></div>
+                <div class="details" style="flex-grow: 1;">
+                    <h3 style="margin: 0; color: var(--text); font-size: 1.2rem;">พิมพ์ไวดั่งพายุ</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--subtext);">ตอบคำถาม Duo ถูกภายใน 8 วินาที</p>
+                </div>
+                <div class="status" style="font-size: 1.5rem; color: var(--subtext);"><i class="fa-solid fa-lock"></i></div>
+            </div>
+
+        </div>
     </div>
 
     <div class="theme-switcher" id="themeSwitcherBox">
@@ -64,18 +130,16 @@
             <i class="fa-solid fa-palette"></i>
             <i class="fa-solid fa-angle-up arrow-icon"></i>
         </button>
-        
         <div class="theme-options" id="themeOptions">
-            <button class="theme-btn" data-theme="light" title="Light Mode"><i class="fa-solid fa-sun"></i></button>
-            <button class="theme-btn" data-theme="dark" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
-            <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
-            <button class="theme-btn" data-theme="winter" title="Winter"><i class="fa-solid fa-snowflake"></i></button>
-            <button class="theme-btn" data-theme="easter" title="Easter"><i class="fa-solid fa-egg"></i></button>
+            <button class="theme-btn" data-theme="light"><i class="fa-solid fa-sun"></i></button>
+            <button class="theme-btn" data-theme="dark"><i class="fa-solid fa-moon"></i></button>
+            <button class="theme-btn" data-theme="halloween"><i class="fa-solid fa-ghost"></i></button>
+            <button class="theme-btn" data-theme="winter"><i class="fa-solid fa-snowflake"></i></button>
+            <button class="theme-btn" data-theme="easter"><i class="fa-solid fa-egg"></i></button>
         </div>
     </div>
 
     <script src="../js/core.js"></script>
     <script src="../js/achievement.js"></script>
 </body>
-
 </html>

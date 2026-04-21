@@ -551,3 +551,91 @@ nav ul li a:hover {
   color: white;
   transform: rotate(90deg);
 }
+
+/* =========================================
+   ACHIEVEMENT TOAST NOTIFICATION (มุมขวาล่าง)
+========================================= */
+#achievement-toast-container {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100000;
+    pointer-events: none; /* ไม่ให้กล่องขวางการคลิกเมาส์ของเกม */
+}
+
+.achievement-toast {
+    background: var(--box);
+    border-left: 6px solid #f59e0b; /* สีแถบด้านซ้าย */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    border-radius: 16px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* แอนิเมชันเด้งดึ๋ง */
+    min-width: 320px;
+    border: 1px solid var(--border);
+    border-left: 6px solid #f59e0b;
+}
+
+.achievement-toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.achievement-toast .toast-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.achievement-toast .toast-content h4.toast-header {
+    margin: 0 0 4px 0;
+    color: var(--btn);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.achievement-toast .toast-content h3 {
+    margin: 0 0 2px 0;
+    color: var(--text);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.achievement-toast .toast-content p {
+    margin: 0;
+    color: var(--subtext);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* รองรับมือถือจอเล็ก ให้เด้งด้านบนแทน */
+@media (max-width: 600px) {
+    #achievement-toast-container {
+        top: 20px;
+        bottom: auto;
+        right: 10px;
+        left: 10px;
+    }
+    .achievement-toast {
+        min-width: 0;
+        width: 100%;
+        transform: translateY(-120%);
+    }
+    .achievement-toast.show {
+        transform: translateY(0);
+    }
+}
