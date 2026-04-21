@@ -1,53 +1,117 @@
 /* =========================================
-   Achievement Page (กล่องรางวัลนุ่มๆ)
+   ACHIEVEMENT PAGE STYLES
 ========================================= */
-#achievement-section {
-    width: 100%;
+.achievement-wrapper {
     max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    flex: 1;
+    width: 95%;
+    margin: 40px auto 80px auto;
+    animation: slideUp 0.5s ease;
 }
 
-#achievement-section h2 {
+.header-section {
+    text-align: center;
+    background: var(--box);
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 40px;
+}
+
+.header-section h2 {
     font-size: 2.2rem;
     color: var(--text);
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: 800;
+    margin-bottom: 10px;
 }
 
-#achievement-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 15px;
-    padding: 0;
-}
-
-/* สเตตัส: ล็อกอยู่ */
-#achievement-list li {
-    background: var(--bg);
+.header-section p {
     color: var(--subtext);
-    padding: 18px 20px;
-    border-radius: 16px;
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+/* หัวข้อหมวดหมู่ (Category Header) */
+.category-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    border: 1px dashed var(--border);
-    transition: all 0.3s ease;
-}
-
-/* สเตตัส: ปลดล็อกแล้ว */
-#achievement-list li.unlocked {
+    gap: 15px;
+    margin: 40px 0 20px 0;
+    font-size: 1.4rem;
+    font-weight: 800;
     color: var(--text);
-    border: 1px solid #10B981;
-    background: var(--box);
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border);
 }
 
-#achievement-list li.unlocked:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.1);
+.category-header i {
+    color: var(--btn);
+    background: rgba(79, 70, 229, 0.1);
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.achievements-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
+}
+
+/* การ์ดความสำเร็จ */
+.achievement-card {
+    display: flex;
+    align-items: center;
+    background: var(--box);
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.achievement-card:hover {
+    transform: translateY(-4px);
+}
+
+.achievement-card .icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.achievement-card .details {
+    flex-grow: 1;
+}
+
+.achievement-card h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.achievement-card p {
+    margin: 5px 0 0 0;
+    color: var(--subtext);
+    font-size: 0.9rem;
+}
+
+.achievement-card .status {
+    font-size: 1.5rem;
+    padding-left: 15px;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+    .achievements-container {
+        grid-template-columns: 1fr;
+    }
 }
