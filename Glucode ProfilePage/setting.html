@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Glucode - Settings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    
     <link rel="stylesheet" href="../css/core.css">
     <link rel="stylesheet" href="../css/profile.css">
 </head>
@@ -34,39 +37,55 @@
                         <img src="images/user.png" id="setting-avatar-preview" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--btn);">
                         <div style="display: flex; flex-direction: column; gap: 8px;">
                             <input type="file" id="avatar-input" accept="image/*" style="font-size: 0.9rem; color: var(--text); background: transparent; border: none; padding: 0;">
-                            <p class="helper-text" style="margin: 0;">รองรับไฟล์ JPG, PNG ขนาดไม่เกิน 1MB (แนะนำอัตราส่วน 1:1)</p>
+                            <p class="helper-text" style="margin: 0;">รองรับไฟล์ JPG, PNG (สามารถจัดตำแหน่งรูปได้หลังเลือกไฟล์)</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="info-group">
                     <label>Username</label>
-                    <input type="text" id="setting-username" class="profile-select" placeholder="กรอกชื่อผู้ใช้ใหม่">
+                    <input type="text" id="setting-username" class="profile-select" readonly style="opacity: 0.7; cursor: not-allowed;" title="ไม่สามารถเปลี่ยน Username ได้">
                 </div>
                 <div class="info-group">
                     <label>Email Address</label>
                     <input type="email" id="setting-email" class="profile-select" placeholder="กรอกอีเมลของคุณ">
                 </div>
 
-                <div class="info-group full-width" style="margin-top: 15px;">
-                    <h3 style="color: var(--text); font-size: 1.2rem; border-bottom: 2px solid var(--border); padding-bottom: 10px;">เปลี่ยนรหัสผ่าน (Change Password)</h3>
+                <div class="info-group full-width" style="margin-top: 20px;">
+                    <h3 style="color: var(--text); font-size: 1.2rem; border-bottom: 2px solid var(--bg); padding-bottom: 10px; margin-bottom: 10px;">เปลี่ยนรหัสผ่าน</h3>
                 </div>
+
                 <div class="info-group full-width">
                     <label>รหัสผ่านปัจจุบัน (หากไม่ต้องการเปลี่ยน ให้เว้นว่างไว้)</label>
-                    <input type="password" id="setting-old-pass" class="profile-select" placeholder="กรอกรหัสผ่านปัจจุบัน">
+                    <input type="password" id="setting-old-pwd" class="profile-select" placeholder="รหัสผ่านปัจจุบัน">
                 </div>
+
                 <div class="info-group">
                     <label>รหัสผ่านใหม่</label>
-                    <input type="password" id="setting-new-pass" class="profile-select" placeholder="กรอกรหัสผ่านใหม่">
+                    <input type="password" id="setting-new-pwd" class="profile-select" placeholder="รหัสผ่านใหม่">
                 </div>
+
                 <div class="info-group">
                     <label>ยืนยันรหัสผ่านใหม่</label>
-                    <input type="password" id="setting-confirm-pass" class="profile-select" placeholder="ยืนยันรหัสผ่านใหม่อีกครั้ง">
+                    <input type="password" id="setting-confirm-pwd" class="profile-select" placeholder="ยืนยันรหัสผ่านใหม่">
                 </div>
             </div>
             
             <button id="saveSettingsBtn" class="save-btn">บันทึกการตั้งค่า</button>
         </main>
+    </div>
+
+    <div id="cropModal" class="popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 100000; padding: 20px;">
+        <div class="popup-box" style="background: var(--box); padding: 2.5rem 2rem; border-radius: 24px; text-align: center; max-width: 500px; width: 100%; border: 1px solid var(--border); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+            <h2 style="font-size: 1.5rem; margin-bottom: 15px; color: var(--text);"><i class="fa-solid fa-crop-simple"></i> จัดตำแหน่งรูปโปรไฟล์</h2>
+            <div class="crop-container" style="max-height: 400px; overflow: hidden; margin-bottom: 20px; background: var(--bg); border-radius: 12px;">
+                <img id="cropImage" src="" style="max-width: 100%; display: block;">
+            </div>
+            <div class="popup-buttons" style="display: flex; gap: 12px; justify-content: center;">
+                <button class="btn-cancel" onclick="closeCropModal()" style="flex: 1; padding: 14px 20px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; background: var(--subtext); color: white;">ยกเลิก</button>
+                <button class="btn-primary" id="cropConfirmBtn" style="flex: 1; padding: 14px 20px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; background: var(--btn); color: white;">ตกลง</button>
+            </div>
+        </div>
     </div>
 
     <div class="theme-switcher" id="themeSwitcherBox">
@@ -84,6 +103,7 @@
     </div>
 
     <script src="../js/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="../js/settings.js"></script>
 </body>
 </html>
