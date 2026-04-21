@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('val-email').innerText = user.email || "No Email Provided";
     document.getElementById('disp-coins').innerText = user.coins || 0;
     document.getElementById('disp-total-score').innerText = (user.scoreDuo || 0) + (user.scoreBox || 0);
-    
+
     // แสดงฉายาปัจจุบัน
     const titleBadge = document.getElementById('selected-title-display');
     titleBadge.innerText = user.currentTitle || "Newbie Coder";
@@ -66,14 +66,15 @@ document.addEventListener('DOMContentLoaded', () => {
             users[userIndex].currentTitle = newTitle;
             localStorage.setItem("users", JSON.stringify(users));
             titleBadge.innerText = newTitle;
-            
-            const originalText = saveBtn.innerText;
-            saveBtn.innerText = "บันทึกสำเร็จ! ✔️";
-            saveBtn.style.background = "#10b981"; 
+
+            const originalText = saveBtn.innerHTML;
+            // 🟢 เปลี่ยน Emoji เป็น FontAwesome
+            saveBtn.innerHTML = "บันทึกสำเร็จ! <i class='fa-solid fa-circle-check'></i>";
+            saveBtn.style.background = "#10b981";
 
             setTimeout(() => {
-                saveBtn.innerText = originalText;
-                saveBtn.style.background = ""; 
+                saveBtn.innerHTML = originalText;
+                saveBtn.style.background = "";
             }, 2000);
         });
     }

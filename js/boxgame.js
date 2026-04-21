@@ -620,7 +620,8 @@ window.submitAnswer = function () {
 
     if (JSON.stringify(answerList) === JSON.stringify(level.correct)) {
         // === ตอบถูกต้อง ===
-        if (result) { result.style.color = "#10B981"; result.innerText = "ถูกต้อง!"; }
+        // 🟢 เปลี่ยนข้อความตอบถูกให้มี FontAwesome
+        if (result) { result.style.color = "#10B981"; result.innerHTML = '<i class="fa-solid fa-circle-check"></i> ถูกต้อง!'; }
         if (answerArea) answerArea.classList.add("correct");
 
         addScore(currentDifficulty);
@@ -634,7 +635,6 @@ window.submitAnswer = function () {
         if (boxStreak >= 3) grantAchievement("box-streak-3");
         if (timeTaken <= 5) grantAchievement("box-speed");
 
-        // 🟢 อัปเดต Daily Quest (รวมเควสต์เก่าและใหม่)
         let users = JSON.parse(localStorage.getItem("users")) || [];
         let uIdx = users.findIndex(u => u.username === getCurrentUser());
         if (uIdx !== -1) {
@@ -648,22 +648,23 @@ window.submitAnswer = function () {
                 }
             };
 
-            addQuest("q_box_5", 1);          // เควสต์ใหม่: ตอบถูก Jigsaws
-            addQuest("q_streak_3", boxStreak, true); // เควสต์ใหม่: คอมโบ
-            addQuest("q_score_30", SCORE_MAP[currentDifficulty]); // เควสต์ใหม่: คะแนนสะสม
-            addQuest("correct_5_times", 1);  // 🌟 เควสต์เก่า: ตอบถูกรวมโหมดใดก็ได้
+            addQuest("q_box_5", 1);
+            addQuest("q_streak_3", boxStreak, true);
+            addQuest("q_score_30", SCORE_MAP[currentDifficulty]);
+            addQuest("correct_5_times", 1);
 
             users[uIdx].questProgress = p;
             localStorage.setItem("users", JSON.stringify(users));
         }
 
         setTimeout(() => {
-            if (result) result.innerText = "";
+            if (result) result.innerHTML = "";
             handleRoundProgress(false);
         }, 800);
     } else {
         // === ตอบผิด ===
-        if (result) { result.style.color = "#ef4444"; result.innerText = "ยังไม่ถูก ลองใหม่"; }
+        // 🟢 เปลี่ยนข้อความตอบผิดให้มี FontAwesome
+        if (result) { result.style.color = "#ef4444"; result.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> ยังไม่ถูก ลองใหม่'; }
         if (answerArea) answerArea.classList.add("wrong");
         boxStreak = 0;
 

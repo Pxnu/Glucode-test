@@ -14,12 +14,13 @@ function loadLeaderboard() {
 
     const title = document.querySelector("h1");
     if (title) {
+        // 🟢 อัปเกรดไอคอนให้ดูพรีเมียมขึ้น (มีพื้นหลังสีอ่อนๆ รองรับตัวไอคอน)
         if (boardType === "duo") {
-            title.innerHTML = '<i class="fa-solid fa-keyboard" style="color: var(--btn); margin-right: 10px;"></i> Duo Leader Board';
+            title.innerHTML = '<i class="fa-solid fa-terminal" style="color: #8b5cf6; background: rgba(139, 92, 246, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Duo Leader Board';
         } else if (boardType === "boxgame") {
-            title.innerHTML = '<i class="fa-solid fa-cubes" style="color: #10B981; margin-right: 10px;"></i> Jigsaw Leader Board';
+            title.innerHTML = '<i class="fa-solid fa-puzzle-piece" style="color: #10B981; background: rgba(16, 185, 129, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Jigsaw Leader Board';
         } else {
-            title.innerHTML = '<i class="fa-solid fa-trophy" style="color: #F59E0B; margin-right: 10px;"></i> Global Leader Board';
+            title.innerHTML = '<i class="fa-solid fa-ranking-star" style="color: #F59E0B; background: rgba(245, 158, 11, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Global Leader Board';
         }
     }
 
@@ -32,7 +33,6 @@ function loadLeaderboard() {
         else if (boardType === "boxgame") score = sBox;
         else score = sBox + sDuo;
 
-        // 🟢 ดึงฉายามาด้วย ถ้าไม่มีให้ใช้ "Newbie Coder" เป็นค่าเริ่มต้น
         return { 
             name: u.username, 
             score: score,
@@ -81,7 +81,6 @@ function showCurrentUserRank() {
         rankDisplay = `<div class="rank-badge rank-other">${userRank}</div>`;
     }
 
-    // 🟢 สร้างป้ายฉายา
     let titleDisplay = `<div class="player-title-badge">${userData.title}</div>`;
 
     existingCard.innerHTML = `
@@ -135,7 +134,6 @@ function renderBoard() {
 
         let formattedScore = p.score.toLocaleString();
         
-        // 🟢 สร้างป้ายฉายา
         let titleDisplay = `<div class="player-title-badge">${p.title}</div>`;
 
         row.innerHTML = `

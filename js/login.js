@@ -43,14 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let users = JSON.parse(localStorage.getItem('users')) || [];
 
         if (!username || !password || (!isLoginMode && !email)) {
-            showMessage('⚠️ กรุณากรอกข้อมูลให้ครบถ้วน', '#ef4444');
+            showMessage('กรุณากรอกข้อมูลให้ครบถ้วน', '#ef4444');
             return;
         }
 
         if (isLoginMode) {
             const user = users.find(u => u.username === username && u.password === password);
             if (user) {
-                showMessage('✅ เข้าสู่ระบบสำเร็จ!', '#22c55e');
+                showMessage('เข้าสู่ระบบสำเร็จ!', '#22c55e');
                 localStorage.setItem('loggedInUser', username);
 
                 // 🔥 เช็คว่า User คนนี้เคยดู Tutorial หรือยัง
@@ -63,11 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }, 1000);
             } else {
-                showMessage('❌ Username หรือ Password ไม่ถูกต้อง', '#ef4444');
+                showMessage('Username หรือ Password ไม่ถูกต้อง', '#ef4444');
             }
         } else {
             if (users.find(u => u.username === username)) {
-                showMessage('⚠️ Username นี้ถูกใช้งานแล้ว', '#ef4444');
+                showMessage('Username นี้ถูกใช้งานแล้ว', '#ef4444');
                 return;
             }
 

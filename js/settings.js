@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         avatarPreview.src = user.avatar;
     }
 
-    // 🟢 ระบบเลือกและ Crop รูปภาพโปรไฟล์ (Cropper.js)
+    // ระบบเลือกและ Crop รูปภาพโปรไฟล์ (Cropper.js)
     let cropper; 
     const cropModal = document.getElementById('cropModal');
     const cropImage = document.getElementById('cropImage');
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeCropModal();
     });
 
-    // 🟢 ฟังก์ชันแสดง Popup แจ้งเตือนรหัสผ่านและการบันทึก
+    // ฟังก์ชันแสดง Popup แจ้งเตือนรหัสผ่านและการบันทึก
     window.showPwdAlert = function(type, title, message, reloadOnClose = false) {
         const modal = document.getElementById('passwordAlertModal');
         const icon = document.getElementById('pwdAlertIcon');
@@ -164,6 +164,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // โชว์ Popup บันทึกสำเร็จ และสั่งให้รีเฟรชเมื่อปิด
             showPwdAlert('success', 'บันทึกข้อมูลสำเร็จ', 'การตั้งค่าและข้อมูลบัญชีของคุณถูกอัปเดตเรียบร้อยแล้ว', true);
+            
+            // 🟢 เปลี่ยนข้อความที่ตัวปุ่มด้วย (ใช้ FontAwesome แทน Emoji)
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = "บันทึกข้อมูลเรียบร้อยแล้ว! <i class='fa-solid fa-circle-check'></i>";
+            saveBtn.style.background = "#10b981";
+
+            setTimeout(() => {
+                saveBtn.innerHTML = originalText;
+                saveBtn.style.background = "";
+            }, 1500);
         });
     }
 });
