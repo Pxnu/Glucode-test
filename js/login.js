@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 🔥 เช็คว่า User คนนี้เคยดู Tutorial หรือยัง
                 setTimeout(() => {
                     if (user.hasSeenTutorial) {
-                        window.location.href = './Home.html';
+                        window.location.href = './index.html';
                     } else {
                         window.location.href = '../Glucode tutorial/tutorial.html';
                     }
