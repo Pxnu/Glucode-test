@@ -1,194 +1,91 @@
-// js/quest.js
-
-// ข้อมูลโจทย์เควส ปรับให้ตรงกับการผ่านแต่ละด่านของแต่ละเกม
-const questsData = [
-    // หมวด Jigsaws (BoxGame)
-    { id: "box-easy", title: "ก้าวแรกนักต่อจิ๊กซอว์", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Easy", target: 1, reward: 10, difficulty: "Easy", achievementId: "box-easy" },
-    { id: "box-medium", title: "นักต่อโค้ดระดับกลาง", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Medium", target: 1, reward: 20, difficulty: "Medium", achievementId: "box-medium" },
-    { id: "box-hard", title: "ผู้เชี่ยวชาญจิ๊กซอว์", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Hard", target: 1, reward: 30, difficulty: "Hard", achievementId: "box-hard" },
-    { id: "box-expert", title: "ปรมาจารย์นักต่อโค้ด", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Expert", target: 1, reward: 50, difficulty: "Challenge", achievementId: "box-expert" },
-
-    // หมวด พิมพ์โค้ด (Duo)
-    { id: "duo-easy", title: "ก้าวแรกนักพิมพ์โค้ด", desc: "เล่นเคลียร์โหมด Duo ระดับ Easy", target: 1, reward: 10, difficulty: "Easy", achievementId: "duo-easy" },
-    { id: "duo-medium", title: "นักพิมพ์คล่องมือ", desc: "เล่นเคลียร์โหมด Duo ระดับ Medium", target: 1, reward: 20, difficulty: "Medium", achievementId: "duo-medium" },
-    { id: "duo-hard", title: "แฮกเกอร์คีย์บอร์ด", desc: "เล่นเคลียร์โหมด Duo ระดับ Hard", target: 1, reward: 30, difficulty: "Hard", achievementId: "duo-hard" },
-    { id: "duo-expert", title: "เทพเจ้าการพิมพ์", desc: "เล่นเคลียร์โหมด Duo ระดับ Expert", target: 1, reward: 50, difficulty: "Challenge", achievementId: "duo-expert" }
-];
-
-function getUserData() {
-    let users = JSON.parse(localStorage.getItem('users')) || [];
-    let currentUser = localStorage.getItem('loggedInUser');
-    let index = users.findIndex(u => u.username === currentUser);
-    return { users, user: users[index], index };
-}
-
-// 🌟 ฟังก์ชันอัปเดตความคืบหน้าเควส + ปลดล็อก Achievement
-window.updateQuestProgress = function(questId, amount = 1) {
-    let { users, user, index } = getUserData();
-    if (!user) return;
-
-    if (!user.quests) user.quests = {}; 
-    if (!user.claimedQuests) user.claimedQuests = [];
-    if (!user.unlockedAchievements) user.unlockedAchievements = [];
-
-    // ถ้าเควสนี้รับรางวัลไปแล้ว ไม่ต้องนับต่อ
-    if (user.claimedQuests.includes(questId)) return;
-
-    let currentProgress = user.quests[questId] || 0;
-    let questInfo = questsData.find(q => q.id === questId);
-    if (!questInfo) return;
-
-    if (currentProgress < questInfo.target) {
-        // ถ้านับ Streak ให้แทนที่ด้วยค่าสูงสุด / ถ้าเควสอื่นให้บวกเพิ่ม
-        if (questId.includes("streak")) {
-            user.quests[questId] = Math.max(currentProgress, amount);
-        } else {
-            user.quests[questId] = Math.min(currentProgress + amount, questInfo.target);
-        }
-        
-        // แจ้งเตือนและปลดล็อก Achievement เมื่อทำเควสสำเร็จ
-        if (user.quests[questId] >= questInfo.target && currentProgress < questInfo.target) {
-            showQuestNotification(questInfo.title);
-            
-            // ปลดล็อค Achievement ทันที
-            if (!user.unlockedAchievements.includes(questInfo.achievementId)) {
-                user.unlockedAchievements.push(questInfo.achievementId);
-                // เรียกโชว์ Popup โล่รางวัลจาก core.js
-                if (typeof window.showAchievementToast === 'function') {
-                    window.showAchievementToast(questInfo.achievementId);
-                }
-            }
-        }
-        
-        localStorage.setItem('users', JSON.stringify(users));
-
-        // รีเฟรชหน้าจอถ้ากำลังเปิดหน้า Quest อยู่
-        if (document.getElementById("quest-list")) renderQuests();
-    }
-};
-
-function showQuestNotification(title) {
-    // 1. ดึง Container ตัวเดียวกับระบบ Achievement มาใช้ เพื่อให้มันเรียงต่อกัน (Stack) ไม่ซ้อนทับกัน
-    let container = document.getElementById('achievement-toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'achievement-toast-container';
-        document.body.appendChild(container);
-    }
-
-    // 2. สร้างตัว Popup โดยใช้ Class เดียวกับ Achievement เพื่อยืมความสวยงามมาใช้
-    const toast = document.createElement('div');
-    toast.className = 'achievement-toast';
-    
-    // กำหนดสีและไอคอนเฉพาะสำหรับ Quest (ตัวอย่างใช้สีม่วง)
-    const questColor = '#8B5CF6'; 
-    toast.style.borderLeftColor = questColor;
-    
-    // โครงสร้าง HTML เดียวกับ Toast ใน core.js
-    toast.innerHTML = `
-        <div class="toast-icon" style="color: ${questColor}; background: ${questColor}25;">
-            <i class="fa-solid fa-scroll"></i>
-        </div>
-        <div class="toast-content">
-            <h4 class="toast-header" style="color: ${questColor};">📜 Quest Completed</h4>
-            <h3>${title}</h3>
-            <p>ไปรับรางวัลที่หน้า Quests ได้เลย!</p>
-        </div>
-    `;
-
-    // 3. เอาไปใส่ในตะกร้า
-    container.appendChild(toast);
-
-    // 4. เล่นแอนิเมชันสไลด์เข้า
-    setTimeout(() => toast.classList.add('show'), 50);
-
-    // 5. หน่วงเวลา 4 วินาทีแล้วสไลด์ออก พร้อมลบออกจากหน้าเว็บ
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 500); 
-    }, 4000);
-}
-
+/* ==========================================
+   QUEST JS - ระบบจัดการภารกิจรายวัน (รวมเควสต์เก่า+ใหม่)
+========================================== */
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.getElementById("quest-list")) {
-        renderQuests();
-        updateUserStatsUI();
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    const userIndex = users.findIndex(u => u.username === loggedInUser);
+    
+    if (userIndex === -1) {
+        window.location.href = "../Login.html";
+        return;
     }
-});
 
-function renderQuests() {
-    let list = document.getElementById("quest-list");
-    if (!list) return;
+    const user = users[userIndex];
+    if (!user.questProgress) user.questProgress = {}; 
 
-    list.innerHTML = "";
-    let { user } = getUserData();
-    if (!user) return;
-
-    if (!user.quests) user.quests = {};
-    if (!user.claimedQuests) user.claimedQuests = [];
-
-    questsData.forEach(q => {
-        let progress = user.quests[q.id] || 0;
-        let isCompleted = progress >= q.target;
-        let isClaimed = user.claimedQuests.includes(q.id);
-        let progressPercent = (progress / q.target) * 100;
-
-        let difficultyColor = "";
-        if (q.difficulty === "Easy") difficultyColor = "#10B981"; // เขียว
-        else if (q.difficulty === "Medium") difficultyColor = "#F59E0B"; // ส้ม
-        else if (q.difficulty === "Hard") difficultyColor = "#EF4444"; // แดง
-        else if (q.difficulty === "Challenge") difficultyColor = "#8B5CF6"; // ม่วง
-
-        let li = document.createElement("div");
-        li.className = "quest-item " + (isClaimed ? "claimed" : (isCompleted ? "completed" : ""));
+    // 🟢 ฐานข้อมูล Quest (รวมเควสต์เก่า 2 อัน และใหม่ 5 อัน รวมเป็น 7 อัน)
+    const QUEST_DATA = [
+        // --- เควสต์ใหม่ 5 อัน ---
+        { id: 'q_login', title: 'เข้าสู่ระบบประจำวัน', desc: 'ล็อกอินเข้าสู่ระบบ Glucode (รีเซ็ตทุกวัน)', max: 1, reward: 10, icon: 'fa-right-to-bracket', color: '#3b82f6', bg: '#eff6ff' },
+        { id: 'q_box_5', title: 'นักต่อบล็อกโค้ด', desc: 'ตอบถูกในโหมด Jigsaws 5 ข้อ', max: 5, reward: 20, icon: 'fa-puzzle-piece', color: '#10b981', bg: '#dcfce7' },
+        { id: 'q_duo_5', title: 'นักพิมพ์โค้ดมือไว', desc: 'ตอบถูกในโหมด Duo 5 ข้อ', max: 5, reward: 30, icon: 'fa-keyboard', color: '#8b5cf6', bg: '#f3e8ff' },
+        { id: 'q_streak_3', title: 'ต่อเนื่องไม่มีสะดุด', desc: 'ทำคอมโบตอบถูก 3 ข้อติดกันในโหมดใดก็ได้', max: 3, reward: 20, icon: 'fa-fire', color: '#ef4444', bg: '#fee2e2' },
+        { id: 'q_score_30', title: 'นักสะสมคะแนน', desc: 'สะสมคะแนนจากการเล่นให้ครบ 30 Pts', max: 30, reward: 40, icon: 'fa-star', color: '#f59e0b', bg: '#fef3c7' },
         
-        li.innerHTML = `
-            <div class="quest-info">
-                <h3>${q.title} <span style="font-size: 0.8rem; background: ${difficultyColor}20; color: ${difficultyColor}; padding: 3px 8px; border-radius: 12px; margin-left: 8px;">${q.difficulty}</span></h3>
-                <p>${q.desc}</p>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" style="width: ${progressPercent}%"></div>
+        // --- เควสต์เก่า 2 อันที่ต้องการเก็บไว้ ---
+        { id: 'type_3_words', title: 'ฝึกพิมพ์ 3 คำ', desc: 'พิมพ์โค้ดให้ถูกต้อง 3 คำ', max: 3, reward: 20, icon: 'fa-font', color: '#ec4899', bg: '#fce7f3' },
+        { id: 'correct_5_times', title: 'ตอบถูก 5 ข้อ', desc: 'ตอบคำถามได้ถูกต้อง 5 ครั้ง', max: 5, reward: 50, icon: 'fa-check-double', color: '#14b8a6', bg: '#ccfbf1' }
+    ];
+
+    const container = document.getElementById('questContainer');
+    const coinDisplay = document.getElementById('questCoinDisplay');
+
+    function renderQuests() {
+        coinDisplay.innerText = user.coins || 0;
+        container.innerHTML = '';
+
+        QUEST_DATA.forEach(q => {
+            let progress = user.questProgress[q.id] || { current: 0, claimed: false };
+            let currentAmount = Math.min(progress.current, q.max);
+            let percent = (currentAmount / q.max) * 100;
+            let isReady = currentAmount >= q.max && !progress.claimed;
+
+            let btnHtml = '';
+            if (progress.claimed) {
+                btnHtml = `<button class="btn-claim btn-claimed" disabled><i class="fa-solid fa-check"></i> รับแล้ว</button>`;
+            } else if (isReady) {
+                btnHtml = `<button class="btn-claim btn-ready" onclick="claimReward('${q.id}', ${q.reward})">รับรางวัล</button>`;
+            } else {
+                btnHtml = `<button class="btn-claim btn-uncompleted" disabled>${currentAmount} / ${q.max}</button>`;
+            }
+
+            const card = document.createElement('div');
+            card.className = 'quest-card';
+            card.innerHTML = `
+                <div class="quest-icon" style="color: ${q.color}; background: ${q.bg};">
+                    <i class="fa-solid ${q.icon}"></i>
                 </div>
-                <span class="progress-text">${progress} / ${q.target}</span>
-            </div>
-            <div class="quest-action">
-                <div class="reward">💰 ${q.reward}</div>
-                ${isClaimed 
-                    ? `<button class="claim-btn claimed-btn" disabled>รับแล้ว ✅</button>`
-                    : `<button class="claim-btn ${isCompleted ? 'ready' : ''}" 
-                        ${!isCompleted ? 'disabled' : `onclick="claimReward('${q.id}', ${q.reward})"`}>
-                        ${isCompleted ? 'รับรางวัล' : 'ยังไม่สำเร็จ'}
-                       </button>`
-                }
-            </div>
-        `;
-        list.appendChild(li);
-    });
-}
+                <div class="quest-info">
+                    <h3>${q.title}</h3>
+                    <p>${q.desc}</p>
+                    <div class="progress-container">
+                        <div class="progress-text">${currentAmount} / ${q.max}</div>
+                        <div class="progress-bar" style="width: ${percent}%; background: ${q.color};"></div>
+                    </div>
+                </div>
+                <div class="quest-reward">
+                    <div class="reward-amt"><i class="fa-solid fa-coins"></i> +${q.reward}</div>
+                    ${btnHtml}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
 
-window.claimReward = function(questId, reward) {
-    let { users, user, index } = getUserData();
-    if (!user) return;
+    window.claimReward = function(questId, amount) {
+        if (!user.questProgress[questId]) return;
 
-    if (!user.claimedQuests) user.claimedQuests = [];
-    if (!user.coins) user.coins = 0;
+        user.questProgress[questId].claimed = true;
+        user.coins = (user.coins || 0) + amount;
+        
+        localStorage.setItem("users", JSON.stringify(users));
 
-    if (!user.claimedQuests.includes(questId)) {
-        user.claimedQuests.push(questId);
-        user.coins += reward;
-        localStorage.setItem('users', JSON.stringify(users));
+        const navCoin = document.querySelector('.coin-display strong');
+        if (navCoin) navCoin.innerText = user.coins;
 
         renderQuests();
-        updateUserStatsUI();
-        
-        let coinDisplay = document.querySelector('.coin-display strong');
-        if (coinDisplay) coinDisplay.textContent = user.coins;
-    }
-};
+    };
 
-function updateUserStatsUI() {
-    let { user } = getUserData();
-    if (!user) return;
-    let coinUI = document.getElementById("user-coins");
-    if (coinUI) coinUI.textContent = user.coins || 0;
-}
+    renderQuests();
+});

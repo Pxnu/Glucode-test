@@ -369,22 +369,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let resultDisplay = document.getElementById("resultMessage");
         let submitBtn = document.getElementById("submitBtn");
 
-        // 🟢 ฟังก์ชันช่วยบันทึกการปลดล็อก Achievement ด้วยตัวเอง
         function grantAchievement(achId) {
             let users = JSON.parse(localStorage.getItem("users")) || [];
             let currentUser = localStorage.getItem("loggedInUser");
             let uIdx = users.findIndex(u => u.username === currentUser);
             if (uIdx !== -1) {
                 if (!users[uIdx].unlockedAchievements) users[uIdx].unlockedAchievements = [];
-
                 if (!users[uIdx].unlockedAchievements.includes(achId)) {
                     users[uIdx].unlockedAchievements.push(achId);
                     localStorage.setItem("users", JSON.stringify(users));
-
-                    // 🌟 เรียกโชว์ Popup ขวาล่าง
-                    if (typeof window.showAchievementToast === 'function') {
-                        window.showAchievementToast(achId);
-                    }
+                    if (typeof window.showAchievementToast === 'function') window.showAchievementToast(achId);
                 }
             }
         }
@@ -400,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (userTyped === correctNormalized) {
-            // === กรณีตอบถูก ===
+            // === ตอบถูก ===
             let earnedScore = SCORE_MAP[currentDifficulty];
             addScoreToUser(earnedScore);
 
@@ -414,18 +408,37 @@ document.addEventListener('DOMContentLoaded', () => {
             duoStreak++;
             let timeTaken = (Date.now() - questionStartTime) / 1000;
 
-            // 🌟 แจก Achievement ตามเงื่อนไขของ Duo
             grantAchievement("duo-first");
             if (duoCorrectTotal >= 5) grantAchievement("duo-5");
             if (duoCorrectTotal >= 10) grantAchievement("duo-10");
             if (duoStreak >= 3) grantAchievement("duo-streak-3");
             if (timeTaken <= 8) grantAchievement("duo-speed");
 
-            // อัปเดตเควสต์ (Quest)
-            if (typeof window.updateQuestProgress === "function") {
-                window.updateQuestProgress("q_duo_5", 1);
-                window.updateQuestProgress("q_streak_3", duoStreak);
-                window.updateQuestProgress("q_score_50", earnedScore);
+            // 🟢 อัปเดต Daily Quest (รวมเควสต์เก่าและใหม่)
+            let users = JSON.parse(localStorage.getItem("users")) || [];
+            let uIdx = users.findIndex(u => u.username === localStorage.getItem("loggedInUser"));
+            if (uIdx !== -1) {
+                let p = users[uIdx].questProgress || {};
+
+                const addQuest = (qId, amt, isMax = false) => {
+                    if (!p[qId]) p[qId] = { current: 0, claimed: false };
+                    if (!p[qId].claimed) {
+                        if (isMax) { if (amt > p[qId].current) p[qId].current = amt; }
+                        else { p[qId].current += amt; }
+                    }
+                };
+
+                // คำนวณจำนวน "คำ" ที่พิมพ์ (อิงจากเว้นวรรค) เพื่อใช้สำหรับเควสต์เก่า type_3_words
+                let wordCount = correctAnswer.trim().split(/\s+/).length;
+
+                addQuest("q_duo_5", 1);          // เควสต์ใหม่: ตอบถูก Duo
+                addQuest("q_streak_3", duoStreak, true); // เควสต์ใหม่: คอมโบ
+                addQuest("q_score_30", earnedScore); // เควสต์ใหม่: คะแนนสะสม
+                addQuest("correct_5_times", 1);  // 🌟 เควสต์เก่า: ตอบถูกรวมโหมดใดก็ได้
+                addQuest("type_3_words", wordCount); // 🌟 เควสต์เก่า: จำนวนคำที่พิมพ์ถูก
+
+                users[uIdx].questProgress = p;
+                localStorage.setItem("users", JSON.stringify(users));
             }
 
             setTimeout(() => {
@@ -433,10 +446,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 handleRoundProgress(false);
             }, 1000);
         } else {
-            // === กรณีตอบผิด ===
+            // === ตอบผิด ===
             resultDisplay.textContent = "❌ ยังไม่ถูกต้อง ลองใหม่อีกครั้งนะ";
             resultDisplay.style.color = "#ef4444";
-            duoStreak = 0; // ทำลายคอมโบ
+            duoStreak = 0;
             isSubmitting = false;
         }
     }

@@ -1,49 +1,39 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quests | Glucode</title>
+    <title>Glucode - Daily Quests</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/core.css">
     <link rel="stylesheet" href="../css/quest.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav style="width: 100%; z-index: 100;">
-        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
-            <div class="logo">
-                <a href="../Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
-            </div>
-            <ul style="margin: 0; padding: 0;">
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="../Home.html">Glucode</a></div>
+            <ul>
                 <li><a href="../Home.html">Home</a></li>
                 <li><a href="../Glucode LearnPage/Learn.html">Learn</a></li>
-                <li><a href="#">Leader Board</a></li>
+                <li><a href="../Glucode LeaderBoard/leader_board.html">Leader Board</a></li>
             </ul>
         </div>
     </nav>
 
-    <div class="quest-container">
-        <header>
-            <h1>Glucode Quests</h1>
-            <p class="subtext">ทำภารกิจเพื่อรับเหรียญรางวัล</p>
-        </header>
-
-        <div class="point-and-achievement">
-            <div class="currency-display">
-                <span class="coin-icon">💰</span>
-                <span id="user-coins">0</span>
+    <div class="quest-wrapper">
+        <div class="quest-header">
+            <div class="header-titles">
+                <h2>🎯 ภารกิจประจำวัน (Daily Quests)</h2>
+                <p>ทำภารกิจให้สำเร็จเพื่อรับเหรียญไปซื้อธีมใหม่ๆ <br><span class="reset-note"><i class="fa-regular fa-clock"></i> ภารกิจจะรีเซ็ตใหม่ทุกเที่ยงคืน</span></p>
             </div>
-
-            <div class="achievement">
-                <a href="./achievement.html">Achievement</a>
+            <div class="coin-display-card">
+                <i class="fa-solid fa-coins"></i>
+                <span id="questCoinDisplay">0</span>
             </div>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-box"><span class="stat-label">Games Played</span><span class="stat-value" id="total-games">0/100</span></div>
-            <div class="stat-box"><span class="stat-label">Best Streak</span><span class="stat-value" id="streak-count">🔥</span></div>
-        </div>
-        <div id="quest-list"></div>
+        <div class="quest-list" id="questContainer">
+            </div>
     </div>
 
     <div class="theme-switcher" id="themeSwitcherBox">
@@ -51,13 +41,12 @@
             <i class="fa-solid fa-palette"></i>
             <i class="fa-solid fa-angle-up arrow-icon"></i>
         </button>
-        
         <div class="theme-options" id="themeOptions">
-            <button class="theme-btn" data-theme="light" title="Light Mode"><i class="fa-solid fa-sun"></i></button>
-            <button class="theme-btn" data-theme="dark" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
-            <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
-            <button class="theme-btn" data-theme="winter" title="Winter"><i class="fa-solid fa-snowflake"></i></button>
-            <button class="theme-btn" data-theme="easter" title="Easter"><i class="fa-solid fa-egg"></i></button>
+            <button class="theme-btn" data-theme="light"><i class="fa-solid fa-sun"></i></button>
+            <button class="theme-btn" data-theme="dark"><i class="fa-solid fa-moon"></i></button>
+            <button class="theme-btn" data-theme="halloween"><i class="fa-solid fa-ghost"></i></button>
+            <button class="theme-btn" data-theme="winter"><i class="fa-solid fa-snowflake"></i></button>
+            <button class="theme-btn" data-theme="easter"><i class="fa-solid fa-egg"></i></button>
         </div>
     </div>
 

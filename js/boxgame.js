@@ -594,81 +594,85 @@ window.removeAt = function (index) { answerList.splice(index, 1); renderAnswer()
 window.resetBoard = function () { answerList = []; renderAnswer(); }; // เคลียร์กระดานคำตอบใหม่หมด
 
 // --------------------------------------------------
-    // ระบบการกดส่งและตรวจคำตอบ (Submit) โหมด Jigsaws
-    // --------------------------------------------------
-    window.submitAnswer = function() {
-        if (isSubmitting) return; // กันคนกดรัว
-        isSubmitting = true;
+// ระบบการกดส่งและตรวจคำตอบ (Submit) โหมด Jigsaws
+// --------------------------------------------------
+window.submitAnswer = function () {
+    if (isSubmitting) return;
+    isSubmitting = true;
 
-        let { pool } = getAvailableQuestions();
-        let level = pool[currentLevel];
-        let result = document.getElementById("result");
-        let answerArea = document.getElementById("answerArea");
+    let { pool } = getAvailableQuestions();
+    let level = pool[currentLevel];
+    let result = document.getElementById("result");
+    let answerArea = document.getElementById("answerArea");
 
-        // 🟢 ฟังก์ชันช่วยบันทึกการปลดล็อก Achievement ด้วยตัวเอง (ไม่ง้อไฟล์อื่น)
-        function grantAchievement(achId) {
-            let users = JSON.parse(localStorage.getItem("users")) || [];
-            let uIdx = users.findIndex(u => u.username === getCurrentUser());
-            if (uIdx !== -1) {
-                // ถ้ายังไม่มี Array ให้สร้างใหม่
-                if (!users[uIdx].unlockedAchievements) users[uIdx].unlockedAchievements = [];
-                
-                // ถ้ายังไม่เคยได้ฉายานี้ ให้เพิ่มเข้าไป
-                if (!users[uIdx].unlockedAchievements.includes(achId)) {
-                    users[uIdx].unlockedAchievements.push(achId);
-                    localStorage.setItem("users", JSON.stringify(users));
-                    
-                    // 🌟 เรียกโชว์ Popup ขวาล่าง (ถ้าใน core.js มีฟังก์ชันนี้อยู่)
-                    if (typeof window.showAchievementToast === 'function') {
-                        window.showAchievementToast(achId);
-                    }
+    function grantAchievement(achId) {
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let uIdx = users.findIndex(u => u.username === getCurrentUser());
+        if (uIdx !== -1) {
+            if (!users[uIdx].unlockedAchievements) users[uIdx].unlockedAchievements = [];
+            if (!users[uIdx].unlockedAchievements.includes(achId)) {
+                users[uIdx].unlockedAchievements.push(achId);
+                localStorage.setItem("users", JSON.stringify(users));
+                if (typeof window.showAchievementToast === 'function') window.showAchievementToast(achId);
+            }
+        }
+    }
+
+    if (JSON.stringify(answerList) === JSON.stringify(level.correct)) {
+        // === ตอบถูกต้อง ===
+        if (result) { result.style.color = "#10B981"; result.innerText = "ถูกต้อง!"; }
+        if (answerArea) answerArea.classList.add("correct");
+
+        addScore(currentDifficulty);
+        boxCorrectTotal++;
+        boxStreak++;
+        let timeTaken = (Date.now() - questionStartTime) / 1000;
+
+        grantAchievement("box-first");
+        if (boxCorrectTotal >= 5) grantAchievement("box-5");
+        if (boxCorrectTotal >= 10) grantAchievement("box-10");
+        if (boxStreak >= 3) grantAchievement("box-streak-3");
+        if (timeTaken <= 5) grantAchievement("box-speed");
+
+        // 🟢 อัปเดต Daily Quest (รวมเควสต์เก่าและใหม่)
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let uIdx = users.findIndex(u => u.username === getCurrentUser());
+        if (uIdx !== -1) {
+            let p = users[uIdx].questProgress || {};
+
+            const addQuest = (qId, amt, isMax = false) => {
+                if (!p[qId]) p[qId] = { current: 0, claimed: false };
+                if (!p[qId].claimed) {
+                    if (isMax) { if (amt > p[qId].current) p[qId].current = amt; }
+                    else { p[qId].current += amt; }
                 }
-            }
+            };
+
+            addQuest("q_box_5", 1);          // เควสต์ใหม่: ตอบถูก Jigsaws
+            addQuest("q_streak_3", boxStreak, true); // เควสต์ใหม่: คอมโบ
+            addQuest("q_score_30", SCORE_MAP[currentDifficulty]); // เควสต์ใหม่: คะแนนสะสม
+            addQuest("correct_5_times", 1);  // 🌟 เควสต์เก่า: ตอบถูกรวมโหมดใดก็ได้
+
+            users[uIdx].questProgress = p;
+            localStorage.setItem("users", JSON.stringify(users));
         }
 
-        // ตรวจคำตอบ: แปลง Array ให้เป็น String เพื่อเทียบกันแบบเป๊ะๆ
-        if (JSON.stringify(answerList) === JSON.stringify(level.correct)) {
-            // === กรณีที่ตอบถูกต้อง ===
-            if (result) { result.style.color = "#10B981"; result.innerText = "ถูกต้อง!"; }
-            if (answerArea) answerArea.classList.add("correct");
+        setTimeout(() => {
+            if (result) result.innerText = "";
+            handleRoundProgress(false);
+        }, 800);
+    } else {
+        // === ตอบผิด ===
+        if (result) { result.style.color = "#ef4444"; result.innerText = "ยังไม่ถูก ลองใหม่"; }
+        if (answerArea) answerArea.classList.add("wrong");
+        boxStreak = 0;
 
-            addScore(currentDifficulty); // บวกคะแนน
-
-            boxCorrectTotal++; 
-            boxStreak++; 
-            let timeTaken = (Date.now() - questionStartTime) / 1000;
-
-            // 🌟 แจก Achievement ตามเงื่อนไขของ BoxGame (Jigsaws)
-            grantAchievement("box-first");
-            if (boxCorrectTotal >= 5) grantAchievement("box-5");
-            if (boxCorrectTotal >= 10) grantAchievement("box-10");
-            if (boxStreak >= 3) grantAchievement("box-streak-3");
-            if (timeTaken <= 5) grantAchievement("box-speed");
-
-            // อัปเดตเควสต์ (Quest)
-            if (typeof window.updateQuestProgress === "function") {
-                window.updateQuestProgress("q_box_3", 1);
-                window.updateQuestProgress("q_streak_3", boxStreak);
-                window.updateQuestProgress("q_score_50", SCORE_MAP[currentDifficulty]);
-            }
-
-            // หน่วงเวลาให้ดีใจแปปนึง ก่อนเปลี่ยนข้อ
-            setTimeout(() => {
-                if (result) result.innerText = ""; 
-                handleRoundProgress(false);
-            }, 800);
-        } else {
-            // === กรณีที่ตอบผิด ===
-            if (result) { result.style.color = "#ef4444"; result.innerText = "ยังไม่ถูก ลองใหม่"; }
-            if (answerArea) answerArea.classList.add("wrong"); 
-            boxStreak = 0; // ทำลายคอมโบ
-            
-            setTimeout(() => { 
-                if (answerArea) answerArea.classList.remove("wrong"); 
-                isSubmitting = false; 
-            }, 400);
-        }
-    };
+        setTimeout(() => {
+            if (answerArea) answerArea.classList.remove("wrong");
+            isSubmitting = false;
+        }, 400);
+    }
+};
 
 // ฟังก์ชันปิดหน้าต่าง Pop-up
 window.closePopup = function (id) { document.getElementById(id).style.display = "none"; };

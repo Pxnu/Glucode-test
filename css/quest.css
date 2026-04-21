@@ -1,213 +1,214 @@
 /* =========================================
-   Quest Page Styles (น่ารัก น่าใช้งาน)
+   QUEST PAGE STYLES (Daily Quests)
 ========================================= */
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.quest-wrapper {
+    max-width: 900px;
+    width: 95%;
+    margin: 40px auto 80px auto;
+    animation: slideUp 0.5s ease;
 }
 
-.quest-container {
-    max-width: 850px;
-    margin: 40px auto;
-    padding: 20px;
-    flex: 1;
-    animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-header h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    color: var(--text);
-    font-weight: 800;
-}
-
-header .subtext {
-    text-align: center;
-    color: var(--subtext);
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-}
-
-/* =========================================
-   Top Bar
-========================================= */
-.point-and-achievement {
+.quest-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: var(--box);
-    border: 1px solid var(--border);
-    padding: 20px 30px;
+    padding: 30px 40px;
     border-radius: 24px;
-    margin-bottom: 30px;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 30px;
 }
 
-.currency-display {
-    font-size: 1.8rem;
+.header-titles h2 {
+    font-size: 2rem;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.header-titles p {
+    color: var(--subtext);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.reset-note {
+    color: #ef4444;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 4px 10px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.coin-display-card {
+    font-size: 2rem;
     font-weight: 800;
-    color: #F59E0B;
+    color: #f59e0b;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    background: rgba(245, 158, 11, 0.1);
+    padding: 15px 30px;
+    border-radius: 20px;
+    border: 2px solid rgba(245, 158, 11, 0.3);
 }
 
-.achievement a {
-    color: var(--btn-text);
-    background: var(--btn);
-    padding: 12px 24px;
-    border-radius: 16px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.achievement a:hover {
-    transform: translateY(-2px);
-    background: var(--hover);
-}
-
-.stats-grid {
-    display: none;
-}
-
-/* =========================================
-   Quest List
-========================================= */
-#quest-list {
+.quest-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.quest-item {
-    background: var(--box);
-    padding: 25px;
-    border-radius: 24px;
+.quest-card {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-    transition: all 0.3s ease;
-}
-
-.quest-item:hover {
-    transform: translateY(-4px);
+    background: var(--box);
+    border-radius: 20px;
+    padding: 25px;
     box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease;
 }
 
-.quest-item.completed {
-    border-color: #10B981;
-    background: rgba(16, 185, 129, 0.03);
+.quest-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--btn);
 }
 
-.quest-item.claimed {
-    opacity: 0.6;
-    filter: grayscale(50%);
-    pointer-events: none;
+.quest-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin-right: 25px;
+    flex-shrink: 0;
 }
 
 .quest-info {
-    flex: 1;
-    padding-right: 20px;
+    flex-grow: 1;
+    margin-right: 25px;
 }
 
 .quest-info h3 {
+    margin: 0 0 6px 0;
     font-size: 1.3rem;
     color: var(--text);
-    margin-bottom: 6px;
-    font-weight: 700;
 }
 
 .quest-info p {
-    color: var(--subtext);
-    margin-bottom: 15px;
+    margin: 0 0 15px 0;
     font-size: 0.95rem;
+    color: var(--subtext);
 }
 
-/* Progress Bar นุ่มนวล */
-.progress-bar-container {
-    background: var(--bg);
+/* หลอด Progress Bar */
+.progress-container {
     width: 100%;
     height: 12px;
-    border-radius: 20px;
+    background: var(--bg);
+    border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 8px;
+    position: relative;
     border: 1px solid var(--border);
 }
 
 .progress-bar {
     height: 100%;
-    background: #10B981;
-    border-radius: 20px;
-    transition: width 0.6s ease;
+    border-radius: 10px;
+    transition: width 0.5s ease;
 }
 
 .progress-text {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--subtext);
+    position: absolute;
+    right: 0;
+    top: -22px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
 }
 
-.quest-action {
+/* ส่วนปุ่มรับรางวัล */
+.quest-reward {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    min-width: 130px;
+    min-width: 140px;
 }
 
-.reward {
+.reward-amt {
+    font-weight: 800;
     font-size: 1.2rem;
-    font-weight: 700;
-    color: #F59E0B;
+    color: #f59e0b;
 }
 
-.claim-btn {
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 12px;
+.btn-claim {
     width: 100%;
-    height: auto;
+    padding: 12px 0;
+    border-radius: 12px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1rem;
 }
 
-.claim-btn:not(.ready):not(.claimed-btn) {
+/* สถานะปุ่ม */
+.btn-uncompleted {
     background: var(--bg);
     color: var(--subtext);
-    box-shadow: none;
-}
-
-.claim-btn.ready {
-    background: #F59E0B;
-    color: #FFF;
-    animation: pulseSoft 2s infinite;
-}
-
-@keyframes pulseSoft {
-    0% {
-        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
-    }
-
-    70% {
-        box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
-    }
-
-    100% {
-        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
-    }
-}
-
-.claim-btn.claimed-btn {
-    background: transparent;
+    cursor: not-allowed;
     border: 1px solid var(--border);
+}
+
+.btn-ready {
+    background: #10b981;
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    animation: pulseBtn 1.5s infinite;
+}
+
+.btn-claimed {
+    background: transparent;
     color: var(--subtext);
-    box-shadow: none;
+    border: 2px solid var(--subtext);
+    cursor: default;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseBtn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+    .quest-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    .quest-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    .quest-icon, .quest-info {
+        margin-right: 0;
+    }
+    .progress-text {
+        position: static;
+        display: block;
+        margin-bottom: 5px;
+    }
 }
