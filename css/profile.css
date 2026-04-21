@@ -1,0 +1,179 @@
+/* =========================================
+   PROFILE PAGE STYLES
+   =========================================
+   ดึงสไตล์มาจากหน้า Profile เดิม แต่ปรับให้ใช้
+   ตัวแปรสีจาก core.css เพื่อรองรับ Themes
+========================================= */
+
+.profile-wrapper {
+    max-width: 900px;
+    width: 95%;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    /* แบ่งซ้าย (รูป) ขวา (ข้อมูล) */
+    gap: 30px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* ส่วนของ Card ด้านซ้าย (Avatar & Quick Stats) */
+.profile-sidebar {
+    background: var(--box);
+    padding: 40px 20px;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    height: fit-content;
+}
+
+.avatar-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--btn);
+    background: var(--bg);
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+.profile-status {
+    color: var(--subtext);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.mini-stats {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+}
+
+.stat-item b {
+    display: block;
+    font-size: 1.2rem;
+    color: var(--btn);
+}
+
+.stat-item span {
+    font-size: 0.8rem;
+    color: var(--subtext);
+}
+
+/* ส่วนของเนื้อหาด้านขวา (Information) */
+.profile-content {
+    background: var(--box);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid var(--bg);
+    padding-bottom: 15px;
+}
+
+.content-header h2 {
+    font-size: 1.8rem;
+    color: var(--text);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-group label {
+    font-weight: 700;
+    color: var(--subtext);
+    font-size: 0.9rem;
+}
+
+.info-group input,
+.info-group textarea {
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 2px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.info-group input:focus,
+.info-group textarea:focus {
+    border-color: var(--btn);
+}
+
+/* 🟢 ปิดการลากขยายขนาด (Resize) ของช่อง Textarea */
+.info-group textarea {
+    resize: none;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+/* ปุ่ม Save Changes */
+.save-btn {
+    margin-top: 30px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--btn), var(--hover));
+    color: white;
+    font-weight: 700;
+    height: 50px;
+}
+
+/* Responsive สำหรับมือถือ */
+@media (max-width: 768px) {
+    .profile-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: span 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

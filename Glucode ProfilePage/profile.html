@@ -6,6 +6,7 @@
     <title>Profile | Glucode</title>
 
     <link rel="stylesheet" href="../css/core.css">
+    <link rel="stylesheet" href="../css/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -22,7 +23,55 @@
         </div>
     </nav>
     
+    <div class="profile-wrapper">
+    <div class="profile-sidebar">
+        <div class="avatar-container">
+            <img src="../profile/images/user.png" class="avatar-img">
+        </div>
+        <h3 class="profile-name" id="disp-username">User</h3>
+        <p class="profile-status" id="profile-rank">Rank...</p>
+        <div class="mini-stats">
+            <div class="stat-item"><b id="disp-coins">0</b><span>Coins</span></div>
+            <div class="stat-item"><b id="disp-total-score">0</b><span>Total Score</span></div>
+        </div>
+    </div>
+    
+    <div class="profile-content">
+        <div class="info-grid">
+            <div class="info-group">
+                <label>Username</label>
+                <input type="text" id="input-username" readonly>
+            </div>
+            <div class="info-group">
+                <label>Email</label>
+                <input type="text" id="input-email" readonly>
+            </div>
+            <div class="info-group full-width">
+                <label>Bio (เขียนคำแนะนำตัวของคุณ)</label>
+                <textarea id="input-bio" rows="4" placeholder="บอกเล่าเรื่องราวของคุณ..."></textarea>
+            </div>
+        </div>
+        <button id="saveProfileBtn" class="save-btn">Save Changes</button>
+        <button id="editProfileBtn" class="save-btn">Edit Profile</button>
+    </div>
+</div>
+
+  <div class="theme-switcher" id="themeSwitcherBox">
+        <button class="theme-toggle-btn" id="themeToggleBtn">
+            <i class="fa-solid fa-palette"></i>
+            <i class="fa-solid fa-angle-up arrow-icon"></i>
+        </button>
+        
+        <div class="theme-options" id="themeOptions">
+            <button class="theme-btn" data-theme="light" title="Light Mode"><i class="fa-solid fa-sun"></i></button>
+            <button class="theme-btn" data-theme="dark" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
+            <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
+            <button class="theme-btn" data-theme="winter" title="Winter"><i class="fa-solid fa-snowflake"></i></button>
+            <button class="theme-btn" data-theme="easter" title="Easter"><i class="fa-solid fa-egg"></i></button>
+        </div>
+    </div>
 
     <script src="../js/core.js"></script>
+    <script src="../js/profile.js"></script>
 </body>
 </html>
