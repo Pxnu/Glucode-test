@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (user.hasSeenTutorial) {
                         window.location.href = './Home.html';
                     } else {
-                        // ถ้ายังไม่เคยดู ให้ไปหน้า Tutorial
                         window.location.href = '../Glucode tutorial/tutorial.html';
                     }
                 }, 1000);
@@ -66,6 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 showMessage('Username หรือ Password ไม่ถูกต้อง', '#ef4444');
             }
         } else {
+            // 🛑 ตรวจสอบ Username ไม่ให้มี @ หรือคำว่า gmail (จากที่คุณแก้ไปก่อนหน้า)
+            if (username.includes('@') || username.toLowerCase().includes('gmail')) {
+                showMessage('Username ไม่สามารถใช้อีเมลได้', '#ef4444');
+                return;
+            }
+
+            // 🛑 เพิ่มการตรวจสอบ Password: ไม่ให้กรอกภาษาไทย
+            const thaiRegex = /[ก-๙]/;
+            if (thaiRegex.test(password)) {
+                showMessage('รหัสผ่านไม่สามารถใช้ภาษาไทยได้', '#ef4444');
+                return;
+            }
+
             if (users.find(u => u.username === username)) {
                 showMessage('Username นี้ถูกใช้งานแล้ว', '#ef4444');
                 return;
