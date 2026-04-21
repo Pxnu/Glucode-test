@@ -1,5 +1,5 @@
 /* ==========================================
-   SETTINGS JS - จัดการอัปโหลดรูปภาพ, รหัสผ่าน และบัญชี
+   SETTINGS JS - จัดการอัปโหลดรูปภาพ, เปลี่ยนชื่อ และรหัสผ่าน
 ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem("loggedInUser");
@@ -108,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.style.background = '#10b981'; // สีเขียว
         }
 
-        // เซ็ตตัวแปรบอกว่าปิดหน้าต่างแล้วต้องรีเฟรชหน้าเว็บไหม
         modal.dataset.reload = reloadOnClose ? 'true' : 'false';
         modal.style.display = 'flex';
     };
@@ -117,55 +116,69 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = document.getElementById('passwordAlertModal');
         modal.style.display = 'none';
         
-        // ถ้าระบุว่าต้องรีเฟรช ให้รีเฟรชหน้าเว็บ (ใช้ตอนบันทึกสำเร็จ)
         if (modal.dataset.reload === 'true') {
             window.location.reload();
         }
     };
 
-    // ระบบบันทึกการตั้งค่า (รวมตรวจสอบรหัสผ่าน)
+    // ระบบบันทึกการตั้งค่า
     const saveBtn = document.getElementById('saveSettingsBtn');
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
-            const newEmail = emailInput ? emailInput.value : user.email;
+            const newEmail = emailInput ? emailInput.value.trim() : user.email;
+            
+            // 🟢 ดึง Username ที่กรอกเข้ามา
+            const newUsername = usernameInput ? usernameInput.value.trim() : user.username;
+
+            // ตรวจสอบว่า Username ห้ามว่าง
+            if (!newUsername) {
+                showPwdAlert('error', 'ข้อมูลไม่ครบถ้วน', 'กรุณากรอก Username ระบบไม่อนุญาตให้ใช้ชื่อเว้นว่างได้');
+                return;
+            }
+
+            // 🟢 ตรวจสอบว่าเปลี่ยนชื่อไหม และถ้าเปลี่ยน ซ้ำกับ User อื่นในระบบไหม
+            if (newUsername !== user.username) {
+                const isDuplicate = users.some((u, idx) => u.username.toLowerCase() === newUsername.toLowerCase() && idx !== userIndex);
+                if (isDuplicate) {
+                    showPwdAlert('error', 'ชื่อผู้ใช้ซ้ำกัน', 'Username นี้มีคนใช้งานแล้ว กรุณาลองใช้ชื่ออื่น');
+                    return;
+                }
+            }
 
             // ตรวจสอบการเปลี่ยนรหัสผ่าน
             const oldPwd = oldPwdInput.value;
             const newPwd = newPwdInput.value;
             const confirmPwd = confirmPwdInput.value;
 
-            // ถ้ามีการพิมพ์อะไรลงไปในช่องรหัสผ่าน ถือว่าต้องการเปลี่ยนรหัส
             if (oldPwd || newPwd || confirmPwd) {
-                // เช็ครหัสเดิม
                 if (oldPwd !== user.password) {
                     showPwdAlert('error', 'รหัสผ่านไม่ถูกต้อง', 'รหัสผ่านปัจจุบันที่คุณระบุไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
                     return;
                 }
-                // เช็ครหัสใหม่ว่ากรอกครบไหม
                 if (!newPwd || !confirmPwd) {
                     showPwdAlert('error', 'ข้อมูลไม่ครบถ้วน', 'กรุณากรอกรหัสผ่านใหม่และการยืนยันรหัสผ่านให้ครบถ้วน');
                     return;
                 }
-                // เช็ครหัสใหม่ว่าตรงกันไหม
                 if (newPwd !== confirmPwd) {
                     showPwdAlert('error', 'รหัสผ่านไม่ตรงกัน', 'รหัสผ่านใหม่ที่คุณตั้ง กับ การยืนยันรหัสผ่านไม่ตรงกัน');
                     return;
                 }
-                
-                // ถ้าผ่านเงื่อนไขหมด บันทึกรหัสใหม่
                 users[userIndex].password = newPwd;
             }
 
-            // บันทึก Email และ รูปโปรไฟล์ที่ถูก Crop
+            // 🟢 บันทึกข้อมูลที่แก้ไขลงฐานข้อมูล
+            users[userIndex].username = newUsername;
             users[userIndex].email = newEmail;
             users[userIndex].avatar = selectedAvatarBase64;
             
             localStorage.setItem("users", JSON.stringify(users));
             
-            // โชว์ Popup บันทึกสำเร็จ และสั่งให้รีเฟรชเมื่อปิด
+            // 🟢 อัปเดต Session การล็อกอินด้วยชื่อใหม่ (สำคัญมาก ไม่งั้นบัญชีจะเด้งออก)
+            localStorage.setItem("loggedInUser", newUsername);
+            
+            // โชว์ Popup บันทึกสำเร็จ
             showPwdAlert('success', 'บันทึกข้อมูลสำเร็จ', 'การตั้งค่าและข้อมูลบัญชีของคุณถูกอัปเดตเรียบร้อยแล้ว', true);
             
-            // 🟢 เปลี่ยนข้อความที่ตัวปุ่มด้วย (ใช้ FontAwesome แทน Emoji)
             const originalText = saveBtn.innerHTML;
             saveBtn.innerHTML = "บันทึกข้อมูลเรียบร้อยแล้ว! <i class='fa-solid fa-circle-check'></i>";
             saveBtn.style.background = "#10b981";
