@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem('loggedInUser');
     const path = window.location.pathname.toLowerCase();
     
-    // เพิ่ม profilepage และ themeshop เข้าไปในเงื่อนไขการถอย path
     const isSubFolder = path.includes("game") || 
                         path.includes("leaderboard") || 
                         path.includes("learnpage") || 
@@ -60,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (navList) {
-            // เช็คว่ามีรูปโปรไฟล์อัปโหลดไว้ไหม
             let userIconHtml = `<i id="dropdownIcon" class="fa-solid fa-user" style="margin-right: 5px;"></i>`;
             if (currentUser && currentUser.avatar) {
                 userIconHtml = `<img src="${currentUser.avatar}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 8px; border: 2px solid var(--btn);">`;
@@ -69,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const userLi = document.createElement('li');
             userLi.classList.add('user-dropdown-container');
             userLi.innerHTML = `
-                <a href="${rootPath}Glucode ProfilePage/profile.html" id="dropdownToggleBtn" class="user-dropdown-btn" style="display: flex; align-items: center;">
+                <a href="#" id="dropdownToggleBtn" class="user-dropdown-btn" style="display: flex; align-items: center;">
                     ${userIconHtml} ${loggedInUser} <i id="dropdownArrow" class="fa-solid fa-angle-down" style="margin-left: 8px;"></i>
                 </a>
                 <div class="user-dropdown-menu" id="dropdownMenu">
@@ -120,13 +118,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     let savedTheme = localStorage.getItem('theme') || 'light';
 
-    // 🟢 ดึงข้อมูลสิทธิ์การครอบครองธีมของผู้ใช้
-    let currentUsers = JSON.parse(localStorage.getItem("users")) || [];
-    let activeUserForTheme = currentUsers.find(u => u.username === localStorage.getItem("loggedInUser"));
-    let myThemes = activeUserForTheme && activeUserForTheme.unlockedThemes ? activeUserForTheme.unlockedThemes : ['light', 'dark'];
+    // 🟢 สร้างฟังก์ชันดึงรายชื่อธีมแบบ Real-time เพื่อแก้บัคธีมหาย
+    function getMyThemes() {
+        let currentUsers = JSON.parse(localStorage.getItem("users")) || [];
+        let activeUserForTheme = currentUsers.find(u => u.username === localStorage.getItem("loggedInUser"));
+        return activeUserForTheme && activeUserForTheme.unlockedThemes ? activeUserForTheme.unlockedThemes : ['light', 'dark'];
+    }
 
-    // ป้องกันกรณีที่ผู้เล่นเซฟธีมไว้ แล้วจู่ๆ ธีมนั้นโดนรีเซ็ต จะให้กลับมาใช้ Light ทันที
-    if (!myThemes.includes(savedTheme)) {
+    let initialThemes = getMyThemes();
+
+    if (!initialThemes.includes(savedTheme)) {
         savedTheme = 'light';
         localStorage.setItem('theme', 'light');
     }
@@ -148,8 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setTheme(theme) {
-        // ห้ามเปลี่ยนธีมถ้ายังไม่ได้ปลดล็อก
-        if (!myThemes.includes(theme)) return;
+        // 🟢 ดึงข้อมูลสิทธิ์แบบล่าสุดทุกครั้งที่เปลี่ยนธีม
+        let freshThemes = getMyThemes();
+
+        if (!freshThemes.includes(theme)) return;
 
         body.className = ''; 
         if (theme !== 'light') {
@@ -160,8 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
         themeButtons.forEach(btn => {
             btn.classList.toggle('active', btn.dataset.theme === theme);
             
-            // 🟢 ซ่อนปุ่มเปลี่ยนธีมที่ยังไม่ได้ปลดล็อก (ซื้อในร้าน)
-            if (!myThemes.includes(btn.dataset.theme)) {
+            // 🟢 อัปเดตการแสดงผลปุ่มโดยอิงจากข้อมูลล่าสุด
+            if (!freshThemes.includes(btn.dataset.theme)) {
                 btn.style.display = 'none';
             } else {
                 btn.style.display = 'flex';
@@ -182,7 +185,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     themeButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            if (myThemes.includes(btn.dataset.theme)) {
+            // 🟢 ตรวจสอบสิทธิ์แบบ Real-time ก่อนเปลี่ยนธีม
+            let freshThemes = getMyThemes();
+            if (freshThemes.includes(btn.dataset.theme)) {
                 setTheme(btn.dataset.theme);
                 if (themeSwitcherBox) themeSwitcherBox.classList.remove('open');
             }
