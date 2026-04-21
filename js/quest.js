@@ -1,10 +1,20 @@
-// ข้อมูลโจทย์เควสที่เชื่อมกับเกมโดยตรง
+// js/quest.js
+
+// ข้อมูลโจทย์เควส ปรับให้ตรงกับ Achievement และเพิ่มระดับความยาก
 const questsData = [
-    { id: "q_duo_5", title: "Duo Beginner", desc: "ตอบคำถามในเกม Duo ให้ถูกครบ 5 ข้อ", target: 5, reward: 20 },
-    { id: "q_box_3", title: "BoxGame Explorer", desc: "ต่อจิ๊กซอว์โค้ดใน BoxGame ให้ถูก 3 ด่าน", target: 3, reward: 15 },
-    { id: "q_streak_3", title: "On Fire! 🔥", desc: "ทำคอมโบ (Streak) ตอบถูกติดกัน 3 ครั้งรวด", target: 3, reward: 30 },
-    { id: "q_box_h1", title: "Heading Master", desc: "ประกอบโค้ดสร้างหัวข้อ <h1> ในเกม BoxGame", target: 1, reward: 10 },
-    { id: "q_score_50", title: "นักสะสมแต้ม", desc: "สะสมคะแนนจากการเล่นเกม 50 คะแนน", target: 50, reward: 50 }
+    // หมวด Jigsaws (BoxGame)
+    { id: "box-first", title: "ก้าวแรกนักต่อโค้ด", desc: "เล่นโหมด Jigsaws ครั้งแรก", target: 1, reward: 10, difficulty: "Easy", achievementId: "box-first" },
+    { id: "box-5", title: "นักต่อโค้ดฝึกหัด", desc: "ตอบถูกรวมสะสม 5 ข้อ (โหมด Jigsaws)", target: 5, reward: 20, difficulty: "Medium", achievementId: "box-5" },
+    { id: "box-10", title: "ปรมาจารย์จิ๊กซอว์", desc: "ตอบถูกรวมสะสม 10 ข้อ (โหมด Jigsaws)", target: 10, reward: 30, difficulty: "Hard", achievementId: "box-10" },
+    { id: "box-streak-3", title: "ต่อเนื่องไม่มีสะดุด!", desc: "ตอบถูกติดต่อกัน 3 ข้อ (โหมด Jigsaws)", target: 3, reward: 50, difficulty: "Challenge", achievementId: "box-streak-3" },
+    { id: "box-speed", title: "ไวดั่งสายฟ้า", desc: "ตอบคำถาม Jigsaws ถูกภายใน 5 วินาที", target: 1, reward: 50, difficulty: "Challenge", achievementId: "box-speed" },
+
+    // หมวด พิมพ์โค้ด (Duo)
+    { id: "duo-first", title: "ก้าวแรกนักพิมพ์โค้ด", desc: "เล่นโหมด Duo ครั้งแรก", target: 1, reward: 10, difficulty: "Easy", achievementId: "duo-first" },
+    { id: "duo-5", title: "พิมพ์คล่องมือ", desc: "ตอบถูกรวมสะสม 5 ข้อ (โหมด Duo)", target: 5, reward: 20, difficulty: "Medium", achievementId: "duo-5" },
+    { id: "duo-10", title: "แฮกเกอร์คีย์บอร์ด", desc: "ตอบถูกรวมสะสม 10 ข้อ (โหมด Duo)", target: 10, reward: 30, difficulty: "Hard", achievementId: "duo-10" },
+    { id: "duo-streak-3", title: "นิ้วไฟลุก!", desc: "ตอบถูกติดต่อกัน 3 ข้อ (โหมด Duo)", target: 3, reward: 50, difficulty: "Challenge", achievementId: "duo-streak-3" },
+    { id: "duo-speed", title: "พิมพ์ไวดั่งพายุ", desc: "ตอบคำถาม Duo ถูกภายใน 8 วินาที", target: 1, reward: 50, difficulty: "Challenge", achievementId: "duo-speed" }
 ];
 
 function getUserData() {
@@ -14,13 +24,14 @@ function getUserData() {
     return { users, user: users[index], index };
 }
 
-// 🌟 ฟังก์ชันหลักสำหรับรับค่าจากหน้าเกมมาอัปเดตความคืบหน้า
+// 🌟 ฟังก์ชันอัปเดตความคืบหน้าเควส + ปลดล็อก Achievement
 window.updateQuestProgress = function(questId, amount = 1) {
     let { users, user, index } = getUserData();
     if (!user) return;
 
     if (!user.quests) user.quests = {}; 
     if (!user.claimedQuests) user.claimedQuests = [];
+    if (!user.unlockedAchievements) user.unlockedAchievements = [];
 
     // ถ้าเควสนี้รับรางวัลไปแล้ว ไม่ต้องนับต่อ
     if (user.claimedQuests.includes(questId)) return;
@@ -31,42 +42,73 @@ window.updateQuestProgress = function(questId, amount = 1) {
 
     if (currentProgress < questInfo.target) {
         // ถ้านับ Streak ให้แทนที่ด้วยค่าสูงสุด / ถ้าเควสอื่นให้บวกเพิ่ม
-        if (questId === "q_streak_3") {
+        if (questId.includes("streak")) {
             user.quests[questId] = Math.max(currentProgress, amount);
         } else {
             user.quests[questId] = Math.min(currentProgress + amount, questInfo.target);
         }
         
-        localStorage.setItem('users', JSON.stringify(users));
-
-        // แจ้งเตือนเมื่อทำเควสสำเร็จ
+        // แจ้งเตือนและปลดล็อก Achievement เมื่อทำเควสสำเร็จ
         if (user.quests[questId] >= questInfo.target && currentProgress < questInfo.target) {
             showQuestNotification(questInfo.title);
+            
+            // ปลดล็อค Achievement ทันที
+            if (!user.unlockedAchievements.includes(questInfo.achievementId)) {
+                user.unlockedAchievements.push(questInfo.achievementId);
+                // เรียกโชว์ Popup โล่รางวัลจาก core.js
+                if (typeof window.showAchievementToast === 'function') {
+                    window.showAchievementToast(questInfo.achievementId);
+                }
+            }
         }
+        
+        localStorage.setItem('users', JSON.stringify(users));
 
         // รีเฟรชหน้าจอถ้ากำลังเปิดหน้า Quest อยู่
         if (document.getElementById("quest-list")) renderQuests();
     }
 };
 
-// เด้ง Popup แจ้งเตือนเวลาเควสเสร็จ
 function showQuestNotification(title) {
-    let popup = document.getElementById("achievement-popup");
-    let popupText = document.getElementById("popup-text");
-
-    if (!popup) {
-        popup = document.createElement("div");
-        popup.id = "achievement-popup";
-        popupText = document.createElement("p");
-        popupText.id = "popup-text";
-        popup.appendChild(popupText);
-        document.body.appendChild(popup);
+    // 1. ดึง Container ตัวเดียวกับระบบ Achievement มาใช้ เพื่อให้มันเรียงต่อกัน (Stack) ไม่ซ้อนทับกัน
+    let container = document.getElementById('achievement-toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'achievement-toast-container';
+        document.body.appendChild(container);
     }
 
-    popupText.textContent = "📜 เควสสำเร็จ: " + title;
-    popup.classList.remove("show");
-    setTimeout(() => popup.classList.add("show"), 50);
-    setTimeout(() => popup.classList.remove("show"), 4000);
+    // 2. สร้างตัว Popup โดยใช้ Class เดียวกับ Achievement เพื่อยืมความสวยงามมาใช้
+    const toast = document.createElement('div');
+    toast.className = 'achievement-toast';
+    
+    // กำหนดสีและไอคอนเฉพาะสำหรับ Quest (ตัวอย่างใช้สีม่วง)
+    const questColor = '#8B5CF6'; 
+    toast.style.borderLeftColor = questColor;
+    
+    // โครงสร้าง HTML เดียวกับ Toast ใน core.js
+    toast.innerHTML = `
+        <div class="toast-icon" style="color: ${questColor}; background: ${questColor}25;">
+            <i class="fa-solid fa-scroll"></i>
+        </div>
+        <div class="toast-content">
+            <h4 class="toast-header" style="color: ${questColor};">📜 Quest Completed</h4>
+            <h3>${title}</h3>
+            <p>ไปรับรางวัลที่หน้า Quests ได้เลย!</p>
+        </div>
+    `;
+
+    // 3. เอาไปใส่ในตะกร้า
+    container.appendChild(toast);
+
+    // 4. เล่นแอนิเมชันสไลด์เข้า
+    setTimeout(() => toast.classList.add('show'), 50);
+
+    // 5. หน่วงเวลา 4 วินาทีแล้วสไลด์ออก พร้อมลบออกจากหน้าเว็บ
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 500); 
+    }, 4000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -93,12 +135,18 @@ function renderQuests() {
         let isClaimed = user.claimedQuests.includes(q.id);
         let progressPercent = (progress / q.target) * 100;
 
+        let difficultyColor = "";
+        if (q.difficulty === "Easy") difficultyColor = "#10B981"; // เขียว
+        else if (q.difficulty === "Medium") difficultyColor = "#F59E0B"; // ส้ม
+        else if (q.difficulty === "Hard") difficultyColor = "#EF4444"; // แดง
+        else if (q.difficulty === "Challenge") difficultyColor = "#8B5CF6"; // ม่วง
+
         let li = document.createElement("div");
         li.className = "quest-item " + (isClaimed ? "claimed" : (isCompleted ? "completed" : ""));
         
         li.innerHTML = `
             <div class="quest-info">
-                <h3>${q.title}</h3>
+                <h3>${q.title} <span style="font-size: 0.8rem; background: ${difficultyColor}20; color: ${difficultyColor}; padding: 3px 8px; border-radius: 12px; margin-left: 8px;">${q.difficulty}</span></h3>
                 <p>${q.desc}</p>
                 <div class="progress-bar-container">
                     <div class="progress-bar" style="width: ${progressPercent}%"></div>
@@ -120,7 +168,6 @@ function renderQuests() {
     });
 }
 
-// ระบบกดรับรางวัล
 window.claimReward = function(questId, reward) {
     let { users, user, index } = getUserData();
     if (!user) return;

@@ -600,24 +600,6 @@ window.submitAnswer = function () {
     let result = document.getElementById("result");
     let answerArea = document.getElementById("answerArea");
 
-    // 🟢 ฟังก์ชันช่วยบันทึกการปลดล็อก Achievement และเรียก Popup
-    function grantAchievement(achId) {
-        let users = JSON.parse(localStorage.getItem("users")) || [];
-        let uIdx = users.findIndex(u => u.username === getCurrentUser());
-        if (uIdx !== -1) {
-            if (!users[uIdx].unlockedAchievements) users[uIdx].unlockedAchievements = [];
-            if (!users[uIdx].unlockedAchievements.includes(achId)) {
-                users[uIdx].unlockedAchievements.push(achId);
-                localStorage.setItem("users", JSON.stringify(users));
-
-                // 🌟 เรียกโชว์ Popup ขวาล่าง!
-                if (typeof window.showAchievementToast === 'function') {
-                    window.showAchievementToast(achId);
-                }
-            }
-        }
-    }
-
     // ตรวจคำตอบ: แปลง Array ให้เป็น String เพื่อเทียบกันแบบเป๊ะๆ
     if (JSON.stringify(answerList) === JSON.stringify(level.correct)) {
         // === กรณีที่ตอบถูกต้อง ===
@@ -630,12 +612,14 @@ window.submitAnswer = function () {
         boxStreak++;
         let timeTaken = (Date.now() - questionStartTime) / 1000;
 
-        // 🌟 แจก Achievement (ถ้ายังไม่เคยได้ มันจะเด้ง Popup)
-        grantAchievement("box-first");
-        if (boxCorrectTotal >= 5) grantAchievement("box-5");
-        if (boxCorrectTotal >= 10) grantAchievement("box-10");
-        if (boxStreak >= 3) grantAchievement("box-streak-3");
-        if (timeTaken <= 5) grantAchievement("box-speed");
+        // 🌟 อัปเดต Quest (ระบบจะเช็คและแจก Achievement ให้อัตโนมัติถ้าถึงเป้าหมาย)
+        if (typeof window.updateQuestProgress === 'function') {
+            window.updateQuestProgress("box-first", 1);
+            window.updateQuestProgress("box-5", 1);
+            window.updateQuestProgress("box-10", 1);
+            window.updateQuestProgress("box-streak-3", boxStreak);
+            if (timeTaken <= 5) window.updateQuestProgress("box-speed", 1);
+        }
 
         // หน่วงเวลาให้ดีใจแปปนึง ก่อนเปลี่ยนข้อ
         setTimeout(() => {

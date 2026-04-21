@@ -364,24 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let resultDisplay = document.getElementById("resultMessage");
         let submitBtn = document.getElementById("submitBtn");
 
-        // 🟢 ฟังก์ชันช่วยบันทึกการปลดล็อก Achievement และเรียก Popup
-        function grantAchievement(achId) {
-            let users = JSON.parse(localStorage.getItem("users")) || [];
-            let uIdx = users.findIndex(u => u.username === localStorage.getItem("loggedInUser"));
-            if (uIdx !== -1) {
-                if (!users[uIdx].unlockedAchievements) users[uIdx].unlockedAchievements = [];
-                if (!users[uIdx].unlockedAchievements.includes(achId)) {
-                    users[uIdx].unlockedAchievements.push(achId);
-                    localStorage.setItem("users", JSON.stringify(users));
-
-                    // 🌟 เรียกโชว์ Popup ขวาล่าง!
-                    if (typeof window.showAchievementToast === 'function') {
-                        window.showAchievementToast(achId);
-                    }
-                }
-            }
-        }
-
         let userTyped = answerField.value.trim().replace(/\s+/g, '').toLowerCase();
         let correctNormalized = correctAnswer.trim().replace(/\s+/g, '').toLowerCase();
 
@@ -407,12 +389,14 @@ document.addEventListener('DOMContentLoaded', () => {
             duoStreak++;
             let timeTaken = (Date.now() - questionStartTime) / 1000;
 
-            // 🌟 แจก Achievement (ถ้ายังไม่เคยได้ มันจะเด้ง Popup)
-            grantAchievement("duo-first");
-            if (duoCorrectTotal >= 5) grantAchievement("duo-5");
-            if (duoCorrectTotal >= 10) grantAchievement("duo-10");
-            if (duoStreak >= 3) grantAchievement("duo-streak-3");
-            if (timeTaken <= 8) grantAchievement("duo-speed");
+            // 🌟 อัปเดต Quest (ระบบจะเช็คและแจก Achievement ให้อัตโนมัติถ้าถึงเป้าหมาย)
+            if (typeof window.updateQuestProgress === 'function') {
+                window.updateQuestProgress("duo-first", 1);
+                window.updateQuestProgress("duo-5", 1);
+                window.updateQuestProgress("duo-10", 1);
+                window.updateQuestProgress("duo-streak-3", duoStreak);
+                if (timeTaken <= 8) window.updateQuestProgress("duo-speed", 1);
+            }
 
             setTimeout(() => {
                 resultDisplay.textContent = "";
