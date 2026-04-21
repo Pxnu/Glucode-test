@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glucode - Manage Profile</title>
+    <title>Glucode - Settings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/core.css">
-    <link rel="stylesheet" href="../css/settings.css">
+    <link rel="stylesheet" href="../css/profile.css">
 </head>
 <body>
     <nav>
@@ -20,67 +20,53 @@
         </div>
     </nav>
 
-    <div class="settings-wrapper">
-        <div class="settings-header">
-            <h2><i class="fa-solid fa-user-gear"></i> Manage Profile</h2>
-            <p>จัดการข้อมูลส่วนตัวและการตั้งค่าบัญชีของคุณ</p>
-        </div>
-
-        <div class="settings-card">
-            <div class="avatar-section">
-                <div class="avatar-preview">
-                    <img src="../profile/images/user.png" alt="User Avatar" id="settingAvatar">
-                    <button class="edit-avatar-btn" title="Change Avatar"><i class="fa-solid fa-camera"></i></button>
-                </div>
-                <div class="avatar-info">
-                    <h3 id="displayCurrentUsername">Username</h3>
-                    <p>อัปเดตรูปโปรไฟล์และข้อมูลส่วนตัวของคุณได้ที่นี่</p>
-                </div>
+    <div class="profile-wrapper" style="grid-template-columns: 1fr; max-width: 800px;">
+        <main class="profile-content">
+            <div class="content-header">
+                <h2>Account Settings</h2>
+                <a href="profile.html" class="edit-link"><i class="fa-solid fa-arrow-left"></i> Back to Profile</a>
             </div>
 
-            <hr class="settings-divider">
-
-            <form id="settingsForm" class="settings-form">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="editUsername"><i class="fa-solid fa-user"></i> Username (ชื่อผู้ใช้)</label>
-                        <input type="text" id="editUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editEmail"><i class="fa-solid fa-envelope"></i> Email (อีเมล)</label>
-                        <input type="email" id="editEmail" required>
+            <div class="info-grid">
+                <div class="info-group full-width">
+                    <label>รูปโปรไฟล์ (Profile Avatar)</label>
+                    <div class="avatar-edit-container" style="display: flex; align-items: center; gap: 20px; background: var(--bg); padding: 20px; border-radius: 16px; border: 1px solid var(--border);">
+                        <img src="images/user.png" id="setting-avatar-preview" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--btn);">
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <input type="file" id="avatar-input" accept="image/*" style="font-size: 0.9rem; color: var(--text); background: transparent; border: none; padding: 0;">
+                            <p class="helper-text" style="margin: 0;">รองรับไฟล์ JPG, PNG ขนาดไม่เกิน 1MB (แนะนำอัตราส่วน 1:1)</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group full-width">
-                    <label for="editBio"><i class="fa-solid fa-pen-to-square"></i> Bio (คำแนะนำตัว)</label>
-                    <textarea id="editBio" rows="4" placeholder="บอกเล่าเรื่องราวของคุณให้โลกรู้..."></textarea>
+                <div class="info-group">
+                    <label>Username</label>
+                    <input type="text" id="setting-username" class="profile-select" placeholder="กรอกชื่อผู้ใช้ใหม่">
+                </div>
+                <div class="info-group">
+                    <label>Email Address</label>
+                    <input type="email" id="setting-email" class="profile-select" placeholder="กรอกอีเมลของคุณ">
                 </div>
 
-                <hr class="settings-divider">
-                
-                <h3 class="section-title"><i class="fa-solid fa-lock"></i> เปลี่ยนรหัสผ่าน (Change Password)</h3>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="editPassword">รหัสผ่านใหม่ (ปล่อยว่างไว้ถ้าไม่ต้องการเปลี่ยน)</label>
-                        <input type="password" id="editPassword" placeholder="••••••••">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">ยืนยันรหัสผ่านใหม่</label>
-                        <input type="password" id="confirmPassword" placeholder="••••••••">
-                    </div>
+                <div class="info-group full-width" style="margin-top: 15px;">
+                    <h3 style="color: var(--text); font-size: 1.2rem; border-bottom: 2px solid var(--border); padding-bottom: 10px;">เปลี่ยนรหัสผ่าน (Change Password)</h3>
                 </div>
-
-                <div id="settingsMessage" class="settings-message"></div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="window.location.href='profile.html'">ยกเลิก</button>
-                    <button type="submit" class="btn-save"><i class="fa-solid fa-floppy-disk"></i> บันทึกการเปลี่ยนแปลง</button>
+                <div class="info-group full-width">
+                    <label>รหัสผ่านปัจจุบัน (หากไม่ต้องการเปลี่ยน ให้เว้นว่างไว้)</label>
+                    <input type="password" id="setting-old-pass" class="profile-select" placeholder="กรอกรหัสผ่านปัจจุบัน">
                 </div>
-
-            </form>
-        </div>
+                <div class="info-group">
+                    <label>รหัสผ่านใหม่</label>
+                    <input type="password" id="setting-new-pass" class="profile-select" placeholder="กรอกรหัสผ่านใหม่">
+                </div>
+                <div class="info-group">
+                    <label>ยืนยันรหัสผ่านใหม่</label>
+                    <input type="password" id="setting-confirm-pass" class="profile-select" placeholder="ยืนยันรหัสผ่านใหม่อีกครั้ง">
+                </div>
+            </div>
+            
+            <button id="saveSettingsBtn" class="save-btn">บันทึกการตั้งค่า</button>
+        </main>
     </div>
 
     <div class="theme-switcher" id="themeSwitcherBox">
@@ -89,11 +75,11 @@
             <i class="fa-solid fa-angle-up arrow-icon"></i>
         </button>
         <div class="theme-options" id="themeOptions">
-            <button class="theme-btn" data-theme="light" title="Light Mode"><i class="fa-solid fa-sun"></i></button>
-            <button class="theme-btn" data-theme="dark" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
-            <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
-            <button class="theme-btn" data-theme="winter" title="Winter"><i class="fa-solid fa-snowflake"></i></button>
-            <button class="theme-btn" data-theme="easter" title="Easter"><i class="fa-solid fa-egg"></i></button>
+            <button class="theme-btn" data-theme="light"><i class="fa-solid fa-sun"></i></button>
+            <button class="theme-btn" data-theme="dark"><i class="fa-solid fa-moon"></i></button>
+            <button class="theme-btn" data-theme="halloween"><i class="fa-solid fa-ghost"></i></button>
+            <button class="theme-btn" data-theme="winter"><i class="fa-solid fa-snowflake"></i></button>
+            <button class="theme-btn" data-theme="easter"><i class="fa-solid fa-egg"></i></button>
         </div>
     </div>
 
