@@ -28,16 +28,12 @@
     width: calc(100% - 40px);
     max-width: 700px;
     background: var(--box);
-    /* ใช้สีพื้นกล่องเดียวกับตาราง */
     color: var(--text);
-    /* ใช้สีตัวอักษรหลัก */
     padding: 16px 28px;
     border-radius: 24px;
     box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08);
-    /* เงาซอฟท์ๆ ด้านบน */
     z-index: 99999;
     border: 2px solid var(--btn);
-    /* เน้นขอบสีปุ่มหลัก เพื่อบอกว่าเป็นตัวเรา */
     display: flex;
     transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     opacity: 1;
@@ -65,6 +61,7 @@
     min-width: 60px;
 }
 
+/* 🟢 ปรับให้ชื่อและฉายาเรียงบนล่าง (แถบลอย) */
 .floating-name {
     font-size: 1.15rem;
     font-weight: 700;
@@ -72,13 +69,14 @@
     text-align: left;
     padding-left: 15px;
     display: flex;
-    align-items: center;
-    gap: 8px;
+    flex-direction: column; 
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px; 
 }
 
 .you-badge-float {
     background: rgba(99, 102, 241, 0.1);
-    /* สีฟ้าอ่อนๆ */
     color: var(--btn);
     font-size: 0.8rem;
     padding: 3px 10px;
@@ -90,7 +88,6 @@
     font-size: 1.15rem;
     font-weight: 700;
     background: var(--bg);
-    /* พื้นหลังช่องคะแนนเป็นสีเทาอ่อน */
     color: var(--text);
     padding: 8px 18px;
     border-radius: 50px;
@@ -154,18 +151,39 @@
     border-color: var(--border);
 }
 
-/* การจัดวางแต่ละคอลัมน์ */
 .col-rank {
     text-align: center;
 }
 
+/* 🟢 ปรับให้ชื่อและฉายาในตารางเรียงบนล่างเช่นกัน */
 .col-player {
     font-weight: 600;
     text-align: left;
     padding-left: 10px;
     font-size: 1.1rem;
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+}
+
+.player-name-wrapper {
+    display: flex;
     align-items: center;
+}
+
+/* 🟢 สไตล์ของป้ายฉายาใต้ชื่อ */
+.player-title-badge {
+    font-size: 0.75rem;
+    color: var(--btn);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 3px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--btn);
+    font-weight: 700;
+    display: inline-block;
+    line-height: 1.2;
 }
 
 .col-score {
@@ -280,7 +298,6 @@
         opacity: 0;
         transform: translateY(15px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);

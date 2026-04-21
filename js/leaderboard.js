@@ -32,7 +32,12 @@ function loadLeaderboard() {
         else if (boardType === "boxgame") score = sBox;
         else score = sBox + sDuo;
 
-        return { name: u.username, score: score };
+        // 🟢 ดึงฉายามาด้วย ถ้าไม่มีให้ใช้ "Newbie Coder" เป็นค่าเริ่มต้น
+        return { 
+            name: u.username, 
+            score: score,
+            title: u.currentTitle || "Newbie Coder" 
+        };
     });
 
     players.sort((a, b) => b.score - a.score);
@@ -65,7 +70,6 @@ function showCurrentUserRank() {
     let userData = players[userRank - 1];
     let formattedScore = userData.score.toLocaleString();
 
-    // ดึงคลาสป้ายอันดับแบบเดียวกับตารางมาใช้ เพื่อความกลมกลืน
     let rankDisplay = "";
     if (userRank === 1) {
         rankDisplay = `<div class="rank-badge rank-1"><i class="fa-solid fa-crown"></i></div>`;
@@ -77,10 +81,18 @@ function showCurrentUserRank() {
         rankDisplay = `<div class="rank-badge rank-other">${userRank}</div>`;
     }
 
+    // 🟢 สร้างป้ายฉายา
+    let titleDisplay = `<div class="player-title-badge">${userData.title}</div>`;
+
     existingCard.innerHTML = `
         <div class="user-rank-floating">
             <div class="floating-rank">${rankDisplay}</div>
-            <div class="floating-name"><i class="fa-solid fa-user-check" style="color: var(--subtext);"></i> ${userData.name} <span class="you-badge-float">(คุณ)</span></div>
+            <div class="floating-name">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <i class="fa-solid fa-user-check" style="color: var(--subtext);"></i> ${userData.name} <span class="you-badge-float">(คุณ)</span>
+                </div>
+                ${titleDisplay}
+            </div>
             <div class="floating-score"><i class="fa-solid fa-star score-icon"></i> ${formattedScore} <span>Pts</span></div>
         </div>
     `;
@@ -122,10 +134,16 @@ function renderBoard() {
             : p.name;
 
         let formattedScore = p.score.toLocaleString();
+        
+        // 🟢 สร้างป้ายฉายา
+        let titleDisplay = `<div class="player-title-badge">${p.title}</div>`;
 
         row.innerHTML = `
             <div class="col-rank">${rankDisplay}</div>
-            <div class="col-player">${displayName}</div>
+            <div class="col-player">
+                <div class="player-name-wrapper">${displayName}</div>
+                ${titleDisplay}
+            </div>
             <div class="col-score"><i class="fa-solid fa-star score-icon"></i> ${formattedScore} <span>Pts</span></div>
         `;
         board.appendChild(row);
