@@ -387,8 +387,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let correctNormalized = correctAnswer.trim().replace(/\s+/g, '').toLowerCase();
 
         if (userTyped === "") {
-            resultDisplay.textContent = "⚠️ กรุณากรอกคำตอบก่อนส่ง";
-            resultDisplay.style.color = "#ef4444";
+            // 🟢 เปลี่ยนข้อความเตือนให้ใช้ FontAwesome
+            resultDisplay.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> กรุณากรอกคำตอบก่อนส่ง';
+            resultDisplay.style.color = "#f59e0b"; // สีส้มเตือน
             isSubmitting = false;
             return;
         }
@@ -398,8 +399,9 @@ document.addEventListener('DOMContentLoaded', () => {
             let earnedScore = SCORE_MAP[currentDifficulty];
             addScoreToUser(earnedScore);
 
-            resultDisplay.textContent = `🎉 ถูกต้อง! รับไป ${earnedScore} คะแนน`;
-            resultDisplay.style.color = "#10B981";
+            // 🟢 เปลี่ยนข้อความตอบถูกให้ใช้ FontAwesome
+            resultDisplay.innerHTML = `<i class="fa-solid fa-circle-check"></i> ถูกต้อง! รับไป ${earnedScore} คะแนน`;
+            resultDisplay.style.color = "#10B981"; // สีเขียว
 
             submitBtn.disabled = true;
             answerField.disabled = true;
@@ -414,7 +416,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (duoStreak >= 3) grantAchievement("duo-streak-3");
             if (timeTaken <= 8) grantAchievement("duo-speed");
 
-            // 🟢 อัปเดต Daily Quest (รวมเควสต์เก่าและใหม่)
             let users = JSON.parse(localStorage.getItem("users")) || [];
             let uIdx = users.findIndex(u => u.username === localStorage.getItem("loggedInUser"));
             if (uIdx !== -1) {
@@ -428,32 +429,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 };
 
-                // คำนวณจำนวน "คำ" ที่พิมพ์ (อิงจากเว้นวรรค) เพื่อใช้สำหรับเควสต์เก่า type_3_words
                 let wordCount = correctAnswer.trim().split(/\s+/).length;
 
-                addQuest("q_duo_5", 1);          // เควสต์ใหม่: ตอบถูก Duo
-                addQuest("q_streak_3", duoStreak, true); // เควสต์ใหม่: คอมโบ
-                addQuest("q_score_30", earnedScore); // เควสต์ใหม่: คะแนนสะสม
-                addQuest("correct_5_times", 1);  // 🌟 เควสต์เก่า: ตอบถูกรวมโหมดใดก็ได้
-                addQuest("type_3_words", wordCount); // 🌟 เควสต์เก่า: จำนวนคำที่พิมพ์ถูก
+                addQuest("q_duo_5", 1);
+                addQuest("q_streak_3", duoStreak, true);
+                addQuest("q_score_30", earnedScore);
+                addQuest("correct_5_times", 1);
+                addQuest("type_3_words", wordCount);
 
                 users[uIdx].questProgress = p;
                 localStorage.setItem("users", JSON.stringify(users));
             }
 
             setTimeout(() => {
-                resultDisplay.textContent = "";
+                resultDisplay.innerHTML = ""; // เคลียร์ข้อความ
                 handleRoundProgress(false);
             }, 1000);
         } else {
             // === ตอบผิด ===
-            resultDisplay.textContent = "❌ ยังไม่ถูกต้อง ลองใหม่อีกครั้งนะ";
-            resultDisplay.style.color = "#ef4444";
+            // 🟢 เปลี่ยนข้อความตอบผิดให้ใช้ FontAwesome
+            resultDisplay.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> ยังไม่ถูกต้อง ลองใหม่อีกครั้งนะ';
+            resultDisplay.style.color = "#ef4444"; // สีแดง
             duoStreak = 0;
             isSubmitting = false;
         }
     }
-
+    
     // ฟังก์ชันจัดการปุ่มและหน้าต่างทั่วไป
     window.closePopup = function (id) { document.getElementById(id).style.display = "none"; };
     window.goHome = function () { window.location.href = "../Home.html"; };
