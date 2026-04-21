@@ -1,7 +1,6 @@
 /* ==========================================
-   PROFILE JS - ระบบจัดการฉายาและข้อมูล
+   PROFILE JS - ระบบจัดการโปรไฟล์และฉายา
 ========================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem("loggedInUser");
     let users = JSON.parse(localStorage.getItem("users")) || [];
@@ -13,8 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // 1. แมปข้อมูลชื่อฉายาจาก ID ใน achievement.js
-    // (รบกวนแก้ชื่อให้ตรงกับที่คุณตั้งไว้ในหน้า Achievement นะครับ)
+    // 1. แมปข้อมูลชื่อฉายาจาก ID (เชื่อมกับ Achievement)
     const TITLE_MAP = {
         'code-first': 'First Step Coder',
         'code-correct-5': 'Code Apprentice',
@@ -24,7 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
         'code-speed': 'Flash Programmer'
     };
 
-    // 2. แสดงข้อมูลเบื้องต้น
+    // 2. โชว์รูปโปรไฟล์ (ถ้ามีรูป Base64 เก็บไว้)
+    const profileAvatar = document.getElementById('profile-avatar');
+    if (profileAvatar && user.avatar) {
+        profileAvatar.src = user.avatar;
+    }
+
+    // 3. แสดงข้อมูลเบื้องต้น
     document.getElementById('disp-username').innerText = user.username;
     document.getElementById('val-username').innerText = user.username;
     document.getElementById('val-email').innerText = user.email || "No Email Provided";
@@ -32,11 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('disp-total-score').innerText = (user.scoreDuo || 0) + (user.scoreBox || 0);
     document.getElementById('input-bio').value = user.bio || "";
     
-    // แสดงฉายาปัจจุบันที่หัวข้อ
+    // แสดงฉายาปัจจุบัน
     const titleBadge = document.getElementById('selected-title-display');
     titleBadge.innerText = user.currentTitle || "Newbie Coder";
 
-    // 3. จัดการ dropdown ฉายาที่ปลดล็อกแล้ว
+    // 4. จัดการ dropdown ฉายาที่ปลดล็อกแล้ว
     const titleSelect = document.getElementById('title-select');
     const unlocked = user.unlockedAchievements || [];
 
@@ -45,35 +49,32 @@ document.addEventListener('DOMContentLoaded', () => {
             const option = document.createElement('option');
             option.value = TITLE_MAP[id];
             option.innerText = TITLE_MAP[id];
-            // ถ้าเป็นฉายาปัจจุบัน ให้เซ็ตเป็น Selected
             if (user.currentTitle === TITLE_MAP[id]) option.selected = true;
             titleSelect.appendChild(option);
         }
     });
 
-    // 4. ระบบบันทึกข้อมูล
+    // 5. ระบบบันทึกข้อมูลหน้า Profile
     const saveBtn = document.getElementById('saveProfileBtn');
-    saveBtn.addEventListener('click', () => {
-        const newBio = document.getElementById('input-bio').value;
-        const newTitle = titleSelect.value || "Newbie Coder";
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const newBio = document.getElementById('input-bio').value;
+            const newTitle = titleSelect.value || "Newbie Coder";
 
-        // อัปเดตลงในฐานข้อมูล
-        users[userIndex].bio = newBio;
-        users[userIndex].currentTitle = newTitle;
+            users[userIndex].bio = newBio;
+            users[userIndex].currentTitle = newTitle;
 
-        localStorage.setItem("users", JSON.stringify(users));
+            localStorage.setItem("users", JSON.stringify(users));
+            titleBadge.innerText = newTitle;
+            
+            const originalText = saveBtn.innerText;
+            saveBtn.innerText = "บันทึกสำเร็จ! ✔️";
+            saveBtn.style.background = "#10b981"; // สีเขียว
 
-        // อัปเดต UI ทันที
-        titleBadge.innerText = newTitle;
-        
-        // แอนิเมชันปุ่มบันทึกสำเร็จ
-        const originalText = saveBtn.innerText;
-        saveBtn.innerText = "บันทึกสำเร็จ! ✔️";
-        saveBtn.style.background = "#10b981";
-
-        setTimeout(() => {
-            saveBtn.innerText = originalText;
-            saveBtn.style.background = "";
-        }, 2000);
-    });
+            setTimeout(() => {
+                saveBtn.innerText = originalText;
+                saveBtn.style.background = ""; // กลับเป็นสีเดิม
+            }, 2000);
+        });
+    }
 });

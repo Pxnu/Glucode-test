@@ -1,5 +1,5 @@
 /* =========================================
-   PROFILE PAGE STYLES - GLUCODE THEME
+   PROFILE & SETTINGS PAGE STYLES
 ========================================= */
 
 .profile-wrapper {
@@ -53,7 +53,7 @@
 
 .title-badge {
     display: inline-block;
-    background: rgba(79, 70, 229, 0.1); /* สีฟ้าจางๆ */
+    background: rgba(79, 70, 229, 0.1);
     color: var(--btn);
     padding: 6px 16px;
     border-radius: 50px;
@@ -169,7 +169,7 @@
 }
 
 .info-group textarea {
-    resize: none; /* 🟢 ห้ามลากขยาย */
+    resize: none;
 }
 
 .full-width {
@@ -191,6 +191,14 @@
     font-weight: 700;
     height: 60px;
     border-radius: 16px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.save-btn:hover {
+    background: var(--hover);
+    transform: translateY(-2px);
 }
 
 @keyframes slideUp {
@@ -198,7 +206,6 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile Responsive */
 @media (max-width: 850px) {
     .profile-wrapper {
         grid-template-columns: 1fr;

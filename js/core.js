@@ -54,13 +54,21 @@ document.addEventListener('DOMContentLoaded', () => {
             leaderBoardLi.addEventListener('mouseleave', () => icon.classList.replace('fa-angle-up', 'fa-angle-down'));
         }
 
-        // Dropdown: Profile (ขวาสุด) (สร้างเมนูโปรไฟล์ขวาสุด แสดงชื่อผู้ใช้, เหรียญ, Quest, และ Logout)
+        // Dropdown: Profile
         if (navList) {
+            // 🟢 ตรวจสอบว่าผู้ใช้มีรูปอัปโหลดไว้หรือไม่
+            let userIconHtml = `<i id="dropdownIcon" class="fa-solid fa-user" style="margin-right: 5px;"></i>`;
+            if (currentUser && currentUser.avatar) {
+                // ถัามี ให้ใช้ tag img แบบวงกลมเล็กๆ แทน
+                userIconHtml = `<img src="${currentUser.avatar}" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 8px; border: 2px solid var(--btn);">`;
+            }
+
             const userLi = document.createElement('li');
             userLi.classList.add('user-dropdown-container');
+            // 🟢 แทรก userIconHtml เข้าไปตรงปุ่มแทนไอคอนเดิม
             userLi.innerHTML = `
-                <a href="${rootPath}Glucode ProfilePage/profile.html" id="dropdownToggleBtn" class="user-dropdown-btn">
-                    ${loggedInUser} <i id="dropdownIcon" class="fa-solid fa-angle-down"></i>
+                <a href="${rootPath}Glucode ProfilePage/profile.html" id="dropdownToggleBtn" class="user-dropdown-btn" style="display: flex; align-items: center;">
+                    ${userIconHtml} ${loggedInUser} <i id="dropdownArrow" class="fa-solid fa-angle-down" style="margin-left: 8px;"></i>
                 </a>
                 <div class="user-dropdown-menu" id="dropdownMenu">
                     <div class="dropdown-item coin-display">
@@ -76,10 +84,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             navList.appendChild(userLi);
 
-            // เปลี่ยนลูกศรชี้ขึ้น/ลง เมื่อเอาเมาส์ชี้
-            const dIcon = document.getElementById('dropdownIcon');
-            userLi.addEventListener('mouseenter', () => dIcon.classList.replace('fa-angle-down', 'fa-angle-up'));
-            userLi.addEventListener('mouseleave', () => dIcon.classList.replace('fa-angle-up', 'fa-angle-down'));
+            // แอนิเมชันลูกศร
+            const dIcon = document.getElementById('dropdownArrow');
+            if (dIcon) {
+                userLi.addEventListener('mouseenter', () => dIcon.classList.replace('fa-angle-down', 'fa-angle-up'));
+                userLi.addEventListener('mouseleave', () => dIcon.classList.replace('fa-angle-up', 'fa-angle-down'));
+            }
         }
 
         // อัปเดตข้อความทักทายในหน้า Home ให้เป็นชื่อผู้ใช้
