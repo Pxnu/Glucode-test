@@ -12,14 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // แมปข้อมูลชื่อฉายาจาก ID (เชื่อมกับ Achievement)
+    // 🟢 แมปข้อมูลชื่อฉายาให้ตรงกับ Achievement ที่ตั้งไว้
     const TITLE_MAP = {
-        'code-first': 'First Step Coder',
-        'code-correct-5': 'Code Apprentice',
-        'code-correct-10': 'Algorithm Master',
-        'word-3': 'Streak King',
-        'quiz-first': 'Fast Thinker',
-        'code-speed': 'Flash Programmer'
+        'box-first': 'ก้าวแรกนักต่อโค้ด (Jigsaw Beginner)',
+        'box-5': 'นักต่อโค้ดฝึกหัด (Block Apprentice)',
+        'box-10': 'ปรมาจารย์จิ๊กซอว์ (Jigsaw Master)',
+        'box-streak-3': 'ต่อเนื่องไม่มีสะดุด (Combo Builder)',
+        'box-speed': 'ไวดั่งสายฟ้า (Flash Builder)',
+        'duo-first': 'ก้าวแรกนักพิมพ์โค้ด (Typing Beginner)',
+        'duo-5': 'พิมพ์คล่องมือ (Fast Typist)',
+        'duo-10': 'แฮกเกอร์คีย์บอร์ด (Keyboard Hacker)',
+        'duo-streak-3': 'นิ้วไฟลุก! (Combo Typist)',
+        'duo-speed': 'พิมพ์ไวดั่งพายุ (Flash Typist)'
     };
 
     // โชว์รูปโปรไฟล์
@@ -34,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('val-email').innerText = user.email || "No Email Provided";
     document.getElementById('disp-coins').innerText = user.coins || 0;
     document.getElementById('disp-total-score').innerText = (user.scoreDuo || 0) + (user.scoreBox || 0);
-
+    
     // แสดงฉายาปัจจุบัน
     const titleBadge = document.getElementById('selected-title-display');
     titleBadge.innerText = user.currentTitle || "Newbie Coder";
@@ -59,18 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
         saveBtn.addEventListener('click', () => {
             const newTitle = titleSelect.value || "Newbie Coder";
 
-            // อัปเดตลงในฐานข้อมูล
             users[userIndex].currentTitle = newTitle;
             localStorage.setItem("users", JSON.stringify(users));
             titleBadge.innerText = newTitle;
-
+            
             const originalText = saveBtn.innerText;
             saveBtn.innerText = "บันทึกสำเร็จ! ✔️";
-            saveBtn.style.background = "#10b981";
+            saveBtn.style.background = "#10b981"; 
 
             setTimeout(() => {
                 saveBtn.innerText = originalText;
-                saveBtn.style.background = "";
+                saveBtn.style.background = ""; 
             }, 2000);
         });
     }
