@@ -420,6 +420,11 @@ function handleRoundProgress(isSkip = false) {
 
 // หน้าต่างแสดงความยินดีเมื่อผ่านครบ 5 ข้อ (Progression Popup)
 window.showProgressionPopup = function (isExhausted = false) {
+    // เพิ่มบรรทัดนี้ลงไปที่บรรทัดแรกๆ ของฟังก์ชัน เพื่ออัปเดต Quest ตามระดับความยากปัจจุบันที่เพิ่งเล่นผ่าน
+    if (typeof window.updateQuestProgress === 'function' && !isExhausted) {
+        window.updateQuestProgress(`box-${currentDifficulty}`, 1);
+    }
+
     let { avail } = getAvailableQuestions();
     let popup = document.getElementById("progressionPopup");
     let title = document.getElementById("progTitle");
@@ -612,14 +617,14 @@ window.submitAnswer = function () {
         boxStreak++;
         let timeTaken = (Date.now() - questionStartTime) / 1000;
 
-        // 🌟 อัปเดต Quest (ระบบจะเช็คและแจก Achievement ให้อัตโนมัติถ้าถึงเป้าหมาย)
-        if (typeof window.updateQuestProgress === 'function') {
-            window.updateQuestProgress("box-first", 1);
-            window.updateQuestProgress("box-5", 1);
-            window.updateQuestProgress("box-10", 1);
-            window.updateQuestProgress("box-streak-3", boxStreak);
-            if (timeTaken <= 5) window.updateQuestProgress("box-speed", 1);
-        }
+        // // 🌟 อัปเดต Quest (ระบบจะเช็คและแจก Achievement ให้อัตโนมัติถ้าถึงเป้าหมาย)
+        // if (typeof window.updateQuestProgress === 'function') {
+        //     window.updateQuestProgress("box-first", 1);
+        //     window.updateQuestProgress("box-5", 1);
+        //     window.updateQuestProgress("box-10", 1);
+        //     window.updateQuestProgress("box-streak-3", boxStreak);
+        //     if (timeTaken <= 5) window.updateQuestProgress("box-speed", 1);
+        // }
 
         // หน่วงเวลาให้ดีใจแปปนึง ก่อนเปลี่ยนข้อ
         setTimeout(() => {

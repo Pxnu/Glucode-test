@@ -253,6 +253,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // แสดงหน้าต่างยินดีเมื่อจบ 5 ข้อ
     window.showProgressionPopup = function (isExhausted = false) {
+        // เพิ่มบรรทัดนี้ลงไปเพื่ออัปเดต Quest โหมด Duo ตามระดับความยากปัจจุบัน
+        if (typeof window.updateQuestProgress === 'function' && !isExhausted) {
+            window.updateQuestProgress(`duo-${currentDifficulty}`, 1);
+        }
+
         let { avail } = getAvailableQuestions();
         let popup = document.getElementById("progressionPopup");
         let title = document.getElementById("progTitle");
@@ -389,14 +394,14 @@ document.addEventListener('DOMContentLoaded', () => {
             duoStreak++;
             let timeTaken = (Date.now() - questionStartTime) / 1000;
 
-            // 🌟 อัปเดต Quest (ระบบจะเช็คและแจก Achievement ให้อัตโนมัติถ้าถึงเป้าหมาย)
-            if (typeof window.updateQuestProgress === 'function') {
-                window.updateQuestProgress("duo-first", 1);
-                window.updateQuestProgress("duo-5", 1);
-                window.updateQuestProgress("duo-10", 1);
-                window.updateQuestProgress("duo-streak-3", duoStreak);
-                if (timeTaken <= 8) window.updateQuestProgress("duo-speed", 1);
-            }
+            // // 🌟 อัปเดต Quest (ระบบจะเช็คและแจก Achievement ให้อัตโนมัติถ้าถึงเป้าหมาย)
+            // if (typeof window.updateQuestProgress === 'function') {
+            //     window.updateQuestProgress("duo-first", 1);
+            //     window.updateQuestProgress("duo-5", 1);
+            //     window.updateQuestProgress("duo-10", 1);
+            //     window.updateQuestProgress("duo-streak-3", duoStreak);
+            //     if (timeTaken <= 8) window.updateQuestProgress("duo-speed", 1);
+            // }
 
             setTimeout(() => {
                 resultDisplay.textContent = "";

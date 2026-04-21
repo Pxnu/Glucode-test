@@ -1,20 +1,18 @@
 // js/quest.js
 
-// ข้อมูลโจทย์เควส ปรับให้ตรงกับ Achievement และเพิ่มระดับความยาก
+// ข้อมูลโจทย์เควส ปรับให้ตรงกับการผ่านแต่ละด่านของแต่ละเกม
 const questsData = [
     // หมวด Jigsaws (BoxGame)
-    { id: "box-first", title: "ก้าวแรกนักต่อโค้ด", desc: "เล่นโหมด Jigsaws ครั้งแรก", target: 1, reward: 10, difficulty: "Easy", achievementId: "box-first" },
-    { id: "box-5", title: "นักต่อโค้ดฝึกหัด", desc: "ตอบถูกรวมสะสม 5 ข้อ (โหมด Jigsaws)", target: 5, reward: 20, difficulty: "Medium", achievementId: "box-5" },
-    { id: "box-10", title: "ปรมาจารย์จิ๊กซอว์", desc: "ตอบถูกรวมสะสม 10 ข้อ (โหมด Jigsaws)", target: 10, reward: 30, difficulty: "Hard", achievementId: "box-10" },
-    { id: "box-streak-3", title: "ต่อเนื่องไม่มีสะดุด!", desc: "ตอบถูกติดต่อกัน 3 ข้อ (โหมด Jigsaws)", target: 3, reward: 50, difficulty: "Challenge", achievementId: "box-streak-3" },
-    { id: "box-speed", title: "ไวดั่งสายฟ้า", desc: "ตอบคำถาม Jigsaws ถูกภายใน 5 วินาที", target: 1, reward: 50, difficulty: "Challenge", achievementId: "box-speed" },
+    { id: "box-easy", title: "ก้าวแรกนักต่อจิ๊กซอว์", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Easy", target: 1, reward: 10, difficulty: "Easy", achievementId: "box-easy" },
+    { id: "box-medium", title: "นักต่อโค้ดระดับกลาง", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Medium", target: 1, reward: 20, difficulty: "Medium", achievementId: "box-medium" },
+    { id: "box-hard", title: "ผู้เชี่ยวชาญจิ๊กซอว์", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Hard", target: 1, reward: 30, difficulty: "Hard", achievementId: "box-hard" },
+    { id: "box-expert", title: "ปรมาจารย์นักต่อโค้ด", desc: "เล่นเคลียร์โหมด Jigsaws ระดับ Expert", target: 1, reward: 50, difficulty: "Challenge", achievementId: "box-expert" },
 
     // หมวด พิมพ์โค้ด (Duo)
-    { id: "duo-first", title: "ก้าวแรกนักพิมพ์โค้ด", desc: "เล่นโหมด Duo ครั้งแรก", target: 1, reward: 10, difficulty: "Easy", achievementId: "duo-first" },
-    { id: "duo-5", title: "พิมพ์คล่องมือ", desc: "ตอบถูกรวมสะสม 5 ข้อ (โหมด Duo)", target: 5, reward: 20, difficulty: "Medium", achievementId: "duo-5" },
-    { id: "duo-10", title: "แฮกเกอร์คีย์บอร์ด", desc: "ตอบถูกรวมสะสม 10 ข้อ (โหมด Duo)", target: 10, reward: 30, difficulty: "Hard", achievementId: "duo-10" },
-    { id: "duo-streak-3", title: "นิ้วไฟลุก!", desc: "ตอบถูกติดต่อกัน 3 ข้อ (โหมด Duo)", target: 3, reward: 50, difficulty: "Challenge", achievementId: "duo-streak-3" },
-    { id: "duo-speed", title: "พิมพ์ไวดั่งพายุ", desc: "ตอบคำถาม Duo ถูกภายใน 8 วินาที", target: 1, reward: 50, difficulty: "Challenge", achievementId: "duo-speed" }
+    { id: "duo-easy", title: "ก้าวแรกนักพิมพ์โค้ด", desc: "เล่นเคลียร์โหมด Duo ระดับ Easy", target: 1, reward: 10, difficulty: "Easy", achievementId: "duo-easy" },
+    { id: "duo-medium", title: "นักพิมพ์คล่องมือ", desc: "เล่นเคลียร์โหมด Duo ระดับ Medium", target: 1, reward: 20, difficulty: "Medium", achievementId: "duo-medium" },
+    { id: "duo-hard", title: "แฮกเกอร์คีย์บอร์ด", desc: "เล่นเคลียร์โหมด Duo ระดับ Hard", target: 1, reward: 30, difficulty: "Hard", achievementId: "duo-hard" },
+    { id: "duo-expert", title: "เทพเจ้าการพิมพ์", desc: "เล่นเคลียร์โหมด Duo ระดับ Expert", target: 1, reward: 50, difficulty: "Challenge", achievementId: "duo-expert" }
 ];
 
 function getUserData() {
