@@ -1,5 +1,5 @@
 /* ==========================================
-   QUEST JS - ระบบจัดการภารกิจรายวัน (รวมเควสต์เก่า+ใหม่)
+   QUEST JS - ระบบจัดการภารกิจรายวัน (มีเวลานับถอยหลัง)
 ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem("loggedInUser");
@@ -14,16 +14,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = users[userIndex];
     if (!user.questProgress) user.questProgress = {}; 
 
+    // 🟢 ระบบเวลานับถอยหลังถึงเที่ยงคืน (Countdown Timer)
+    function updateCountdown() {
+        const now = new Date();
+        // หาวันพรุ่งนี้ เวลา 00:00:00
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const timeLeft = tomorrow - now; // ลบกันออกมาเป็นมิลลิวินาที
+
+        // คำนวณเป็น ชั่วโมง นาที วินาที
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        const countdownEl = document.getElementById('countdownTimer');
+        if (countdownEl) {
+            // padStart(2, '0') ช่วยเติมเลข 0 ด้านหน้าถ้าเลขมีหลักเดียว เช่น 09 นาที 05 วินาที
+            countdownEl.innerText = `${String(hours).padStart(2, '0')} ชม. ${String(minutes).padStart(2, '0')} นาที ${String(seconds).padStart(2, '0')} วินาที`;
+        }
+    }
+    
+    // เรียกใช้ทันทีตอนเปิดหน้าเว็บ และตั้งเวลาให้อัปเดตทุก 1 วินาที (1000 ms)
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
     // 🟢 ฐานข้อมูล Quest (รวมเควสต์เก่า 2 อัน และใหม่ 5 อัน รวมเป็น 7 อัน)
     const QUEST_DATA = [
-        // --- เควสต์ใหม่ 5 อัน ---
         { id: 'q_login', title: 'เข้าสู่ระบบประจำวัน', desc: 'ล็อกอินเข้าสู่ระบบ Glucode (รีเซ็ตทุกวัน)', max: 1, reward: 10, icon: 'fa-right-to-bracket', color: '#3b82f6', bg: '#eff6ff' },
         { id: 'q_box_5', title: 'นักต่อบล็อกโค้ด', desc: 'ตอบถูกในโหมด Jigsaws 5 ข้อ', max: 5, reward: 20, icon: 'fa-puzzle-piece', color: '#10b981', bg: '#dcfce7' },
         { id: 'q_duo_5', title: 'นักพิมพ์โค้ดมือไว', desc: 'ตอบถูกในโหมด Duo 5 ข้อ', max: 5, reward: 30, icon: 'fa-keyboard', color: '#8b5cf6', bg: '#f3e8ff' },
         { id: 'q_streak_3', title: 'ต่อเนื่องไม่มีสะดุด', desc: 'ทำคอมโบตอบถูก 3 ข้อติดกันในโหมดใดก็ได้', max: 3, reward: 20, icon: 'fa-fire', color: '#ef4444', bg: '#fee2e2' },
         { id: 'q_score_30', title: 'นักสะสมคะแนน', desc: 'สะสมคะแนนจากการเล่นให้ครบ 30 Pts', max: 30, reward: 40, icon: 'fa-star', color: '#f59e0b', bg: '#fef3c7' },
-        
-        // --- เควสต์เก่า 2 อันที่ต้องการเก็บไว้ ---
         { id: 'type_3_words', title: 'ฝึกพิมพ์ 3 คำ', desc: 'พิมพ์โค้ดให้ถูกต้อง 3 คำ', max: 3, reward: 20, icon: 'fa-font', color: '#ec4899', bg: '#fce7f3' },
         { id: 'correct_5_times', title: 'ตอบถูก 5 ข้อ', desc: 'ตอบคำถามได้ถูกต้อง 5 ครั้ง', max: 5, reward: 50, icon: 'fa-check-double', color: '#14b8a6', bg: '#ccfbf1' }
     ];
