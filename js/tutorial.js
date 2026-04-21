@@ -11,15 +11,15 @@ function render() {
         content.innerHTML = `<h1>Welcome to Glucode</h1><p>เริ่มต้นการเรียนรู้การเขียนโค้ดแบบเกม</p>`;
     }
     else if (step === 1) {
-        content.innerHTML = `<h1>Glucode System</h1><p>Glucode เป็นเว็บเกมที่ช่วยฝึกเขียนโค้ด<br>โดยใช้เกมทำให้เรียนง่ายและสนุก</p><p>มี 2 รูปแบบ:<br>🧩 ต่อจิ๊กซอ<br>💻 พิมพ์โค้ด</p>`;
+        content.innerHTML = `<h1>Glucode System</h1><p>Glucode เป็นเว็บเกมที่ช่วยฝึกเขียนโค้ด<br>โดยใช้เกมทำให้เรียนง่ายและสนุก</p><p>มี 2 รูปแบบ:<br> ต่อจิ๊กซอ<br> พิมพ์โค้ด</p>`;
     }
     else if (step === 2) {
-        content.innerHTML = `<h1>🧩 Jigsaw Mode</h1><p>ลากโค้ดมาต่อให้ถูกต้องตามลำดับ</p><video autoplay muted loop playsinline style="width: 900px; max-width: 95%; border-radius: 20px; margin-top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);"><source src="../Glucode VdoTutorial/2.mp4" type="video/mp4"></video>`;
+        content.innerHTML = `<h1>Box Game</h1><p>ลากโค้ดมาต่อให้ถูกต้องตามลำดับ</p><video autoplay muted loop playsinline style="width: 900px; max-width: 95%; border-radius: 20px; margin-top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);"><source src="../Glucode VdoTutorial/1.mp4" type="video/mp4"></video>`;
         autoTimer = setTimeout(() => { step++; render(); }, 8000);
     }
     else if (step === 3) {
-        content.innerHTML = `<h1>💻 Code Mode</h1><p>พิมพ์โค้ดให้ถูกต้องตามโจทย์</p><video autoplay muted loop playsinline style="width: 900px; max-width: 95%; border-radius: 20px; margin-top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);"><source src="../Glucode VdoTutorial/1.mp4" type="video/mp4"></video>`;
-        autoTimer = setTimeout(() => { step++; render(); }, 8000);
+        content.innerHTML = `<h1>Find Game</h1><p>พิมพ์โค้ดให้ถูกต้องตามโจทย์</p><video autoplay muted loop playsinline style="width: 900px; max-width: 95%; border-radius: 20px; margin-top: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.25);"><source src="../Glucode VdoTutorial/2.mp4" type="video/mp4"></video>`;
+        autoTimer = setTimeout(() => { step++; render(); }, 8500);
     }
     else if (step === 4) {
         content.innerHTML = `<h1>Ready?</h1><p>คลิกเพื่อเริ่มเข้าสู่ระบบ</p>`;
