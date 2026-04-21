@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             localStorage.setItem('users', JSON.stringify(users));
-            showMessage('🎉 สมัครสมาชิกสำเร็จ! กรุณาล็อกอิน', '#22c55e');
+            showMessage('สมัครสมาชิกสำเร็จ! กรุณาล็อกอิน', '#22c55e');
             setTimeout(() => { toggleModeBtn.click(); }, 1500);
         }
     });
