@@ -1,80 +1,79 @@
 /* ==========================================
-   PROFILE JS - ข้อมูลผู้ใช้งาน
-   ==========================================
-   จัดการดึงข้อมูลจาก localStorage มาแสดงผล
-   และระบบบันทึกข้อมูลส่วนตัว (Profile Update)
+   PROFILE JS - ระบบจัดการฉายาและข้อมูล
 ========================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. ดึงข้อมูลพื้นฐาน
     const loggedInUser = localStorage.getItem("loggedInUser");
     let users = JSON.parse(localStorage.getItem("users")) || [];
-    
-    // ค้นหา Object ของผู้ใช้ปัจจุบัน
     const userIndex = users.findIndex(u => u.username === loggedInUser);
     const user = users[userIndex];
 
     if (!user) {
-        // ถ้าไม่มีข้อมูล ให้เด้งกลับหน้า Login
         window.location.href = "../Login.html";
         return;
     }
 
-    // 2. แสดงผลข้อมูลลงใน HTML
-    const displayFields = {
-        'disp-username': user.username,
-        'disp-coins': user.coins || 0,
-        'disp-total-score': (user.scoreDuo || 0) + (user.scoreBox || 0),
-        'input-email': user.email || "ไม่ระบุอีเมล",
-        'input-username': user.username,
-        'input-bio': user.bio || ""
+    // 1. แมปข้อมูลชื่อฉายาจาก ID ใน achievement.js
+    // (รบกวนแก้ชื่อให้ตรงกับที่คุณตั้งไว้ในหน้า Achievement นะครับ)
+    const TITLE_MAP = {
+        'code-first': 'First Step Coder',
+        'code-correct-5': 'Code Apprentice',
+        'code-correct-10': 'Algorithm Master',
+        'word-3': 'Streak King',
+        'quiz-first': 'Fast Thinker',
+        'code-speed': 'Flash Programmer'
     };
 
-    // วนลูปนำข้อมูลไปใส่ตาม ID ที่ตั้งไว้
-    for (let id in displayFields) {
-        const el = document.getElementById(id);
-        if (el) {
-            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-                el.value = displayFields[id];
-            } else {
-                el.innerText = displayFields[id];
-            }
+    // 2. แสดงข้อมูลเบื้องต้น
+    document.getElementById('disp-username').innerText = user.username;
+    document.getElementById('val-username').innerText = user.username;
+    document.getElementById('val-email').innerText = user.email || "No Email Provided";
+    document.getElementById('disp-coins').innerText = user.coins || 0;
+    document.getElementById('disp-total-score').innerText = (user.scoreDuo || 0) + (user.scoreBox || 0);
+    document.getElementById('input-bio').value = user.bio || "";
+    
+    // แสดงฉายาปัจจุบันที่หัวข้อ
+    const titleBadge = document.getElementById('selected-title-display');
+    titleBadge.innerText = user.currentTitle || "Newbie Coder";
+
+    // 3. จัดการ dropdown ฉายาที่ปลดล็อกแล้ว
+    const titleSelect = document.getElementById('title-select');
+    const unlocked = user.unlockedAchievements || [];
+
+    unlocked.forEach(id => {
+        if (TITLE_MAP[id]) {
+            const option = document.createElement('option');
+            option.value = TITLE_MAP[id];
+            option.innerText = TITLE_MAP[id];
+            // ถ้าเป็นฉายาปัจจุบัน ให้เซ็ตเป็น Selected
+            if (user.currentTitle === TITLE_MAP[id]) option.selected = true;
+            titleSelect.appendChild(option);
         }
-    }
+    });
 
-    // 3. ระบบบันทึกการเปลี่ยนแปลง (Save Changes)
+    // 4. ระบบบันทึกข้อมูล
     const saveBtn = document.getElementById('saveProfileBtn');
-    if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-            const newBio = document.getElementById('input-bio').value;
-            
-            // อัปเดตข้อมูลใน Array
-            users[userIndex].bio = newBio;
-            
-            // เซฟกลับลง localStorage
-            localStorage.setItem("users", JSON.stringify(users));
+    saveBtn.addEventListener('click', () => {
+        const newBio = document.getElementById('input-bio').value;
+        const newTitle = titleSelect.value || "Newbie Coder";
 
-            // แสดงสถานะการบันทึก
-            saveBtn.innerText = "บันทึกสำเร็จ! ✔️";
-            saveBtn.style.background = "#10B981"; // สีเขียว
+        // อัปเดตลงในฐานข้อมูล
+        users[userIndex].bio = newBio;
+        users[userIndex].currentTitle = newTitle;
 
-            setTimeout(() => {
-                saveBtn.innerText = "Save Changes";
-                saveBtn.style.background = ""; // กลับเป็นสีธีมปกติ
-            }, 2000);
-        });
-    }
+        localStorage.setItem("users", JSON.stringify(users));
 
-    // 4. แสดงระดับ (Rank) ตามคะแนน
-    const rankLabel = document.getElementById('profile-rank');
-    if (rankLabel) {
-        const totalScore = (user.scoreDuo || 0) + (user.scoreBox || 0);
-        let rank = "Beginner";
+        // อัปเดต UI ทันที
+        titleBadge.innerText = newTitle;
         
-        if (totalScore >= 500) rank = "Master of Code";
-        else if (totalScore >= 200) rank = "Professional";
-        else if (totalScore >= 50) rank = "Intermediate";
-        
-        rankLabel.innerText = rank;
-    }
+        // แอนิเมชันปุ่มบันทึกสำเร็จ
+        const originalText = saveBtn.innerText;
+        saveBtn.innerText = "บันทึกสำเร็จ! ✔️";
+        saveBtn.style.background = "#10b981";
+
+        setTimeout(() => {
+            saveBtn.innerText = originalText;
+            saveBtn.style.background = "";
+        }, 2000);
+    });
 });

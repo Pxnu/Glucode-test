@@ -3,71 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile | Glucode</title>
-
+    <title>Glucode - Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/core.css">
     <link rel="stylesheet" href="../css/profile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <nav style="width: 100%; z-index: 100;">
-        <div class="container" style="max-width: 1440px; padding: 1.5rem 2.25rem; background: transparent; box-shadow: none;">
-            <div class="logo">
-                <a href="../Home.html" style="color: var(--text); font-weight: bold; font-size: 2rem; text-decoration: none;">Glucode</a>
-            </div>
-            <ul style="margin: 0; padding: 0;">
+    <nav>
+        <div class="container">
+            <div class="logo"><a href="../Home.html">Glucode</a></div>
+            <ul>
                 <li><a href="../Home.html">Home</a></li>
                 <li><a href="../Glucode LearnPage/Learn.html">Learn</a></li>
-                <li><a href="#">Leader Board</a></li>
+                <li><a href="../Glucode LeaderBoard/leader_board.html">Leader Board</a></li>
             </ul>
         </div>
     </nav>
-    
-    <div class="profile-wrapper">
-    <div class="profile-sidebar">
-        <div class="avatar-container">
-            <img src="../profile/images/user.png" class="avatar-img">
-        </div>
-        <h3 class="profile-name" id="disp-username">User</h3>
-        <p class="profile-status" id="profile-rank">Rank...</p>
-        <div class="mini-stats">
-            <div class="stat-item"><b id="disp-coins">0</b><span>Coins</span></div>
-            <div class="stat-item"><b id="disp-total-score">0</b><span>Total Score</span></div>
-        </div>
-    </div>
-    
-    <div class="profile-content">
-        <div class="info-grid">
-            <div class="info-group">
-                <label>Username</label>
-                <input type="text" id="input-username" readonly>
-            </div>
-            <div class="info-group">
-                <label>Email</label>
-                <input type="text" id="input-email" readonly>
-            </div>
-            <div class="info-group full-width">
-                <label>Bio (เขียนคำแนะนำตัวของคุณ)</label>
-                <textarea id="input-bio" rows="4" placeholder="บอกเล่าเรื่องราวของคุณ..."></textarea>
-            </div>
-        </div>
-        <button id="saveProfileBtn" class="save-btn">Save Changes</button>
-        <button id="editProfileBtn" class="save-btn">Edit Profile</button>
-    </div>
-</div>
 
-  <div class="theme-switcher" id="themeSwitcherBox">
+    <div class="profile-wrapper">
+        <aside class="profile-sidebar">
+            <div class="avatar-container">
+                <img src="images/user.png" alt="Avatar" class="avatar-img" id="profile-avatar">
+            </div>
+            <h1 class="profile-name" id="disp-username">Username</h1>
+            <div class="title-badge" id="selected-title-display">Newbie Coder</div>
+            
+            <div class="mini-stats">
+                <div class="stat-item">
+                    <b id="disp-coins">0</b>
+                    <span>Coins</span>
+                </div>
+                <div class="stat-item">
+                    <b id="disp-total-score">0</b>
+                    <span>Total Score</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="profile-content">
+            <div class="content-header">
+                <h2>My Profile</h2>
+                <a href="setting.html" class="edit-link"><i class="fa-solid fa-gear"></i> Settings</a>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-group">
+                    <label>Username</label>
+                    <div class="info-value" id="val-username">User</div>
+                </div>
+                <div class="info-group">
+                    <label>Email Address</label>
+                    <div class="info-value" id="val-email">user@example.com</div>
+                </div>
+                <div class="info-group full-width">
+                    <label for="title-select">เลือกฉายาที่คุณได้รับ</label>
+                    <select id="title-select" class="profile-select">
+                        <option value="">-- ไม่ใช้ฉายา --</option>
+                    </select>
+                    <p class="helper-text">ฉายาจะได้มาจากการสะสม Achievement ในหน้าภารกิจ</p>
+                </div>
+                
+                <div class="info-group full-width">
+                    <label for="input-bio">About Me (Bio)</label>
+                    <textarea id="input-bio" placeholder="เขียนคำแนะนำตัวสั้นๆ ของคุณ..." rows="3"></textarea>
+                </div>
+            </div>
+            <button id="saveProfileBtn" class="save-btn">บันทึกข้อมูลส่วนตัว</button>
+        </main>
+    </div>
+
+    <div class="theme-switcher" id="themeSwitcherBox">
         <button class="theme-toggle-btn" id="themeToggleBtn">
             <i class="fa-solid fa-palette"></i>
             <i class="fa-solid fa-angle-up arrow-icon"></i>
         </button>
-        
         <div class="theme-options" id="themeOptions">
-            <button class="theme-btn" data-theme="light" title="Light Mode"><i class="fa-solid fa-sun"></i></button>
-            <button class="theme-btn" data-theme="dark" title="Dark Mode"><i class="fa-solid fa-moon"></i></button>
-            <button class="theme-btn" data-theme="halloween" title="Halloween"><i class="fa-solid fa-ghost"></i></button>
-            <button class="theme-btn" data-theme="winter" title="Winter"><i class="fa-solid fa-snowflake"></i></button>
-            <button class="theme-btn" data-theme="easter" title="Easter"><i class="fa-solid fa-egg"></i></button>
+            <button class="theme-btn" data-theme="light"><i class="fa-solid fa-sun"></i></button>
+            <button class="theme-btn" data-theme="dark"><i class="fa-solid fa-moon"></i></button>
+            <button class="theme-btn" data-theme="halloween"><i class="fa-solid fa-ghost"></i></button>
+            <button class="theme-btn" data-theme="winter"><i class="fa-solid fa-snowflake"></i></button>
+            <button class="theme-btn" data-theme="easter"><i class="fa-solid fa-egg"></i></button>
         </div>
     </div>
 
