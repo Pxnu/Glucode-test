@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem('loggedInUser');
     const path = window.location.pathname.toLowerCase();
     // เช็คว่าหน้าปัจจุบันอยู่ในโฟลเดอร์ย่อยหรือไม่ เพื่อจัดการ path ของลิงก์ให้ถูกต้อง
-    const isSubFolder = path.includes("game") || path.includes("leaderboard") || path.includes("learnpage") || path.includes("quest") || path.includes("tutorial");
+    const isSubFolder = path.includes("game") || path.includes("leaderboard") || path.includes("learnpage") || path.includes("quest") || path.includes("tutorial")
     const rootPath = isSubFolder ? "../" : "./";
 
     // ถ้าไม่ได้ล็อกอิน และไม่ได้อยู่หน้า login ให้เด้งกลับไปหน้า login ทันที
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>Coins: <strong>${userCoins}</strong></span>
                     </div>
                     <hr class="dropdown-divider">
-                    <a href="#" class="dropdown-item">Profile</a>
+                    <a href="${rootPath}Glucode ProfilePage/profile.html" class="dropdown-item">Profile</a>
                     <a href="#" class="dropdown-item">Shop</a>
                     <a href="${rootPath}Glucode quest/quest.html" class="dropdown-item">Quests</a>
                     <a href="${rootPath}Glucode quest/achievement.html" class="dropdown-item">Achievement</a>
