@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem('loggedInUser');
     const path = window.location.pathname.toLowerCase();
     // เช็คว่าหน้าปัจจุบันอยู่ในโฟลเดอร์ย่อยหรือไม่ เพื่อจัดการ path ของลิงก์ให้ถูกต้อง
-    const isSubFolder = path.includes("game") || path.includes("leaderboard") || path.includes("learnpage") || path.includes("quest") || path.includes("tutorial")
+    const isSubFolder = path.includes("game") || path.includes("leaderboard") || path.includes("learnpage") || path.includes("quest") || path.includes("tutorial") || path.includes("profile");
     const rootPath = isSubFolder ? "../" : "./";
 
     // ถ้าไม่ได้ล็อกอิน และไม่ได้อยู่หน้า login ให้เด้งกลับไปหน้า login ทันที
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const userLi = document.createElement('li');
             userLi.classList.add('user-dropdown-container');
             userLi.innerHTML = `
-                <a href="#" id="dropdownToggleBtn" class="user-dropdown-btn">
+                <a href="${rootPath}Glucode ProfilePage/profile.html" id="dropdownToggleBtn" class="user-dropdown-btn">
                     ${loggedInUser} <i id="dropdownIcon" class="fa-solid fa-angle-down"></i>
                 </a>
                 <div class="user-dropdown-menu" id="dropdownMenu">
