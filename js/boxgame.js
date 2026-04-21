@@ -655,6 +655,11 @@ window.goHome = function() { window.location.href = "../Home.html"; };
 // โหลดเกมทันทีเมื่อโหลดไฟล์ JS เสร็จสิ้น
 window.onload = function() {
     loadGameState();
-    loadLevel();
     syncGameUI();
+    // ❌ ยังไม่ loadLevel()
+};
+
+window.startGame = function() {
+    document.getElementById("startScreen").style.display = "none";
+    loadLevel(); // เริ่มเกม
 };
