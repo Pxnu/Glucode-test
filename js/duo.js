@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { tags: ["<i>", "Note", "</i>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับทำข้อความตัวเอียง (Italic) ที่มีคำว่า 'Note'" },
             { tags: ["<u>", "Link", "</u>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับขีดเส้นใต้ (Underline) คำว่า 'Link'" },
             { tags: ["<h2>", "About Me", "</h2>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างหัวข้อรอง (H2) ที่มีข้อความ 'About Me" },
-            { tags: ["<ul>", "<small>", "© 2026", "</small>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับแสดงข้อความขนาดเล็ก (Small) คำว่า '© 2026'" },
-            { tags: ["<ol>", "<code>", "console.log(1)", "</code>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับแสดงรูปแบบโค้ด (Code) ข้อความ 'console.log(1)'" },
+            { tags: ["<small>", "© 2026", "</small>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับแสดงข้อความขนาดเล็ก (Small) คำว่า '© 2026'" },
+            { tags: ["<code>", "console.log(1)", "</code>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับแสดงรูปแบบโค้ด (Code) ข้อความ 'console.log(1)'" },
             { tags: ["<h3>", "Details", "</h3>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างหัวข้อระดับ 3 (H3) ที่มีข้อความ 'Details'" },
             { tags: ["<strong>", "Warning!", "</strong>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับเน้นข้อความสำคัญ (Strong) คำว่า 'Warning!'" }
         ],
