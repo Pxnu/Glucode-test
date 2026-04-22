@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 leaderBoardLi.classList.add('user-dropdown-container');
                 leaderBoardLi.innerHTML = `
                     <a href="${rootPath}Glucode LeaderBoard/leader_board.html" class="user-dropdown-btn">
-                        Leader Board <i id="leaderboardIcon" class="fa-solid fa-angle-down"></i>
+                        LeaderBoard <i id="leaderboardIcon" class="fa-solid fa-angle-down"></i>
                     </a>
                     <div class="user-dropdown-menu" style="left: 50%; transform: translateX(-50%); text-align: center;">
                         <a href="${rootPath}Glucode LeaderBoard/leader_board.html?type=duo" class="dropdown-item">Find Game</a>
