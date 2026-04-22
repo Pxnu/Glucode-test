@@ -16,9 +16,9 @@ function loadLeaderboard() {
     if (title) {
         // 🟢 อัปเกรดไอคอนให้ดูพรีเมียมขึ้น (มีพื้นหลังสีอ่อนๆ รองรับตัวไอคอน)
         if (boardType === "duo") {
-            title.innerHTML = '<i class="fa-solid fa-terminal" style="color: #8b5cf6; background: rgba(139, 92, 246, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Duo Leader Board';
+            title.innerHTML = '<i class="fa-solid fa-terminal" style="color: #8b5cf6; background: rgba(139, 92, 246, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Find Game Leader Board';
         } else if (boardType === "boxgame") {
-            title.innerHTML = '<i class="fa-solid fa-puzzle-piece" style="color: #10B981; background: rgba(16, 185, 129, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Jigsaw Leader Board';
+            title.innerHTML = '<i class="fa-solid fa-puzzle-piece" style="color: #10B981; background: rgba(16, 185, 129, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Box Game Leader Board';
         } else {
             title.innerHTML = '<i class="fa-solid fa-ranking-star" style="color: #F59E0B; background: rgba(245, 158, 11, 0.15); padding: 12px; border-radius: 14px; margin-right: 12px; font-size: 1.8rem;"></i> Global Leader Board';
         }

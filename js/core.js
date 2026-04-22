@@ -61,8 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         Leader Board <i id="leaderboardIcon" class="fa-solid fa-angle-down"></i>
                     </a>
                     <div class="user-dropdown-menu" style="left: 50%; transform: translateX(-50%); text-align: center;">
-                        <a href="${rootPath}Glucode LeaderBoard/leader_board.html?type=duo" class="dropdown-item">Duo</a>
-                        <a href="${rootPath}Glucode LeaderBoard/leader_board.html?type=boxgame" class="dropdown-item">Jigsaws</a> 
+                        <a href="${rootPath}Glucode LeaderBoard/leader_board.html?type=duo" class="dropdown-item">Find Game</a>
+                        <a href="${rootPath}Glucode LeaderBoard/leader_board.html?type=boxgame" class="dropdown-item">Box Game</a> 
                     </div>
                 `;
                 const icon = document.getElementById('leaderboardIcon');
@@ -217,16 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
 ========================================== */
 // ฐานข้อมูลฉายา เพื่อดึงชื่อและไอคอนไปโชว์ใน Popup ขวาล่าง
 const GLOBAL_ACHIEVEMENTS = {
-    'box-first': { title: 'ก้าวแรกนักต่อโค้ด', desc: 'เล่นโหมด Jigsaws ครั้งแรก', icon: 'fa-puzzle-piece', color: '#4f46e5' },
-    'box-5': { title: 'นักต่อโค้ดฝึกหัด', desc: 'ตอบถูกรวม 5 ข้อ (Jigsaws)', icon: 'fa-layer-group', color: '#10b981' },
-    'box-10': { title: 'ปรมาจารย์จิ๊กซอว์', desc: 'ตอบถูกรวม 10 ข้อ (Jigsaws)', icon: 'fa-crown', color: '#f59e0b' },
-    'box-streak-3': { title: 'ต่อเนื่องไม่มีสะดุด!', desc: 'ตอบถูกติดกัน 3 ข้อ (Jigsaws)', icon: 'fa-fire', color: '#ef4444' },
+    'box-first': { title: 'ก้าวแรกนักต่อโค้ด', desc: 'เล่นโหมด Box Game ครั้งแรก', icon: 'fa-puzzle-piece', color: '#4f46e5' },
+    'box-5': { title: 'นักต่อโค้ดฝึกหัด', desc: 'ตอบถูกรวม 5 ข้อ (Box Game)', icon: 'fa-layer-group', color: '#10b981' },
+    'box-10': { title: 'ปรมาจารย์จิ๊กซอว์', desc: 'ตอบถูกรวม 10 ข้อ (Box Game)', icon: 'fa-crown', color: '#f59e0b' },
+    'box-streak-3': { title: 'ต่อเนื่องไม่มีสะดุด!', desc: 'ตอบถูกติดกัน 3 ข้อ (Box Game)', icon: 'fa-fire', color: '#ef4444' },
     'box-speed': { title: 'ไวดั่งสายฟ้า', desc: 'ตอบถูกภายใน 5 วินาที', icon: 'fa-bolt', color: '#6366f1' },
 
-    'duo-first': { title: 'ก้าวแรกนักพิมพ์โค้ด', desc: 'เล่นโหมด Duo ครั้งแรก', icon: 'fa-keyboard', color: '#0ea5e9' },
-    'duo-5': { title: 'พิมพ์คล่องมือ', desc: 'ตอบถูกรวม 5 ข้อ (Duo)', icon: 'fa-code', color: '#10b981' },
-    'duo-10': { title: 'แฮกเกอร์คีย์บอร์ด', desc: 'ตอบถูกรวม 10 ข้อ (Duo)', icon: 'fa-laptop-code', color: '#f59e0b' },
-    'duo-streak-3': { title: 'นิ้วไฟลุก!', desc: 'ตอบถูกติดกัน 3 ข้อ (Duo)', icon: 'fa-fire-flame-curved', color: '#ef4444' },
+    'duo-first': { title: 'ก้าวแรกนักพิมพ์โค้ด', desc: 'เล่นโหมด Find Game ครั้งแรก', icon: 'fa-keyboard', color: '#0ea5e9' },
+    'duo-5': { title: 'พิมพ์คล่องมือ', desc: 'ตอบถูกรวม 5 ข้อ (Find Game)', icon: 'fa-code', color: '#10b981' },
+    'duo-10': { title: 'แฮกเกอร์คีย์บอร์ด', desc: 'ตอบถูกรวม 10 ข้อ (Find Game)', icon: 'fa-laptop-code', color: '#f59e0b' },
+    'duo-streak-3': { title: 'นิ้วไฟลุก!', desc: 'ตอบถูกติดกัน 3 ข้อ (Find Game)', icon: 'fa-fire-flame-curved', color: '#ef4444' },
     'duo-speed': { title: 'พิมพ์ไวดั่งพายุ', desc: 'ตอบถูกภายใน 8 วินาที', icon: 'fa-stopwatch', color: '#8b5cf6' }
 };
 

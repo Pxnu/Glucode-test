@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 🟢 ฐานข้อมูล Quest (รวมเควสต์เก่า 2 อัน และใหม่ 5 อัน รวมเป็น 7 อัน)
     const QUEST_DATA = [
         { id: 'q_login', title: 'เข้าสู่ระบบประจำวัน', desc: 'ล็อกอินเข้าสู่ระบบ Glucode (รีเซ็ตทุกวัน)', max: 1, reward: 10, icon: 'fa-right-to-bracket', color: '#3b82f6', bg: '#eff6ff' },
-        { id: 'q_box_5', title: 'นักต่อบล็อกโค้ด', desc: 'ตอบถูกในโหมด Jigsaws 5 ข้อ', max: 5, reward: 20, icon: 'fa-puzzle-piece', color: '#10b981', bg: '#dcfce7' },
-        { id: 'q_duo_5', title: 'นักพิมพ์โค้ดมือไว', desc: 'ตอบถูกในโหมด Duo 5 ข้อ', max: 5, reward: 30, icon: 'fa-keyboard', color: '#8b5cf6', bg: '#f3e8ff' },
+        { id: 'q_box_5', title: 'นักต่อบล็อกโค้ด', desc: 'ตอบถูกในโหมด Box Game 5 ข้อ', max: 5, reward: 20, icon: 'fa-puzzle-piece', color: '#10b981', bg: '#dcfce7' },
+        { id: 'q_duo_5', title: 'นักพิมพ์โค้ดมือไว', desc: 'ตอบถูกในโหมด Find Game 5 ข้อ', max: 5, reward: 30, icon: 'fa-keyboard', color: '#8b5cf6', bg: '#f3e8ff' },
         { id: 'q_streak_3', title: 'ต่อเนื่องไม่มีสะดุด', desc: 'ทำคอมโบตอบถูก 3 ข้อติดกันในโหมดใดก็ได้', max: 3, reward: 20, icon: 'fa-fire', color: '#ef4444', bg: '#fee2e2' },
         { id: 'q_score_30', title: 'นักสะสมคะแนน', desc: 'สะสมคะแนนจากการเล่นให้ครบ 30 Pts', max: 30, reward: 40, icon: 'fa-star', color: '#f59e0b', bg: '#fef3c7' },
         { id: 'type_3_words', title: 'ฝึกพิมพ์ 3 คำ', desc: 'พิมพ์โค้ดให้ถูกต้อง 3 คำ', max: 3, reward: 20, icon: 'fa-font', color: '#ec4899', bg: '#fce7f3' },
