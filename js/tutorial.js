@@ -39,7 +39,7 @@ function render() {
         // ✅ ล้างค่าใน Session เพื่อบังคับให้หน้า Home โชว์หน้า Welcome ทันทีที่จบ Tutorial
         sessionStorage.removeItem("hasSeenWelcome"); 
 
-        window.location.href = "../index.html";
+        window.location.href = "../home.html";
     }
 }
 

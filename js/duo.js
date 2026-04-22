@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ฟังก์ชันจัดการปุ่มและหน้าต่างทั่วไป
     window.closePopup = function (id) { document.getElementById(id).style.display = "none"; };
-    window.goHome = function () { window.location.href = "../index.html"; };
+    window.goHome = function () { window.location.href = "../home.html"; };
 
     // --- ตอนหน้าเว็บโหลดเสร็จ ---
     loadGameState(); // โหลดเซฟ

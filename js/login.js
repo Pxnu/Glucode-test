@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 🔥 เช็คว่า User คนนี้เคยดู Tutorial หรือยัง
                 setTimeout(() => {
                     if (user.hasSeenTutorial) {
-                        window.location.href = './index.html';
+                        window.location.href = './home.html';
                     } else {
                         window.location.href = '../Glucode tutorial/tutorial.html';
                     }
@@ -65,6 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 showMessage('Username หรือ Password ไม่ถูกต้อง', '#ef4444');
             }
         } else {
+            // 🛑 เพิ่มการตรวจสอบว่าอีเมลต้องเป็น @gmail.com เท่านั้น
+            if (!email.toLowerCase().endsWith('@gmail.com')) {
+                showMessage('กรุณาใช้อีเมล @gmail.com ในการสมัครสมาชิก', '#ef4444');
+                return;
+            }
+
             // 🛑 ตรวจสอบ Username ไม่ให้มี @ หรือคำว่า gmail (จากที่คุณแก้ไปก่อนหน้า)
             if (username.includes('@') || username.toLowerCase().includes('gmail')) {
                 showMessage('Username ไม่สามารถใช้อีเมลได้', '#ef4444');

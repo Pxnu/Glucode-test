@@ -677,7 +677,7 @@ window.submitAnswer = function () {
 
 // ฟังก์ชันปิดหน้าต่าง Pop-up
 window.closePopup = function (id) { document.getElementById(id).style.display = "none"; };
-window.goHome = function () { window.location.href = "../index.html"; };
+window.goHome = function () { window.location.href = "../home.html"; };
 
 // โหลดเกมทันทีเมื่อโหลดไฟล์ JS เสร็จสิ้น
 window.onload = function () {
