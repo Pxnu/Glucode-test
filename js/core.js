@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ==========================================
-   GLOBAL ACHIEVEMENT TOAST SYSTEM
+   GLOBAL ACHIEVEMENT TOAST SYSTEM test
 ========================================== */
 // ฐานข้อมูลฉายา เพื่อดึงชื่อและไอคอนไปโชว์ใน Popup ขวาล่าง
 const GLOBAL_ACHIEVEMENTS = {
