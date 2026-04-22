@@ -13,60 +13,60 @@ document.addEventListener('DOMContentLoaded', () => {
     ========================= */
     const quizData = {
         easy: [
-            { tags: ["<h1>", "Welcome", "</h1>"], hint: "สร้างหัวเรื่องใหญ่ 'Welcome'" },
-            { tags: ["<p>", "Hello World", "</p>"], hint: "สร้างย่อหน้าข้อความ 'Hello World'" },
-            { tags: ["<button>", "Submit", "</button>"], hint: "สร้างปุ่ม 'Submit'" },
+            { tags: ["<h1>", "Hello", "</h1>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างหัวข้อหลัก (H1) ที่มีข้อความ 'Hello'" },
+            { tags: ["<p>", "This is my website", "</p>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างย่อหน้า (Paragraph) ที่มีข้อความ 'This is my website'" },
+            { tags: ["<button>", "Submit", "</button>"], hint: "สร้างปุ่ม (Button) ที่มีข้อความ 'Submit'" },
             { tags: ["<div>", "Box", "</div>"], hint: "สร้างกล่องที่มีข้อความ 'Box'" },
-            { tags: ["<span>", "Text", "</span>"], hint: "สร้าง span ที่มี 'Text'" },
-            { tags: ["<h2>", "Title", "</h2>"], hint: "สร้างหัวข้อย่อย 'Title'" },
-            { tags: ["<a href='#'>", "Link", "</a>"], hint: "สร้างลิงก์ที่มีข้อความ 'Link'" },
-            { tags: ["<img src='img.jpg'>"], hint: "เพิ่มรูปภาพ 'img.jpg'" },
-            { tags: ["<ul>", "<li>Item 1</li>", "<li>Item 2</li>", "</ul>"], hint: "สร้างรายการไม่เรียงลำดับ 2 รายการ" },
-            { tags: ["<ol>", "<li>First</li>", "<li>Second</li>", "</ol>"], hint: "สร้างรายการเรียงลำดับ 2 รายการ" },
-            { tags: ["<strong>", "Bold", "</strong>"], hint: "ข้อความตัวหนา 'Bold'" },
-            { tags: ["<em>", "Italic", "</em>"], hint: "ข้อความตัวเอียง 'Italic'" }
+            { tags: ["<b>", "Important", "</b>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับทำข้อความตัวหนา (Bold) ที่มีคำว่า 'Important" },
+            { tags: ["<i>", "Note", "</i>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับทำข้อความตัวเอียง (Italic) ที่มีคำว่า 'Note'" },
+            { tags: ["<u>", "Link", "</u>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับขีดเส้นใต้ (Underline) คำว่า 'Link'" },
+            { tags: ["<h2>", "About Me", "</h2>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างหัวข้อรอง (H2) ที่มีข้อความ 'About Me" },
+            { tags: ["<ul>", "<small>", "© 2026", "</small>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับแสดงข้อความขนาดเล็ก (Small) คำว่า '© 2026'" },
+            { tags: ["<ol>", "<code>", "console.log(1)", "</code>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับแสดงรูปแบบโค้ด (Code) ข้อความ 'console.log(1)'" },
+            { tags: ["<h3>", "Details", "</h3>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างหัวข้อระดับ 3 (H3) ที่มีข้อความ 'Details'" },
+            { tags: ["<strong>", "Warning!", "</strong>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับเน้นข้อความสำคัญ (Strong) คำว่า 'Warning!'" }
         ],
         medium: [
-            { tags: ["<input type='text'>"], hint: "สร้างช่องกรอกข้อความ" },
-            { tags: ["<input type='password'>"], hint: "สร้างช่องกรอกรหัสผ่าน" },
-            { tags: ["<form>", "<input>", "</form>"], hint: "สร้างฟอร์มง่าย ๆ" },
+            { tags: ["<li>", "Home", "</li>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างรายการ (List Item) ข้อความ 'Home'" },
+            { tags: ["<div>", "Content here", "</div>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างกล่องเนื้อหา (Div) ข้อความ 'Content here'" },
+            { tags: ["<tr>", "<td>", "Data", "</td>", "</tr>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างแถวตาราง (Table Row) และข้อมูล 'Data'" },
             { tags: ["<hr>"], hint: "สร้างเส้นคั่น" },
             { tags: ["<br>"], hint: "ขึ้นบรรทัดใหม่" },
-            { tags: ["<footer>", "My Footer", "</footer>"], hint: "สร้างส่วนท้าย 'My Footer'" },
-            { tags: ["<header>", "My Header", "</header>"], hint: "สร้างส่วนหัว 'My Header'" },
-            { tags: ["<section>", "Content", "</section>"], hint: "สร้าง section 'Content'" },
-            { tags: ["<table>", "<tr><td>1</td><td>2</td></tr>", "</table>"], hint: "สร้างตาราง 1 แถว 2 คอลัมน์" },
-            { tags: ["<div class='box'>", "Hello", "</div>"], hint: "สร้าง div พร้อม class 'box'" },
-            { tags: ["<a href='https://example.com'>", "Go", "</a>"], hint: "สร้างลิงก์ไป example.com" },
+            { tags: ["<footer>", "My Footer", "</footer>"], hint: "สร้างส่วนท้ายที่มีข้อความที่มีคำว่า 'My Footer'" },
+            { tags: ["<header>", "My Header", "</header>"], hint: "สร้างส่วนหัวที่มีข้อความที่มีคำว่า 'My Header'" },
+            { tags: ["<section>", "Content", "</section>"], hint: "สร้าง section ที่มีข้อความที่มีคำว่า 'Content'" },
+            //{ tags: ["<table>", "<tr><td>1</td><td>2</td></tr>", "</table>"], hint: "สร้างตาราง 1 แถว 2 คอลัมน์" },
+            //{ tags: ["<div class='box'>", "Hello", "</div>"], hint: "สร้าง div พร้อม class 'box'" },
+            //{ tags: ["<a href='https://example.com'>", "Go", "</a>"], hint: "สร้างลิงก์ไป example.com" },
             { tags: ["<input type='checkbox'>"], hint: "สร้าง checkbox" },
-            { tags: ["<input type='radio'>"], hint: "สร้าง radio button" }
+            //{ tags: ["<input type='radio'>"], hint: "สร้าง radio button" }
         ],
         hard: [
-            { tags: ["<label for='id1'>", "Name", "</label>"], hint: "สร้าง label ให้ input id='id1'" },
-            { tags: ["<textarea>", "Write here", "</textarea>"], hint: "สร้าง textarea พร้อมข้อความ" },
-            { tags: ["<select>", "<option>Option 1</option>", "<option>Option 2</option>", "</select>"], hint: "สร้าง dropdown 2 ตัวเลือก" },
-            { tags: ["<img src='pic.jpg' alt='Picture'>"], hint: "เพิ่มรูปพร้อม alt" },
-            { tags: ["<meta charset='UTF-8'>"], hint: "กำหนด charset UTF-8" },
-            { tags: ["<link rel='stylesheet' href='style.css'>"], hint: "เชื่อมไฟล์ CSS" },
-            { tags: ["<nav>", "Menu", "</nav>"], hint: "สร้าง navigation bar" },
-            { tags: ["<article>", "Article Content", "</article>"], hint: "สร้าง article" },
-            { tags: ["<aside>", "Sidebar", "</aside>"], hint: "สร้าง sidebar" },
+            { tags: ["<h1>", "Welcome", "</h1>", "<button>", "Start", "</button>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างหัวข้อ 'Welcome' และปุ่ม 'Start' ต่อท้าย" },
+            { tags: ["<textarea>", "SPU", "</textarea>"], hint: "สร้าง textarea พร้อมข้อความ SPU" },
+            { tags: ["<p>", "Hi", "<b>", "User", "</b>", "</p>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างย่อหน้าที่มีคำว่า 'User' เป็นตัวหนา (Hi <b>User</b>)" },
+            { tags: ["<ul>", "<li>", "Info", "</li>", "</ul>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างรายการแบบไม่ลำดับ (Unordered List) ที่มีรายการ 'Info'" },
+            { tags: ["<header>", "<nav>", "Menu", "</nav>", "</header>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างส่วนหัว (Header) ที่มีเมนูนำทาง (Nav) ข้อความ 'Menu'" },
+            { tags: ["<form>", '<input type="password">', "</form>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างฟอร์มที่มีช่องกรอกรหัสผ่าน (Password Input)" },
+            //{ tags: ["<nav>", "Menu", "</nav>"], hint: "สร้าง navigation bar" },
+            //{ tags: ["<article>", "Article Content", "</article>"], hint: "สร้าง article" },
+            //{ tags: ["<aside>", "Sidebar", "</aside>"], hint: "สร้าง sidebar" },
             { tags: ["<main>", "Main Content", "</main>"], hint: "สร้าง main content" },
-            { tags: ["<div id='container'>", "<p>Nested</p>", "</div>"], hint: "div ภายในมี p" },
-            { tags: ["<ul>", "<li><a href='#'>Link1</a></li>", "<li><a href='#'>Link2</a></li>", "</ul>"], hint: "ul กับ li ที่มีลิงก์" }
+            //{ tags: ["<div id='container'>", "<p>Nested</p>", "</div>"], hint: "div ภายในมี p" },
+            //{ tags: ["<ul>", "<li><a href='#'>Link1</a></li>", "<li><a href='#'>Link2</a></li>", "</ul>"], hint: "ul กับ li ที่มีลิงก์" }
         ],
         expert: [
-            { tags: ["<form action='/submit' method='post'>", "<input type='text'>", "</form>"], hint: "ฟอร์ม POST" },
-            { tags: ["<table>", "<tr><th>Name</th><th>Age</th></tr>", "<tr><td>Alice</td><td>20</td></tr>", "</table>"], hint: "ตารางชื่อและอายุ" },
-            { tags: ["<section>", "<article>", "Content", "</article>", "</section>"], hint: "section ภายในมี article" },
-            { tags: ["<div class='grid'>", "<div>1</div>", "<div>2</div>", "</div>"], hint: "div แบบ grid" },
-            { tags: ["<audio controls>", "<source src='audio.mp3' type='audio/mpeg'>", "</audio>"], hint: "เพิ่ม audio player" },
-            { tags: ["<video controls>", "<source src='video.mp4' type='video/mp4'>", "</video>"], hint: "เพิ่ม video player" },
-            { tags: ["<iframe src='https://example.com'></iframe>"], hint: "ฝัง iframe" },
-            { tags: ["<canvas id='myCanvas'></canvas>"], hint: "สร้าง canvas" },
-            { tags: ["<blockquote>", "Quote", "</blockquote>"], hint: "สร้าง blockquote" },
-            { tags: ["<details>", "<summary>More</summary>", "Extra info", "</details>"], hint: "details/summary" },
-            { tags: ["<figure>", "<img src='img.jpg'>", "<figcaption>Caption</figcaption>", "</figure>"], hint: "figure + caption" }
+            { tags: ["<article>", "<h2>", "My Blog", "</h2>", "<p>", "Welcome to my blog", "</p>", "</article>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างบทความ (Article) ที่มีหัวข้อ 'My Blog' และเนื้อหา" },
+            { tags: ["<aside>", "<ul>", "<li>", '<a href="#">', "Link", "</a>", "</li>", "</ul>", "</aside>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างแถบข้าง (Aside) ที่มีรายการลิงก์ 'Link'" },
+            { tags: ["<figure>", '<img src="img.jpg" alt="image">', "<figcaption>", "This is an image", "</figcaption>", "</figure>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างรูปภาพพร้อมคำอธิบาย (Figcaption) 'This is an image'" },
+            { tags: ["<fieldset>", "<legend>", "Login", "</legend>", '<input type="text">', "</fieldset>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับจัดกลุ่มฟอร์ม (Fieldset) หัวข้อ 'Login' และช่องรับข้อมูล" },
+            //{ tags: ["<audio controls>", "<source src='audio.mp3' type='audio/mpeg'>", "</audio>"], hint: "เพิ่ม audio player" },
+            //{ tags: ["<video controls>", "<source src='video.mp4' type='video/mp4'>", "</video>"], hint: "เพิ่ม video player" },
+            //{ tags: ["<iframe src='https://example.com'></iframe>"], hint: "ฝัง iframe" },
+            //{ tags: ["<canvas id='myCanvas'></canvas>"], hint: "สร้าง canvas" },
+            //{ tags: ["<blockquote>", "Quote", "</blockquote>"], hint: "สร้าง blockquote" },
+            //{ tags: ["<details>", "<summary>More</summary>", "Extra info", "</details>"], hint: "details/summary" },
+            { tags: ["<table>", "<thead>", "</thead>", "<tbody>", "</tbody>", "</table>"], hint: "จงสร้างชุดคำสั่ง HTML สำหรับสร้างตารางที่มีส่วนหัว (Thead) และส่วนข้อมูล (Tbody)" }
         ]
     };
 
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
        GAME STATE
        (ตัวแปรควบคุมเกม)
     ========================= */
-    const SCORE_MAP = { easy: 1, medium: 2, hard: 3, expert: 4 }; // คะแนนต่อข้อ
+    const SCORE_MAP = { easy: 2, medium: 4, hard: 6, expert: 8 }; // คะแนนต่อข้อ
     const ROUND_LIMIT = 5; // ทำครบ 5 ข้อถึงจะเด้งหน้าต่างพักครึ่ง
     const SKIP_COSTS = { easy: 10, medium: 20, hard: 30, expert: 40 }; // ราคาข้ามด่าน
 
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // ฟังก์ชันจัดการปุ่มและหน้าต่างทั่วไป
     window.closePopup = function (id) { document.getElementById(id).style.display = "none"; };
-    window.goHome = function () { window.location.href = "../home.html"; };
+    window.goHome = function () { window.location.href = "../index.html"; };
 
     // --- ตอนหน้าเว็บโหลดเสร็จ ---
     loadGameState(); // โหลดเซฟ
