@@ -121,6 +121,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // ฟังก์ชันสำหรับปิดหน้าต่างยืนยันอีเมล
+    window.closeEmailConfirmModal = function() {
+        document.getElementById('emailConfirmModal').style.display = 'none';
+        document.getElementById('email-confirm-pwd').value = '';
+    };
+
     // ระบบบันทึกการตั้งค่า
     const saveBtn = document.getElementById('saveSettingsBtn');
     if (saveBtn) {
@@ -133,6 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // ตรวจสอบว่า Username ห้ามว่าง
             if (!newUsername) {
                 showPwdAlert('error', 'ข้อมูลไม่ครบถ้วน', 'กรุณากรอก Username ระบบไม่อนุญาตให้ใช้ชื่อเว้นว่างได้');
+                return;
+            }
+
+            // 🛑 ตรวจสอบอักษรพิเศษใน Username (อนุญาตเฉพาะตัวอักษรและตัวเลขเท่านั้น)
+            const invalidCharsRegex = /[!@#$%^&*()_+=\[\]{};':"\\|,.<>\/?]+/;
+            if (invalidCharsRegex.test(newUsername)) {
+                showPwdAlert('error', 'รูปแบบไม่ถูกต้อง', 'Username ไม่สามารถใส่อักษรพิเศษได้ (เช่น @, #, $, ฯลฯ)');
                 return;
             }
 
@@ -150,43 +163,72 @@ document.addEventListener('DOMContentLoaded', () => {
             const newPwd = newPwdInput.value;
             const confirmPwd = confirmPwdInput.value;
 
-            if (oldPwd || newPwd || confirmPwd) {
-                if (oldPwd !== user.password) {
-                    showPwdAlert('error', 'รหัสผ่านไม่ถูกต้อง', 'รหัสผ่านปัจจุบันที่คุณระบุไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
-                    return;
+            // ฟังก์ชันสำหรับเซฟข้อมูล (แยกออกมาเพื่อรอเรียกใช้งานหลังเช็ค Popup)
+            const proceedToSave = () => {
+                if (oldPwd || newPwd || confirmPwd) {
+                    if (oldPwd !== user.password) {
+                        showPwdAlert('error', 'รหัสผ่านไม่ถูกต้อง', 'รหัสผ่านปัจจุบันที่คุณระบุไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง');
+                        return;
+                    }
+                    if (!newPwd || !confirmPwd) {
+                        showPwdAlert('error', 'ข้อมูลไม่ครบถ้วน', 'กรุณากรอกรหัสผ่านใหม่และการยืนยันรหัสผ่านให้ครบถ้วน');
+                        return;
+                    }
+                    if (newPwd !== confirmPwd) {
+                        showPwdAlert('error', 'รหัสผ่านไม่ตรงกัน', 'รหัสผ่านใหม่ที่คุณตั้ง กับ การยืนยันรหัสผ่านไม่ตรงกัน');
+                        return;
+                    }
+                    users[userIndex].password = newPwd;
                 }
-                if (!newPwd || !confirmPwd) {
-                    showPwdAlert('error', 'ข้อมูลไม่ครบถ้วน', 'กรุณากรอกรหัสผ่านใหม่และการยืนยันรหัสผ่านให้ครบถ้วน');
-                    return;
-                }
-                if (newPwd !== confirmPwd) {
-                    showPwdAlert('error', 'รหัสผ่านไม่ตรงกัน', 'รหัสผ่านใหม่ที่คุณตั้ง กับ การยืนยันรหัสผ่านไม่ตรงกัน');
-                    return;
-                }
-                users[userIndex].password = newPwd;
+
+                // 🟢 บันทึกข้อมูลที่แก้ไขลงฐานข้อมูล
+                users[userIndex].username = newUsername;
+                users[userIndex].email = newEmail;
+                users[userIndex].avatar = selectedAvatarBase64;
+                
+                localStorage.setItem("users", JSON.stringify(users));
+                
+                // 🟢 อัปเดต Session การล็อกอินด้วยชื่อใหม่
+                localStorage.setItem("loggedInUser", newUsername);
+                
+                // โชว์ Popup บันทึกสำเร็จ
+                showPwdAlert('success', 'บันทึกข้อมูลสำเร็จ', 'การตั้งค่าและข้อมูลบัญชีของคุณถูกอัปเดตเรียบร้อยแล้ว', true);
+                
+                const originalText = saveBtn.innerHTML;
+                saveBtn.innerHTML = "บันทึกข้อมูลเรียบร้อยแล้ว! <i class='fa-solid fa-circle-check'></i>";
+                saveBtn.style.background = "#10b981";
+
+                setTimeout(() => {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.style.background = "";
+                }, 1500);
+            };
+
+            // 🛑 ตรวจสอบการเปลี่ยนอีเมล ถ้ามีการแก้ไขอีเมล ให้เด้ง Popup ถามรหัสผ่านก่อน
+            if (newEmail !== user.email) {
+                const emailModal = document.getElementById('emailConfirmModal');
+                const confirmBtn = document.getElementById('confirmEmailChangeBtn');
+                
+                emailModal.style.display = 'flex';
+                
+                // กำหนดคำสั่งให้ปุ่ม "ยืนยัน" ใน Popup
+                confirmBtn.onclick = function() {
+                    const confirmPwdValue = document.getElementById('email-confirm-pwd').value;
+                    if (confirmPwdValue !== user.password) {
+                        showPwdAlert('error', 'รหัสผ่านไม่ถูกต้อง', 'รหัสผ่านเพื่อยืนยันการเปลี่ยนอีเมลไม่ถูกต้อง กรุณาลองใหม่');
+                        return;
+                    }
+                    
+                    // ถ้ารหัสถูก ให้ปิด Popup และทำงานส่วนเซฟข้อมูลต่อ
+                    closeEmailConfirmModal();
+                    proceedToSave();
+                };
+                
+                return; // หยุดการทำงานชั่วคราว รอผู้ใช้กรอกรหัสใน Popup
+            } else {
+                // ถ้าไม่ได้เปลี่ยนอีเมล ให้บันทึกข้อมูลได้เลย
+                proceedToSave();
             }
-
-            // 🟢 บันทึกข้อมูลที่แก้ไขลงฐานข้อมูล
-            users[userIndex].username = newUsername;
-            users[userIndex].email = newEmail;
-            users[userIndex].avatar = selectedAvatarBase64;
-            
-            localStorage.setItem("users", JSON.stringify(users));
-            
-            // 🟢 อัปเดต Session การล็อกอินด้วยชื่อใหม่ (สำคัญมาก ไม่งั้นบัญชีจะเด้งออก)
-            localStorage.setItem("loggedInUser", newUsername);
-            
-            // โชว์ Popup บันทึกสำเร็จ
-            showPwdAlert('success', 'บันทึกข้อมูลสำเร็จ', 'การตั้งค่าและข้อมูลบัญชีของคุณถูกอัปเดตเรียบร้อยแล้ว', true);
-            
-            const originalText = saveBtn.innerHTML;
-            saveBtn.innerHTML = "บันทึกข้อมูลเรียบร้อยแล้ว! <i class='fa-solid fa-circle-check'></i>";
-            saveBtn.style.background = "#10b981";
-
-            setTimeout(() => {
-                saveBtn.innerHTML = originalText;
-                saveBtn.style.background = "";
-            }, 1500);
         });
     }
 });
