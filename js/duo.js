@@ -169,6 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // 🔥 สลับโหมดอย่างอิสระ (เมื่อผู้ใช้เปลี่ยนค่าใน Dropdown)
     window.changeDifficulty = function (val) {
         currentDifficulty = val;
+        // 🎬 Pulse the card when difficulty changes
+        const card = document.querySelector(".card");
+        if (card) {
+            card.classList.remove("difficulty-switching");
+            void card.offsetWidth;
+            card.classList.add("difficulty-switching");
+            card.addEventListener("animationend", () => {
+                card.classList.remove("difficulty-switching");
+            }, { once: true });
+        }
         generateQuiz();
     };
 
@@ -332,30 +342,59 @@ document.addEventListener('DOMContentLoaded', () => {
         let { avail, pool, played } = getAvailableQuestions();
 
         let randIdx;
-        // 🔥 ตรวจสอบว่ามีโจทย์ค้างอยู่ไหม ถ้ารีเฟรชหน้าเว็บมาจะได้ข้อเดิม ไม่โดนริบ
+        // 🔥 ตรวจสอบว่ามีโจทย์ค้างอยู่ไหม
         if (activeQuestion[currentDifficulty] !== -1) {
             randIdx = activeQuestion[currentDifficulty];
         } else {
-            // ถ้าไม่มีโจทย์ให้เล่นแล้วในระดับนี้
             if (avail.length === 0) {
                 showProgressionPopup(true);
                 return;
             }
-            // สุ่ม Index แบบเอามาจากข้อที่ยังไม่เล่น
             randIdx = avail[Math.floor(Math.random() * avail.length)];
-            played.push(randIdx); // เก็บเข้าประวัติว่าเล่นแล้ว
-            activeQuestion[currentDifficulty] = randIdx; // ล็อกข้อไว้
+            played.push(randIdx);
+            activeQuestion[currentDifficulty] = randIdx;
         }
 
-        // ดึงโจทย์ข้อนั้นมากำหนดเป็นเฉลย
         const currentItem = pool[randIdx];
         correctAnswer = currentItem.tags.join('');
-        document.getElementById("hintText").textContent = currentItem.hint; // โชว์คำใบ้
 
-        syncGameUI();
-        questionStartTime = Date.now(); // เริ่มจับเวลา
-        isSubmitting = false;
-        saveGameState(); // บันทึกเกมเสมอ
+        // 🎬 Animation: slide hint out → update → slide in
+        const hintEl = document.getElementById("hintText");
+        const inputEl = document.getElementById("userInput");
+
+        function applyNewHint() {
+            hintEl.textContent = currentItem.hint;
+            hintEl.classList.remove("hint-slide-out");
+            hintEl.classList.add("hint-slide-in");
+
+            // Animate input box too
+            inputEl.classList.remove("input-fade-in");
+            void inputEl.offsetWidth;
+            inputEl.classList.add("input-fade-in");
+
+            syncGameUI();
+            questionStartTime = Date.now();
+            isSubmitting = false;
+            saveGameState();
+
+            hintEl.addEventListener("animationend", () => {
+                hintEl.classList.remove("hint-slide-in");
+            }, { once: true });
+            inputEl.addEventListener("animationend", () => {
+                inputEl.classList.remove("input-fade-in");
+            }, { once: true });
+        }
+
+        // ถ้ามีข้อความเดิม → slide out ก่อน
+        if (hintEl.textContent && hintEl.textContent !== "กำลังโหลดโจทย์...") {
+            hintEl.classList.remove("hint-slide-in");
+            hintEl.classList.add("hint-slide-out");
+            hintEl.addEventListener("animationend", () => {
+                applyNewHint();
+            }, { once: true });
+        } else {
+            applyNewHint();
+        }
     }
 
     // --------------------------------------------------

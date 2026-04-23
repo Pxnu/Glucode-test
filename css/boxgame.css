@@ -299,3 +299,70 @@ h2#question {
 .block.add {
     animation: popIn 0.2s ease;
 }
+/* =========================================
+   🎬 Question Transition Animations
+========================================= */
+@keyframes questionSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes questionSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+}
+
+@keyframes choicesFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes difficultyPulse {
+    0%   { opacity: 1; transform: scale(1); }
+    40%  { opacity: 0.3; transform: scale(0.97); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.question-slide-in {
+    animation: questionSlideIn 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.question-slide-out {
+    animation: questionSlideOut 0.25s ease-in both;
+    pointer-events: none;
+}
+
+.choices-fade-in .block {
+    animation: choicesFadeIn 0.3s ease both;
+}
+
+.choices-fade-in .block:nth-child(1) { animation-delay: 0.05s; }
+.choices-fade-in .block:nth-child(2) { animation-delay: 0.10s; }
+.choices-fade-in .block:nth-child(3) { animation-delay: 0.15s; }
+.choices-fade-in .block:nth-child(4) { animation-delay: 0.20s; }
+.choices-fade-in .block:nth-child(5) { animation-delay: 0.25s; }
+.choices-fade-in .block:nth-child(6) { animation-delay: 0.28s; }
+.choices-fade-in .block:nth-child(7) { animation-delay: 0.30s; }
+.choices-fade-in .block:nth-child(8) { animation-delay: 0.32s; }
+
+.difficulty-switching {
+    animation: difficultyPulse 0.4s ease both;
+}

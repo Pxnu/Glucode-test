@@ -332,6 +332,16 @@ function syncGameUI() {
 // 🔥 เปลี่ยนโหมดได้อิสระ ไม่รีเซ็ต Round (เรียกใช้เมื่อเปลี่ยน Dropdown)
 window.changeDifficulty = function (val) {
     currentDifficulty = val;
+    // 🎬 Pulse the wrapper when difficulty changes
+    const wrapper = document.querySelector(".game-box-wrapper");
+    if (wrapper) {
+        wrapper.classList.remove("difficulty-switching");
+        void wrapper.offsetWidth;
+        wrapper.classList.add("difficulty-switching");
+        wrapper.addEventListener("animationend", () => {
+            wrapper.classList.remove("difficulty-switching");
+        }, { once: true });
+    }
     loadLevel();
 };
 
@@ -515,32 +525,60 @@ function loadLevel() {
     }
 
     const level = pool[currentLevel];
-    // แสดงข้อความคำถาม
-    document.getElementById("question").innerText = level.question;
 
-    // สร้างกล่องตัวเลือกคำตอบด้านล่าง โดยสุ่มสลับตำแหน่งตลอด
-    let choicesDiv = document.getElementById("choices");
-    choicesDiv.innerHTML = "";
-    let displayChoices = [...new Set(level.choices)].sort(() => Math.random() - 0.5);
+    // 🎬 Animation: slide question out → update content → slide in
+    const questionEl = document.getElementById("question");
+    const choicesDiv = document.getElementById("choices");
 
-    // ใส่ตัวเลือกเข้าไปในกล่อง HTML
-    displayChoices.forEach(choice => {
-        let btn = document.createElement("div");
-        btn.className = "block";
-        // ตรวจสอบว่าคำตอบนี้ถูกเลือกอยู่หรือไม่ ถ้าใช่ให้ใส่ class 'selected'
-        if (answerList.includes(choice)) {
-            btn.classList.add("selected");
-        }
-        btn.innerText = choice;
-        btn.onclick = () => addAnswer(choice, btn); // ส่ง element btn เข้าไปด้วย
-        choicesDiv.appendChild(btn);
-    });
+    function applyNewContent() {
+        // แสดงข้อความคำถาม
+        questionEl.innerText = level.question;
+        questionEl.classList.remove("question-slide-out");
+        questionEl.classList.add("question-slide-in");
 
-    renderAnswer();
-    syncGameUI(); // อัปเดต UI 
-    questionStartTime = Date.now(); // เริ่มจับเวลา (ไว้แจก Achievement ตอบไว)
-    isSubmitting = false;
-    saveGameState(); // เซฟเกม
+        // สร้างกล่องตัวเลือกคำตอบด้านล่าง โดยสุ่มสลับตำแหน่งตลอด
+        choicesDiv.innerHTML = "";
+        choicesDiv.classList.remove("choices-fade-in");
+        let displayChoices = [...new Set(level.choices)].sort(() => Math.random() - 0.5);
+
+        // ใส่ตัวเลือกเข้าไปในกล่อง HTML
+        displayChoices.forEach(choice => {
+            let btn = document.createElement("div");
+            btn.className = "block";
+            if (answerList.includes(choice)) {
+                btn.classList.add("selected");
+            }
+            btn.innerText = choice;
+            btn.onclick = () => addAnswer(choice, btn);
+            choicesDiv.appendChild(btn);
+        });
+
+        // trigger reflow แล้วใส่ class animate
+        void choicesDiv.offsetWidth;
+        choicesDiv.classList.add("choices-fade-in");
+
+        renderAnswer();
+        syncGameUI(); // อัปเดต UI
+        questionStartTime = Date.now();
+        isSubmitting = false;
+        saveGameState();
+
+        // ล้าง animation class หลังเล่นเสร็จ
+        questionEl.addEventListener("animationend", () => {
+            questionEl.classList.remove("question-slide-in");
+        }, { once: true });
+    }
+
+    // ถ้า question มีข้อความเดิมอยู่ ให้ slide out ก่อน แล้วค่อย slide in
+    if (questionEl.innerText && questionEl.innerText !== "Loading...") {
+        questionEl.classList.remove("question-slide-in");
+        questionEl.classList.add("question-slide-out");
+        questionEl.addEventListener("animationend", () => {
+            applyNewContent();
+        }, { once: true });
+    } else {
+        applyNewContent();
+    }
 }
 
 
