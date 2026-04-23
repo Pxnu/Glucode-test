@@ -154,16 +154,11 @@ h2#question {
 
 /* สไตล์สำหรับตัวเลือกที่ถูกกดไปแล้ว */
 .block.selected {
-    opacity: 0.4;
-    /* ทำให้ดูจางลง */
-    filter: grayscale(80%);
-    /* ปรับให้สีหม่น */
-    cursor: not-allowed;
-    /* เปลี่ยน Cursor เป็นรูปห้าม */
-    pointer-events: none;
-    /* ทำให้กดซ้ำไม่ได้ */
-    transform: scale(0.95);
-    /* ทำให้ดูยุบลงเล็กน้อย */
+    opacity: 0.4 !important;          /* 🟢 เพิ่ม !important */
+    filter: grayscale(80%) !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    transform: scale(0.95) !important; /* 🟢 เพิ่ม !important */
 }
 
 /* ===== START SCREEN (THEME SUPPORT) ===== */
@@ -299,6 +294,7 @@ h2#question {
 .block.add {
     animation: popIn 0.2s ease;
 }
+
 /* =========================================
    🎬 Question Transition Animations
 ========================================= */
@@ -354,6 +350,7 @@ h2#question {
     animation: choicesFadeIn 0.3s ease both;
 }
 
+/* ตั้งค่าให้ปุ่มค่อยๆ เฟดมาทีละปุ่ม (Delay) */
 .choices-fade-in .block:nth-child(1) { animation-delay: 0.05s; }
 .choices-fade-in .block:nth-child(2) { animation-delay: 0.10s; }
 .choices-fade-in .block:nth-child(3) { animation-delay: 0.15s; }
