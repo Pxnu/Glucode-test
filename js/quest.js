@@ -1,5 +1,5 @@
 /* ==========================================
-   QUEST JS - ระบบจัดการภารกิจรายวัน (มีเวลานับถอยหลัง)
+   QUEST JS - ระบบจัดการภารกิจรายวัน (มีเวลานับถอยหลัง & รีเซ็ตข้ามวัน)
 ========================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const loggedInUser = localStorage.getItem("loggedInUser");
@@ -14,7 +14,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = users[userIndex];
     if (!user.questProgress) user.questProgress = {}; 
 
-    // 🟢 ระบบเวลานับถอยหลังถึงเที่ยงคืน (Countdown Timer)
+    // 🟢 1. ระบบเช็คและรีเซ็ต Quest เมื่อข้ามวัน (เที่ยงคืน)
+    const todayString = new Date().toDateString(); // ดึงวันที่วันนี้ เช่น "Thu Apr 23 2026"
+    
+    // ถ้าวันที่ล่าสุดที่บันทึกไว้ ไม่ใช่วันนี้ (แปลว่าข้ามวันมาแล้ว หรือเพิ่งล็อกอินครั้งแรก)
+    if (user.lastQuestDate !== todayString) {
+        user.questProgress = {}; // ล้างเควสต์ทั้งหมดให้กลับไปเป็น 0
+        user.lastQuestDate = todayString; // แสตมป์วันที่ของวันนี้ทับลงไป
+        localStorage.setItem("users", JSON.stringify(users)); // เซฟลงฐานข้อมูล
+    }
+
+    // 🟢 2. อัปเดตความคืบหน้าเควสต์ "ล็อกอิน" ทันทีที่เปิดหน้านี้ (ถ้าวันนี้ยังไม่ได้ทำ)
+    if (!user.questProgress['q_login']) {
+        user.questProgress['q_login'] = { current: 1, claimed: false };
+        localStorage.setItem("users", JSON.stringify(users));
+    }
+
+    // 🟢 3. ระบบเวลานับถอยหลังถึงเที่ยงคืน (Countdown Timer)
     function updateCountdown() {
         const now = new Date();
         // หาวันพรุ่งนี้ เวลา 00:00:00
@@ -37,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCountdown();
     setInterval(updateCountdown, 1000);
 
-    // 🟢 ฐานข้อมูล Quest (รวมเควสต์เก่า 2 อัน และใหม่ 5 อัน รวมเป็น 7 อัน)
+    // 🟢 4. ฐานข้อมูล Quest (รวมเควสต์เก่าและใหม่)
     const QUEST_DATA = [
         { id: 'q_login', title: 'เข้าสู่ระบบประจำวัน', desc: 'ล็อกอินเข้าสู่ระบบ Glucode (รีเซ็ตทุกวัน)', max: 1, reward: 10, icon: 'fa-right-to-bracket', color: '#3b82f6', bg: '#eff6ff' },
         { id: 'q_box_5', title: 'นักต่อบล็อกโค้ด', desc: 'ตอบถูกในโหมด Box Game 5 ข้อ', max: 5, reward: 20, icon: 'fa-puzzle-piece', color: '#10b981', bg: '#dcfce7' },
@@ -51,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('questContainer');
     const coinDisplay = document.getElementById('questCoinDisplay');
 
+    // 🟢 5. วาดการ์ดเควสต์ลงบนหน้าจอ
     function renderQuests() {
         coinDisplay.innerText = user.coins || 0;
         container.innerHTML = '';
@@ -93,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 🟢 6. ฟังก์ชันเวลากดปุ่มรับรางวัล
     window.claimReward = function(questId, amount) {
         if (!user.questProgress[questId]) return;
 
@@ -104,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const navCoin = document.querySelector('.coin-display strong');
         if (navCoin) navCoin.innerText = user.coins;
 
-        renderQuests();
+        renderQuests(); // อัปเดตหน้าจอใหม่
     };
 
     renderQuests();
