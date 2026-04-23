@@ -292,13 +292,13 @@ function loadGameState() {
     if (saved) {
         const state = JSON.parse(saved);
         currentDifficulty = state.currentDifficulty || "easy";
-        
+
         // แปลงรูปแบบเก่าให้เป็นแบบใหม่ (เพื่อรองรับการอัปเดตโค้ด)
         if (typeof state.playedInRound === 'number') playedInRound = { easy: state.playedInRound, medium: 0, hard: 0, expert: 0 };
         else playedInRound = state.playedInRound || { easy: 0, medium: 0, hard: 0, expert: 0 };
 
         activeQuestion = state.activeQuestion || { easy: -1, medium: -1, hard: -1, expert: -1 };
-        
+
         easyPlayed = state.easyPlayed || [];
         mediumPlayed = state.mediumPlayed || [];
         hardPlayed = state.hardPlayed || [];
@@ -323,10 +323,10 @@ function syncGameUI() {
     document.getElementById("scoreDisplay").innerText = `Score: ${loadScore()}`;
     document.getElementById("levelDisplay").innerText = `Round: ${round} / ${ROUND_LIMIT}`;
     document.getElementById("difficultySelect").value = currentDifficulty;
-    
+
     // อัปเดตตัวเลขเหรียญบน Navbar ด้านบนด้วย
     let navCoin = document.querySelector('.coin-display strong');
-    if(navCoin) navCoin.innerText = coins;
+    if (navCoin) navCoin.innerText = coins;
 }
 
 // 🔥 เปลี่ยนโหมดได้อิสระ ไม่รีเซ็ต Round (เรียกใช้เมื่อเปลี่ยน Dropdown)
@@ -350,14 +350,14 @@ window.changeDifficulty = function (val) {
    (กดข้ามข้อโดยหักเหรียญ)
 ========================= */
 // เด้งหน้าต่างถามยืนยันการข้าม
-window.promptSkip = function() {
+window.promptSkip = function () {
     if (isSubmitting) return;
     document.getElementById("skipCostText").innerText = SKIP_COSTS[currentDifficulty];
     document.getElementById("skipConfirmPopup").style.display = "flex";
 };
 
 // ดำเนินการหักเหรียญและข้ามข้อ
-window.executeSkip = function() {
+window.executeSkip = function () {
     const cost = SKIP_COSTS[currentDifficulty];
     const loggedInUser = getCurrentUser();
     let users = JSON.parse(localStorage.getItem('users')) || [];
@@ -366,15 +366,15 @@ window.executeSkip = function() {
     if (userIndex !== -1 && users[userIndex].coins >= cost) {
         users[userIndex].coins -= cost; // หักเหรียญ
         localStorage.setItem('users', JSON.stringify(users));
-        
+
         closePopup('skipConfirmPopup'); // ปิดหน้าต่างยืนยัน
         boxStreak = 0; // กดข้ามถือว่าคอมโบขาด
-        
+
         // แจ้งข้อความข้ามด่านสำเร็จ
         let result = document.getElementById("result");
         result.innerText = `ข้ามด่านสำเร็จ! (-${cost} Coins)`;
         result.style.color = "#f59e0b";
-        
+
         isSubmitting = true;
         setTimeout(() => {
             result.innerText = "";
@@ -390,9 +390,9 @@ window.executeSkip = function() {
 };
 
 // 🟢 ฟังก์ชันสำหรับปุ่ม "ไปหน้า Quest"
-window.goToQuestPage = function() {
+window.goToQuestPage = function () {
     // ปรับเส้นทางให้ถูกต้องตามโครงสร้างโฟลเดอร์ของคุณ
-    window.location.href = "../Glucode quest/quest.html"; 
+    window.location.href = "../Glucode quest/quest.html";
 };
 
 /* =========================
@@ -403,20 +403,20 @@ window.goToQuestPage = function() {
 function getAvailableQuestions() {
     let pool = currentDifficulty === "easy" ? easyLevels : currentDifficulty === "medium" ? mediumLevels : currentDifficulty === "hard" ? hardLevels : expertLevels;
     let played = currentDifficulty === "easy" ? easyPlayed : currentDifficulty === "medium" ? mediumPlayed : currentDifficulty === "hard" ? hardPlayed : expertPlayed;
-    
+
     let avail = [];
     // นำ Index ที่ยังไม่เคยเล่นไปใส่ไว้ใน avail
-    pool.forEach((_, i) => { if(!played.includes(i)) avail.push(i); });
+    pool.forEach((_, i) => { if (!played.includes(i)) avail.push(i); });
     return { avail, pool, played };
 }
 
 // ฟังก์ชันจัดการเมื่อจบข้อใดข้อนึง (ไม่ว่าจะตอบถูกหรือกดข้าม)
 function handleRoundProgress(isSkip = false) {
     // เคลียร์โจทย์ปัจจุบันทิ้งเพราะทำผ่าน/ข้ามแล้ว
-    activeQuestion[currentDifficulty] = -1; 
+    activeQuestion[currentDifficulty] = -1;
     playedInRound[currentDifficulty]++; // นับข้อเพิ่ม
     syncGameUI(); // อัปเดต UI
-    
+
     // ถ้าเล่นครบ 5 ข้อแล้ว (ตามตัวแปร ROUND_LIMIT) ให้โชว์หน้าต่างพักครึ่ง
     if (playedInRound[currentDifficulty] >= ROUND_LIMIT) {
         showProgressionPopup();
@@ -429,14 +429,19 @@ function handleRoundProgress(isSkip = false) {
 }
 
 // หน้าต่างแสดงความยินดีเมื่อผ่านครบ 5 ข้อ (Progression Popup)
-window.showProgressionPopup = function(isExhausted = false) {
+window.showProgressionPopup = function (isExhausted = false) {
+    // เพิ่มบรรทัดนี้ลงไปที่บรรทัดแรกๆ ของฟังก์ชัน เพื่ออัปเดต Quest ตามระดับความยากปัจจุบันที่เพิ่งเล่นผ่าน
+    if (typeof window.updateQuestProgress === 'function' && !isExhausted) {
+        window.updateQuestProgress(`box-${currentDifficulty}`, 1);
+    }
+
     let { avail } = getAvailableQuestions();
     let popup = document.getElementById("progressionPopup");
     let title = document.getElementById("progTitle");
     let desc = document.getElementById("progDesc");
     let btnContainer = document.getElementById("progBtns");
     btnContainer.innerHTML = ""; // ล้างปุ่มเก่า
-    
+
     // ถ้าระดับความยากนี้ไม่มีโจทย์เหลือให้เล่นแล้ว
     if (isExhausted || avail.length === 0) {
         title.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 🚧 โหมดนี้เล่นครบแล้ว!`;
@@ -445,7 +450,7 @@ window.showProgressionPopup = function(isExhausted = false) {
         // ถ้าโจทย์ยังเหลือ
         title.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> 🎉 คุณเล่นผ่านระดับนี้แล้ว!`;
         desc.innerText = `สามารถไปด่านถัดไป หรือจะฝึกระดับ ${currentDifficulty.toUpperCase()} ต่อดี?`;
-        
+
         // สร้างปุ่มให้เลือกเล่นระดับเดิมต่อ
         let btnStay = document.createElement("button");
         btnStay.className = "btn-cancel";
@@ -457,7 +462,7 @@ window.showProgressionPopup = function(isExhausted = false) {
     // สร้างปุ่ม "ไปด่านถัดไป"
     let btnNext = document.createElement("button");
     btnNext.className = "btn-primary";
-    
+
     // ถ้าจบโหมด Expert แล้ว และไม่มีโจทย์เหลือ ให้จบเกมโดยสมบูรณ์
     if (currentDifficulty === "expert" && avail.length === 0) {
         document.getElementById("gameClearPopup").style.display = "flex";
@@ -467,16 +472,16 @@ window.showProgressionPopup = function(isExhausted = false) {
         btnNext.innerHTML = `ไปด่านถัดไป <i class="fa-solid fa-arrow-right"></i>`;
         btnNext.onclick = () => moveNextDifficulty();
     }
-    
+
     btnContainer.appendChild(btnNext);
     popup.style.display = "flex";
 };
 
 // ฟังก์ชันสำหรับกระโดดไปความยากระดับต่อไป
-window.moveNextDifficulty = function() {
+window.moveNextDifficulty = function () {
     const order = ["easy", "medium", "hard", "expert"];
     let nextIdx = order.indexOf(currentDifficulty) + 1;
-    if(nextIdx < order.length) {
+    if (nextIdx < order.length) {
         playedInRound[currentDifficulty] = 0; // ล้างรอบของโหมดปัจจุบันทิ้ง
         currentDifficulty = order[nextIdx]; // เปลี่ยนเป็นหมวดต่อไป
         closePopup('progressionPopup');
@@ -540,7 +545,6 @@ function loadLevel() {
         displayChoices.forEach(choice => {
             let btn = document.createElement("div");
             btn.className = "block";
-            // ตรวจสอบว่าคำตอบนี้ถูกเลือกอยู่หรือไม่ ถ้าใช่ให้ใส่ class 'selected'
             if (answerList.includes(choice)) {
                 btn.classList.add("selected");
             }
@@ -549,7 +553,7 @@ function loadLevel() {
             choicesDiv.appendChild(btn);
         });
 
-        // trigger reflow แล้วใส่ class animate ให้ปุ่มตัวเลือก
+        // trigger reflow แล้วใส่ class animate
         void choicesDiv.offsetWidth;
         choicesDiv.classList.add("choices-fade-in");
 
@@ -582,7 +586,7 @@ function loadLevel() {
 function renderAnswer() {
     let area = document.getElementById("answerArea");
     area.innerHTML = "";
-    
+
     // ค้นหาและคืนค่าสีหม่นให้กับปุ่มด้านล่างทั้งหมดก่อน
     const allChoices = document.querySelectorAll("#choices .block");
     allChoices.forEach(btn => {
@@ -593,12 +597,12 @@ function renderAnswer() {
         }
     });
 
-    answerList.forEach(function(value, index) {
+    answerList.forEach(function (value, index) {
         let block = document.createElement("div");
         block.className = "block add";
         block.innerText = value;
-        block.onclick = function() { 
-            removeAt(index); 
+        block.onclick = function () {
+            removeAt(index);
         };
         area.appendChild(block);
     });
@@ -608,28 +612,30 @@ function renderAnswer() {
 function addAnswer(value, element) {
     let { pool } = getAvailableQuestions();
     let level = pool[currentLevel];
-    
+
     if (answerList.length >= level.correct.length || answerList.includes(value)) return;
-    
+
     answerList.push(value);
-    
+
     // ใส่สีหม่นให้กับตัวเลือกที่ถูกกด
     if (element) {
         element.classList.add("selected");
     }
-    
+
     renderAnswer();
 }
 
 
 // ปุ่มควบคุมการจัดการคำตอบ
-window.removeLast = function() { answerList.pop(); renderAnswer(); }; // ลบตัวสุดท้าย
-window.removeAt = function(index) { answerList.splice(index, 1); renderAnswer(); }; // ลบตัวที่ระบุ
-window.resetBoard = function() { answerList = []; renderAnswer(); }; // เคลียร์กระดานคำตอบใหม่หมด
+window.removeLast = function () { answerList.pop(); renderAnswer(); }; // ลบตัวสุดท้าย
+window.removeAt = function (index) { answerList.splice(index, 1); renderAnswer(); }; // ลบตัวที่ระบุ
+window.resetBoard = function () { answerList = []; renderAnswer(); }; // เคลียร์กระดานคำตอบใหม่หมด
 
-// ฟังก์ชันสำหรับส่งคำตอบและตรวจความถูกต้อง
-window.submitAnswer = function() {
-    if (isSubmitting) return; // กันกดปุ่มรัว
+// --------------------------------------------------
+// ระบบการกดส่งและตรวจคำตอบ (Submit) โหมด Jigsaws
+// --------------------------------------------------
+window.submitAnswer = function () {
+    if (isSubmitting) return;
     isSubmitting = true;
 
     let { pool } = getAvailableQuestions();
@@ -637,68 +643,88 @@ window.submitAnswer = function() {
     let result = document.getElementById("result");
     let answerArea = document.getElementById("answerArea");
 
-    // ตรวจสอบความถูกต้องของคำตอบ (แปลงเป็นข้อความและเปรียบเทียบ)
+    function grantAchievement(achId) {
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let uIdx = users.findIndex(u => u.username === getCurrentUser());
+        if (uIdx !== -1) {
+            if (!users[uIdx].unlockedAchievements) users[uIdx].unlockedAchievements = [];
+            if (!users[uIdx].unlockedAchievements.includes(achId)) {
+                users[uIdx].unlockedAchievements.push(achId);
+                localStorage.setItem("users", JSON.stringify(users));
+                if (typeof window.showAchievementToast === 'function') window.showAchievementToast(achId);
+            }
+        }
+    }
+
     if (JSON.stringify(answerList) === JSON.stringify(level.correct)) {
-        // === กรณีตอบถูก ===
-        result.style.color = "#10B981";
-        result.innerText = "ถูกต้อง!";
-        answerArea.classList.add("correct");
+        // === ตอบถูกต้อง ===
+        // 🟢 เปลี่ยนข้อความตอบถูกให้มี FontAwesome
+        if (result) { result.style.color = "#10B981"; result.innerHTML = '<i class="fa-solid fa-circle-check"></i> ถูกต้อง!'; }
+        if (answerArea) answerArea.classList.add("correct");
 
-        addScore(currentDifficulty); // บวกคะแนน
-
+        addScore(currentDifficulty);
         boxCorrectTotal++;
         boxStreak++;
-        let timeTaken = (Date.now() - questionStartTime) / 1000; // คิดเวลาที่ใช้ตอบ
-        
-        // ส่งค่าไปให้ระบบ Achievement ตรวจสอบการปลดล็อกฉายาและเควสต์
-        if (typeof window.unlockAchievement === "function") {
-            window.unlockAchievement("code-first");
-            if (boxCorrectTotal >= 5) window.unlockAchievement("code-correct-5");
-            if (boxCorrectTotal >= 10) { window.unlockAchievement("code-correct-10"); window.unlockAchievement("code-master"); }
-            if (boxStreak >= 3) window.unlockAchievement("word-3");
-            if (timeTaken <= 5) window.unlockAchievement("code-speed");
-            let answerStr = answerList.join(" ").toLowerCase();
-            if (answerStr.includes("if")) window.unlockAchievement("code-if");
-            if (answerStr.includes("for") || answerStr.includes("while")) window.unlockAchievement("code-loop");
-            if (answerStr.includes("[") || answerStr.includes("array")) window.unlockAchievement("code-array");
-        }
-        if (typeof window.updateQuestProgress === "function") {
-            window.updateQuestProgress("q_box_3", 1);
-            window.updateQuestProgress("q_streak_3", boxStreak);
-            let earnedScore = SCORE_MAP[currentDifficulty];
-            window.updateQuestProgress("q_score_50", earnedScore);
-            let answerStr = answerList.join("").toLowerCase();
-            if (answerStr.includes("<h1>")) window.updateQuestProgress("q_box_h1", 1);
+        let timeTaken = (Date.now() - questionStartTime) / 1000;
+
+        grantAchievement("box-first");
+        if (boxCorrectTotal >= 5) grantAchievement("box-5");
+        if (boxCorrectTotal >= 10) grantAchievement("box-10");
+        if (boxStreak >= 3) grantAchievement("box-streak-3");
+        if (timeTaken <= 5) grantAchievement("box-speed");
+
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        let uIdx = users.findIndex(u => u.username === getCurrentUser());
+        if (uIdx !== -1) {
+            let p = users[uIdx].questProgress || {};
+
+            const addQuest = (qId, amt, isMax = false) => {
+                if (!p[qId]) p[qId] = { current: 0, claimed: false };
+                if (!p[qId].claimed) {
+                    if (isMax) { if (amt > p[qId].current) p[qId].current = amt; }
+                    else { p[qId].current += amt; }
+                }
+            };
+
+            addQuest("q_box_5", 1);
+            addQuest("q_streak_3", boxStreak, true);
+            addQuest("q_score_30", SCORE_MAP[currentDifficulty]);
+            addQuest("correct_5_times", 1);
+
+            users[uIdx].questProgress = p;
+            localStorage.setItem("users", JSON.stringify(users));
         }
 
-        // รอสักพักแล้วเปลี่ยนข้อ
         setTimeout(() => {
-            result.innerText = "";
-            handleRoundProgress(false); 
+            if (result) result.innerHTML = "";
+            handleRoundProgress(false);
         }, 800);
     } else {
-        // === กรณีตอบผิด ===
-        result.style.color = "#ef4444";
-        result.innerText = "ยังไม่ถูก ลองใหม่";
-        answerArea.classList.add("wrong");
-        boxStreak = 0; // ทำลายคอมโบ
-        // ลบสีแดงออก ให้ตอบใหม่
-        setTimeout(() => { answerArea.classList.remove("wrong"); isSubmitting = false; }, 400);
+        // === ตอบผิด ===
+        // 🟢 เปลี่ยนข้อความตอบผิดให้มี FontAwesome
+        if (result) { result.style.color = "#ef4444"; result.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> ยังไม่ถูก ลองใหม่'; }
+        if (answerArea) answerArea.classList.add("wrong");
+        boxStreak = 0;
+
+        setTimeout(() => {
+            if (answerArea) answerArea.classList.remove("wrong");
+            isSubmitting = false;
+        }, 400);
     }
 };
 
 // ฟังก์ชันปิดหน้าต่าง Pop-up
-window.closePopup = function(id) { document.getElementById(id).style.display = "none"; };
-window.goHome = function() { window.location.href = "../Home.html"; };
+window.closePopup = function (id) { document.getElementById(id).style.display = "none"; };
+window.goHome = function () { window.location.href = "../home.html"; };
 
 // โหลดเกมทันทีเมื่อโหลดไฟล์ JS เสร็จสิ้น
-window.onload = function() {
+window.onload = function () {
     loadGameState();
     syncGameUI();
     // ❌ ยังไม่ loadLevel()
 };
 
-window.startGame = function() {
+window.startGame = function () {
     document.getElementById("startScreen").style.display = "none";
     loadLevel(); // เริ่มเกม
 };
